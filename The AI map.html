@@ -103,13 +103,12 @@ button { font: inherit; color: inherit; }
 .seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: var(--thumb); }
 
 /* ---------- header ---------- */
-.top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 14px 22px 10px; }
-.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; min-width: 0; }
+.top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 260px) minmax(0, 1fr); align-items: center; gap: 10px 14px; padding: 14px 22px 10px; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .mark { width: 26px; height: 26px; flex: none; color: var(--accent); }
 h1 { font-weight: 500; font-size: 1.12rem; line-height: 1.1; letter-spacing: -0.01em; margin: 0; white-space: nowrap; }
-.tagline { color: var(--muted); font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prefs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.search { position: relative; flex: 0 1 260px; min-width: 170px; }
+.prefs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; justify-self: end; min-width: 0; }
+.search { position: relative; width: 100%; min-width: 0; }
 .search input { width: 100%; font: inherit; font-size: 0.88rem; color: var(--ink); background: var(--fill); border: 0; border-radius: 999px; padding: 8px 15px; -webkit-appearance: none; appearance: none; }
 .search input::placeholder { color: var(--muted); }
 .qres {
@@ -317,7 +316,6 @@ button.tag:hover { color: var(--accent); background: var(--accent-soft); }
 
 /* ---------- touch and tablet: full-screen map, details in a modal ---------- */
 html.sheet .top { padding: 12px 16px 8px; }
-html.sheet .tagline { display: none; }
 html.sheet .stage { display: block; padding: 0; }
 html.sheet .canvas { height: 100%; }
 html.sheet .hint { display: none; }
@@ -337,8 +335,14 @@ html.sheet.sheet-open .scrim { display: block; position: fixed; z-index: 39; ins
 html.sheet .tabs button { padding: 18px 12px 16px; font-size: 0.95rem; }
 html.sheet .details { padding: 24px 28px 30px; }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
+@media (max-width: 1100px) {
+  .top { grid-template-columns: minmax(0, 1fr) auto; }
+  .search { grid-column: 1 / -1; grid-row: 2; width: min(100%, 360px); justify-self: center; }
+}
 @media (max-width: 640px) {
-  .search { flex: 1 1 100%; order: 3; }
+  .top { grid-template-columns: minmax(0, 1fr); }
+  .search { width: 100%; }
+  .prefs { justify-self: start; justify-content: flex-start; }
   .mapbar { left: 10px; right: 10px; gap: 6px; }
   html.sheet .mapbar .btn { padding: 10px 14px; }
   html.sheet .side { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: 100%; height: min(88dvh, calc(100dvh - 40px)); border-radius: 22px 22px 0 0; }
@@ -358,7 +362,6 @@ html.sheet .details { padding: 24px 28px 30px; }
   <div class="brand">
     <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.6"/><circle cx="16" cy="16" r="9" fill="currentColor" opacity="0.14"/><circle cx="16" cy="16" r="4" fill="currentColor"/></svg>
     <h1 data-i="title">The AI map</h1>
-    <span class="tagline" data-i="tagline"></span>
   </div>
   <div class="search">
     <input id="q" type="search" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="qres">
@@ -4411,7 +4414,6 @@ const COURSE = [
 
 // ---- interface text for the course, levels, themes and the About tab ----
 Object.assign(UI.en, {
-  tagline:"A short course on how AI works",
   tabCourse:"Course", tabNode:"Concept", tabTimeline:"Timeline", tabAbout:"About", panelTabs:"Panel",
   lvlSimple:"Simple", lvlFull:"Detailed", level:"Reading level", theme:"Colour theme", thAuto:"Auto", thLight:"Light", thDark:"Dark",
   support:"Support this project", skip:"Skip to the content",
@@ -4437,7 +4439,6 @@ Object.assign(UI.en, {
   aboutPrivacy:"Privacy", aboutPrivacyText:"Your progress and settings are saved only in this browser. The page loads its fonts from Google Fonts and the D3 library from cdnjs; it sends nothing else anywhere."
 });
 Object.assign(UI.pt, {
-  tagline:"Um curso rápido sobre como a IA funciona",
   tabCourse:"Curso", tabNode:"Conceito", tabTimeline:"Linha do tempo", tabAbout:"Sobre", panelTabs:"Painel",
   lvlSimple:"Simples", lvlFull:"Detalhado", level:"Nível de leitura", theme:"Tema de cores", thAuto:"Auto", thLight:"Claro", thDark:"Escuro",
   support:"Apoie este projeto", skip:"Pular para o conteúdo",
@@ -5262,7 +5263,7 @@ Object.assign(UI.pt, {
   function pressGroup(sel, attr, val) { document.querySelectorAll(sel + " button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute(attr) === val ? "true" : "false"); }); }
   function applyLang() {
     document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
-    document.title = U("title") + " — " + U("tagline");
+    document.title = U("title");
     document.querySelectorAll("[data-i]").forEach(function (e) { e.textContent = U(e.getAttribute("data-i")); });
     q.placeholder = U("search"); q.setAttribute("aria-label", U("search"));
     document.getElementById("langSeg").setAttribute("aria-label", U("lang"));
