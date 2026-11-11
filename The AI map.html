@@ -145,7 +145,8 @@ h1 { font-weight: 500; font-size: 1.12rem; line-height: 1.1; letter-spacing: -0.
 .mapbar .seg { background: var(--panel); box-shadow: 0 0 0 1px var(--line), 0 2px 8px rgba(0, 0, 0, 0.05); align-items: center; }
 .mapbar .seg button[aria-pressed="true"] { background: var(--fill-2); box-shadow: none; }
 .seglabel { font-size: 0.78rem; color: var(--muted); padding: 0 6px 0 10px; white-space: nowrap; }
-.btn.reveal svg { width: 15px; height: 15px; flex: none; }
+.btn.reveal svg, .btn.zoomin svg { width: 15px; height: 15px; flex: none; }
+.mapbar .btn.zoomin { color: var(--accent); animation: fadein 0.25s ease; }
 .mapbar .btn.reveal { color: var(--accent); }
 .mapbar .btn.reveal[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 0 4px var(--accent-soft), 0 4px 18px var(--accent-soft); }
 .mapbar .btn.reveal[aria-pressed="true"]:hover { color: var(--on-accent); }
@@ -390,6 +391,7 @@ html.sheet .details { padding: 24px 28px 30px; }
         <span class="div" aria-hidden="true"></span>
         <button type="button" class="btn" id="fitBtn" data-i="fit">Fit</button>
         <button type="button" class="btn" id="centerBtn" data-i="center">Center</button>
+        <button type="button" class="btn zoomin" id="zoomBtn" hidden><svg aria-hidden="true" viewBox="0 0 16 16"><circle cx="6.8" cy="6.8" r="4.8" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M10.4 10.4 14 14M6.8 4.6v4.4M4.6 6.8H9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span data-i="zoomIn">Zoom in</span></button>
         <span class="div" aria-hidden="true"></span>
         <div class="seg" role="group" id="modeSeg">
           <button type="button" data-mode="tree" data-i="tree" aria-pressed="true">Tree</button>
@@ -4415,7 +4417,7 @@ Object.assign(UI.en, {
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
   welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No maths or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
@@ -4441,7 +4443,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -4687,6 +4689,7 @@ Object.assign(UI.pt, {
       });
     nodeSel.select("text.label").each(function (d) {
       const r = R[d.n.kind], lh = lineH(d.n.kind), t = d3.select(this);
+      if (d.exiting) return;
       if (isOuter(d)) {             // one line, drawn along the radius in draw()
         t.classed("out", true).selectAll("tspan").data([L(d.id)]).join("tspan").attr("x", 0).attr("y", 0).text(function (l) { return l; });
         return;
@@ -4798,6 +4801,21 @@ Object.assign(UI.pt, {
     if (T0 + dy < mt) dy = mt - T0;
     if (dx || dy) moveTo(d3.zoomIdentity.translate(t.x + dx, t.y + dy).scale(t.k));
   }
+  function centerChart() {          // keep the zoom, move the whole chart to the middle
+    const b = bounds(Array.from(shown.keys())), sz = size(), k = d3.zoomTransform(svg.node()).k, padTop = 24, padBottom = 64;
+    if (!isFinite(b.x0)) return;
+    moveTo(d3.zoomIdentity.translate(sz.w / 2 - k * (b.x0 + b.x1) / 2, padTop + (sz.h - padTop - padBottom) / 2 - k * (b.y0 + b.y1) / 2).scale(k));
+  }
+  function zoomTo(id) {             // the selected concept, big and in the middle (its label sits just below the dot)
+    const p = shown.get(id); if (!p) return;
+    const sz = size(), k = 2;
+    moveTo(d3.zoomIdentity.translate(sz.w / 2 - k * p.x, (sz.h - 50) / 2 - k * (p.y + 12)).scale(k));
+  }
+  function syncZoomBtn() {
+    const b = document.getElementById("zoomBtn"), on = selected !== "ai";
+    b.hidden = !on;
+    if (on) { const t = fill(U("zoomInTip"), { name: L(selected) }); b.title = t; b.setAttribute("aria-label", t); }
+  }
   function panTo(id) {
     const p = shown.get(id); if (!p) return;
     const t = d3.zoomTransform(svg.node()), sz = size(), k = Math.max(t.k, 0.8);
@@ -4820,8 +4838,9 @@ Object.assign(UI.pt, {
   function stepId() { return cur ? COURSE[cur.m].steps[cur.s] : null; }
   function activate(id) {            // a click on the map
     hideHint();
-    selected = id; setHash(id);
+    selected = id; setHash(id); syncZoomBtn();
     setView("node");
+    if (everything) { render(id); return; }        // in the full view a tap only selects; opening or closing would break the circle
     const n = NODES.get(id);
     if (n.kids.length) {
       const opening = !open.has(id);
@@ -4832,7 +4851,7 @@ Object.assign(UI.pt, {
   function reveal(id, stay) {        // jump to a concept from the panel, search or a link
     hideHint();
     for (let a = NODES.get(id).parent; a; a = a.parent) open.add(a.id);
-    selected = id; setHash(id);
+    selected = id; setHash(id); syncZoomBtn();
     if (!stay) setView("node");
     render(null, function () { panTo(id); });
   }
@@ -5244,6 +5263,7 @@ Object.assign(UI.pt, {
     document.getElementById("allBtn").title = U("showAllTip");
     document.getElementById("sheetClose").setAttribute("aria-label", U("close"));
     svg.attr("aria-label", U("title"));
+    syncZoomBtn();
     pressGroup("#langSeg", "data-lang", lang);
     renderPanel();
     if (q.value.trim()) { qItems = search(q.value); drawResults(); }
@@ -5283,36 +5303,42 @@ Object.assign(UI.pt, {
     document.getElementById("allBtn").setAttribute("aria-pressed", everything ? "true" : "false");
     svg.classed("everything", !!everything);
   }
-  function keepView() {           // the person changed a control themselves: stay on what is shown, forget the snapshot
-    if (everything) { everything = null; syncControls(); }
+  function leaveEverything() {      // restore the view from before "Show everything"; true if it was on
+    if (!everything) return false;
+    mode = everything.mode; linkMode = everything.linkMode; focus = everything.focus;
+    open.clear(); everything.open.forEach(function (id) { open.add(id); });
+    for (let a = NODES.get(selected).parent; a; a = a.parent) open.add(a.id);   // keep the selected concept on screen
+    everything = null;
+    syncControls();
+    return true;
   }
   function setEverything(on) {
     if (on) {
       everything = { mode: mode, linkMode: linkMode, focus: focus, open: new Set(open) };
       mode = "radial"; linkMode = "all"; focus = false;
       NODES.forEach(function (n) { if (n.kids.length) open.add(n.id); });
-    } else if (everything) {
-      mode = everything.mode; linkMode = everything.linkMode; focus = everything.focus;
-      open.clear(); everything.open.forEach(function (id) { open.add(id); });
-      for (let a = NODES.get(selected).parent; a; a = a.parent) open.add(a.id);   // keep the selected concept on screen
-      everything = null;
-    }
+      syncControls();
+    } else leaveEverything();
     hideHint();
-    syncControls();
     render(null, fit);
   }
   document.getElementById("allBtn").addEventListener("click", function () { setEverything(!everything); });
   document.querySelectorAll("#modeSeg button").forEach(function (b) {
     b.addEventListener("click", function () {
-      const m = b.getAttribute("data-mode"); if (m === mode) return;
-      keepView(); mode = m; save("aimap-mode", m); syncControls(); render(null, fit);
+      const m = b.getAttribute("data-mode"), was = leaveEverything();
+      if (m === mode && !was) return;
+      mode = m; save("aimap-mode", m); syncControls(); render(null, fit);
     });
   });
   document.querySelectorAll("#linkSeg button").forEach(function (b) {
-    b.addEventListener("click", function () { keepView(); linkMode = b.getAttribute("data-link"); save("aimap-links", linkMode); syncControls(); render(null); });
+    b.addEventListener("click", function () {
+      const was = leaveEverything();
+      linkMode = b.getAttribute("data-link"); save("aimap-links", linkMode); syncControls(); render(null, was ? fit : null);
+    });
   });
   document.getElementById("focusBtn").addEventListener("click", function () {
-    keepView(); focus = !focus; syncControls(); render(null);
+    const was = leaveEverything();
+    focus = !focus; syncControls(); render(null, was ? fit : null);
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
@@ -5323,19 +5349,23 @@ Object.assign(UI.pt, {
   document.getElementById("sheetBtn").addEventListener("click", function () { setView("course"); });
   sheetMQ.addEventListener("change", applySheetMode);
   document.getElementById("openAll").addEventListener("click", function () {
-    hideHint();
+    hideHint(); leaveEverything();
     (function openAll(n) { if (n.kids.length) { open.add(n.id); n.kids.forEach(openAll); } })(NODES.get(selected));
     for (let a = NODES.get(selected).parent; a; a = a.parent) open.add(a.id);
     render(selected, fit);
   });
   document.getElementById("closeAll").addEventListener("click", function () {
-    keepView();
-    open.clear(); open.add("ai"); selected = "ai"; tlActive = -1; setHash("ai");
+    leaveEverything();
+    open.clear(); open.add("ai"); selected = "ai"; tlActive = -1; setHash("ai"); syncZoomBtn();
     renderPanel();
     render("ai", fit);
   });
   document.getElementById("fitBtn").addEventListener("click", fit);
-  document.getElementById("centerBtn").addEventListener("click", function () { if (shown.has(selected)) panTo(selected); else reveal(selected, true); });
+  document.getElementById("centerBtn").addEventListener("click", centerChart);
+  document.getElementById("zoomBtn").addEventListener("click", function () {
+    if (sheetOpen) setSheet(false);
+    if (shown.has(selected)) zoomTo(selected); else { reveal(selected, true); setTimeout(function () { zoomTo(selected); }, 650); }
+  });
   window.addEventListener("hashchange", function () {
     const id = decodeURIComponent(location.hash.slice(1));
     if (NODES.has(id) && id !== selected) reveal(id);
