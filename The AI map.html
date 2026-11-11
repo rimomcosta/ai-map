@@ -348,7 +348,9 @@ html.sheet.sheet-open .side {
   width: min(400px, 48vw); height: auto; transform: none; animation: sidein 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 html.sheet.sheet-open .tabs { gap: 0; }
-html.sheet.sheet-open .tabs button { padding: 16px 7px 14px; font-size: 0.9rem; }
+html.sheet.sheet-open .tabs button { padding: 16px 6px 14px; font-size: 0.88rem; }
+html.sheet.sheet-open .sidehead .close { width: 30px; height: 30px; }
+html.sheet.sheet-open .minbtn, html.sheet.sheet-open .maxbtn { margin-right: 4px; }
 html.sheet.sheet-open .sidehead { padding: 0 10px 0 12px; }
 html.sheet.sheet-open .details { padding: 18px 22px 28px; }
 /* maximized: a large centered modal over the blurred map */
@@ -360,7 +362,18 @@ html.sheet.sheet-open.sheet-max .tabs button { padding: 18px 12px 16px; font-siz
 html.sheet.sheet-open.sheet-max .details { padding: 24px 32px 32px; }
 html.sheet.sheet-open.sheet-max .scrim { display: block; position: fixed; z-index: 39; inset: 0; background: var(--scrim); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); animation: fadein 0.2s ease; }
 html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
-.maxbtn { display: none; }
+.maxbtn, .minbtn { display: none; }
+html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
+.minbtn .ico { width: 13px; height: 8px; }
+.dock {
+  position: absolute; z-index: 5; left: 50%; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 10px; max-width: min(420px, calc(100% - 32px)); padding: 10px 16px;
+  border: 0; border-radius: 999px; background: var(--panel); color: var(--ink); font-size: 0.92rem; cursor: pointer;
+  box-shadow: 0 0 0 1px var(--line), 0 8px 26px rgba(0, 0, 0, 0.14); animation: dockin 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dock-t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dock .dock-i { width: 13px; height: 8px; color: var(--muted); }
+@keyframes dockin { from { opacity: 0; transform: translate(-50%, 12px); } }
 .maxbtn .ico { width: 14px; height: 14px; }
 @keyframes sidein { from { opacity: 0; transform: translateX(24px); } }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
@@ -387,7 +400,7 @@ html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
   @keyframes sheetin { from { opacity: 0; transform: translateY(24px); } }
 }
 @media (prefers-reduced-motion: reduce) {
-  .entering, .node .orbit, html.sheet.sheet-open .side, html.sheet.sheet-open .scrim { animation: none; }
+  .entering, .node .orbit, html.sheet.sheet-open .side, html.sheet.sheet-open .scrim, .dock { animation: none; }
   .exiting, .hint, .node .halo, .dim, .btn, .node .main { transition: none; }
 }
 </style>
@@ -425,6 +438,7 @@ html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
   <section class="canvas" id="canvas">
     <svg id="graph" role="group"></svg>
     <p class="hint" id="hint" data-i="hint"></p>
+    <button type="button" class="dock" id="dock" hidden><span class="dot"></span><span class="dock-t"></span><span class="ico dock-i"></span></button>
     <div class="mapbar">
       <div class="tools" role="toolbar" id="tools">
         <button type="button" class="btn reveal" id="allBtn" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/><circle cx="8" cy="1.4" r="1.2" fill="currentColor"/><circle cx="13.7" cy="11.3" r="1.2" fill="currentColor"/><circle cx="2.3" cy="11.3" r="1.2" fill="currentColor"/></svg><span data-i="showAll">Show everything</span></button>
@@ -460,6 +474,7 @@ html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
         <button type="button" role="tab" data-view="timeline" data-i="tabTimeline" aria-selected="false">Timeline</button>
         <button type="button" role="tab" data-view="about" data-i="tabAbout" aria-selected="false">About</button>
       </div>
+      <button type="button" class="close minbtn" id="sheetMin"></button>
       <button type="button" class="close maxbtn" id="sheetMax"></button>
       <button type="button" class="close" id="sheetClose"><span aria-hidden="true">&times;</span></button>
     </div>
@@ -4457,7 +4472,7 @@ Object.assign(UI.en, {
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", maximize:"Make bigger", minimize:"Back to the side", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", maximize:"Make bigger", restoreSide:"Back to the side", minimize:"Minimize", showPanel:"Show the panel", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
   welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No math or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
@@ -4482,7 +4497,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", maximize:"Ampliar", minimize:"Voltar para a lateral", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", maximize:"Ampliar", restoreSide:"Voltar para a lateral", minimize:"Minimizar", showPanel:"Mostrar o painel", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -6717,7 +6732,8 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
   const sheetMQ = window.matchMedia("(max-width: 1100px), (pointer: coarse)");   // tablets, phones and other touch screens
   const phone = window.matchMedia("(max-width: 640px)");
   let sheetOpen = false;
-  let sheetMax = load("aimap-max", "0") === "1";
+  let sheetMax = false;                                  // the big centered window, only until the panel closes
+  let sheetMin = load("aimap-min", "0") === "1";         // panel tucked into a small bar at the bottom; remembered
   // Language: "auto" follows the device's preferred languages; "en" or "pt" is the person's own choice.
   function deviceLang() {
     const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
@@ -7065,7 +7081,7 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
   function activate(id) {            // a click on the map
     hideHint();
     selected = id; setHash(id); syncZoomBtn();
-    setView("node");
+    setView("node", sheetMin && sheetMQ.matches);   // while minimized, a tap only updates the small bar
     if (everything) { render(id); return; }        // in the full view a tap only selects; opening or closing would break the circle
     const n = NODES.get(id);
     if (n.kids.length) {
@@ -7089,7 +7105,9 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     const root = document.documentElement;
     if (sheetMQ.matches) {
       const was = sheetOpen;
+      if (v && sheetMin) setMin(false);               // opening it on purpose brings it back from the bar
       sheetOpen = v; root.classList.toggle("sheet-open", v); root.classList.remove("panel-closed");
+      if (!v) setMax(false);
       if (v) panel.focus({ preventScroll: true });
       if (v && !was && sideCovers()) setTimeout(nudgeIntoView, reduce ? 0 : 620);
     } else {
@@ -7097,13 +7115,28 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     }
   }
   function setMax(v) {
-    sheetMax = v; save("aimap-max", v ? "1" : "0");
+    sheetMax = v;
     document.documentElement.classList.toggle("sheet-max", v);
     const b = document.getElementById("sheetMax");
     b.replaceChildren(ico(v ? "shrink" : "expand"));
-    b.setAttribute("aria-label", U(v ? "minimize" : "maximize")); b.title = U(v ? "minimize" : "maximize");
+    b.setAttribute("aria-label", U(v ? "restoreSide" : "maximize")); b.title = U(v ? "restoreSide" : "maximize");
     side.setAttribute("aria-modal", v || phone.matches ? "true" : "false");
     if (!v && sheetOpen) setTimeout(nudgeIntoView, reduce ? 0 : 300);
+  }
+  function setMin(v) {
+    sheetMin = v; save("aimap-min", v ? "1" : "0");
+    if (v) { setMax(false); sheetOpen = false; document.documentElement.classList.remove("sheet-open"); }
+    syncDock();
+  }
+  function syncDock() {             // the small bar that stands for the minimized panel
+    const d = document.getElementById("dock"), on = sheetMQ.matches && sheetMin;
+    d.hidden = !on;
+    if (!on) return;
+    const isNode = view === "node", text = isNode ? L(selected) : U(view === "timeline" ? "tabTimeline" : view === "about" ? "tabAbout" : "tabCourse");
+    d.className = "dock lens-" + (isNode ? NODES.get(selected).lens : "root");
+    d.querySelector(".dock-t").textContent = text;
+    d.querySelector(".dock-i").innerHTML = ICON.up;
+    d.setAttribute("aria-label", U("showPanel") + ": " + text); d.title = U("showPanel");
   }
   function nudgeIntoView() {         // if the side panel hides the selected concept, slide the map so it shows
     const p = shown.get(selected); if (!p) return;
@@ -7118,6 +7151,7 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     side.setAttribute("role", on ? "dialog" : "complementary");
     if (on) side.setAttribute("aria-modal", sheetMax || phone.matches ? "true" : "false"); else side.removeAttribute("aria-modal");
     if (!on) { sheetOpen = false; document.documentElement.classList.remove("sheet-open"); }
+    syncDock();
   }
   function setView(v, quiet) {
     view = v;
@@ -7136,6 +7170,7 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     else if (view === "about") showAbout();
     else showDetails(selected);
     drawBar();
+    syncDock();
   }
   function toTop() {
     panel.scrollTop = 0;
@@ -7154,6 +7189,8 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     bulb: '<svg viewBox="0 0 16 18"><path d="M5.6 13.6h4.8M6.3 16.2h3.4M8 1.4a5.2 5.2 0 0 0-3.1 9.4c.6.5.9 1.1.9 1.8v.6h4.4v-.6c0-.7.3-1.3.9-1.8A5.2 5.2 0 0 0 8 1.4Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
     check: '<svg viewBox="0 0 14 14"><path d="M3 7.3 5.8 10 11 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cross: '<svg viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    up: '<svg viewBox="0 0 14 8"><path d="M1.5 6.5 7 1.5l5.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    down: '<svg viewBox="0 0 14 8"><path d="M1.5 1.5 7 6.5l5.5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     expand: '<svg viewBox="0 0 14 14"><path d="M8.5 1.5h4v4M12.5 1.5 8 6M5.5 12.5h-4v-4M1.5 12.5 6 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     shrink: '<svg viewBox="0 0 14 14"><path d="M12.5 5.5h-4v-4M8.5 5.5l4-4M1.5 8.5h4v4M5.5 8.5l-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     goal: '<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="currentColor" opacity="0.14"/><path d="M5.4 9.3 7.8 11.6 12.6 6.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -7562,6 +7599,8 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     document.getElementById("allBtn").title = U("showAllTip");
     document.getElementById("sheetClose").setAttribute("aria-label", U("close"));
     setMax(sheetMax);
+    const mb = document.getElementById("sheetMin");
+    mb.replaceChildren(ico("down")); mb.setAttribute("aria-label", U("minimize")); mb.title = U("minimize");
     svg.attr("aria-label", U("title"));
     syncZoomBtn();
     pressGroup("#langSeg", "data-lang", langPref);
@@ -7653,6 +7692,8 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
   document.getElementById("scrim").addEventListener("click", function () { setSheet(false); });
   document.getElementById("sheetClose").addEventListener("click", function () { setSheet(false); });
   document.getElementById("sheetMax").addEventListener("click", function () { setMax(!sheetMax); });
+  document.getElementById("sheetMin").addEventListener("click", function () { setMin(true); });
+  document.getElementById("dock").addEventListener("click", function () { setSheet(true); });
   window.addEventListener("resize", measureHeader);
   document.getElementById("sheetBtn").addEventListener("click", function () { setView("course"); });
   sheetMQ.addEventListener("change", applySheetMode);
