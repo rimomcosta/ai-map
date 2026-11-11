@@ -166,69 +166,82 @@ html.panel-closed:not(.sheet) .side { display: none; }
 .tabs button[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; border-radius: 2px; background: var(--accent); }
 .close { display: inline-flex; flex: none; width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--fill); color: var(--muted); font-size: 1.15rem; line-height: 1; cursor: pointer; align-items: center; justify-content: center; }
 .close:hover { background: var(--fill-2); color: var(--ink); }
-.details { flex: 1; min-height: 0; overflow: auto; padding: 22px 26px 28px; -webkit-overflow-scrolling: touch; }
+.details { flex: 1; min-height: 0; overflow: auto; padding: 18px 26px 34px; -webkit-overflow-scrolling: touch; }
 .details:focus { outline: none; }
-.crumbs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
-.crumbs button { font-size: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-.crumbs button:hover { color: var(--accent); }
-.titlerow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.details h2 { font-weight: 500; font-size: 1.6rem; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
-.titlerow .btn { flex: none; font-size: 0.76rem; padding: 6px 11px; margin-top: 3px; color: var(--muted); }
-.full { margin: -4px 0 12px; color: var(--muted); font-size: 0.94rem; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; padding: 3px 10px; border-radius: 999px; background: var(--fill); color: var(--muted); border: 0; }
-.tag.lensTag { color: var(--ink); }
-.tag.core { color: var(--accent); background: var(--accent-soft); }
-button.tag { cursor: pointer; font-family: inherit; }
-button.tag:hover { color: var(--accent); background: var(--accent-soft); }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
-.sec + .sec, .think + .sec { margin-top: 18px; }
-.sec h3, .navs h3, .think h3, .myth h3, .about h3 { font-weight: 500; font-size: 0.78rem; color: var(--muted); margin: 0 0 3px; }
-.sec p { margin: 0; font-size: 0.97rem; max-width: 62ch; }
-.sec.lead p { font-size: 1.14rem; line-height: 1.45; letter-spacing: -0.005em; }
-.think, .myth { margin-top: 18px; padding: 13px 16px; border-radius: 14px; }
-.think { background: var(--accent-soft); }
-.think h3 { color: var(--accent); }
-.myth { background: var(--warn-soft); }
-.myth h3 { color: var(--warn); }
-.think p, .myth p { margin: 0; font-size: 0.97rem; }
-.io { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0; font-size: 0.94rem; }
-.io dt { font-size: 0.78rem; font-weight: 500; color: var(--muted); padding-top: 3px; }
-.io dd { margin: 0; }
-.srcline { margin: 18px 0 0; font-size: 0.86rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
-.ref { color: var(--accent); text-decoration: none; }
-.ref:hover { text-decoration: underline; text-underline-offset: 3px; }
-.morebtn { margin-top: 20px; }
-.navs { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
-.navs h3 { margin-bottom: 9px; }
-.navs .row + h3 { margin-top: 16px; }
-.row { display: flex; flex-wrap: wrap; gap: 6px; }
-.row button { font-size: 0.84rem; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; text-align: left; background: var(--fill); border: 0; border-radius: 999px; padding: 6px 12px; }
-.row button:hover { background: var(--fill-2); }
-.row button small { color: var(--muted); font-size: 0.76rem; }
+.ico { display: inline-flex; width: 1em; height: 1em; flex: none; }
+.ico svg { width: 100%; height: 100%; display: block; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
 
-/* ---------- course ---------- */
-.welcome h2 { font-size: 1.9rem; font-weight: 400; letter-spacing: -0.025em; margin-bottom: 10px; }
-.welcome .lede { font-size: 1.05rem; color: var(--muted); margin: 0 0 14px; max-width: 44ch; }
-.how { margin: 0 0 20px; padding: 0 0 0 18px; color: var(--muted); font-size: 0.93rem; }
-.how li + li { margin-top: 4px; }
-.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 26px; }
-.prog { display: flex; align-items: center; gap: 12px; font-size: 0.8rem; color: var(--muted); margin: 0 0 6px; }
-.meter { flex: 1; display: flex; gap: 3px; }
-.meter i { flex: 1; height: 3px; background: var(--fill-2); border-radius: 2px; }
-.meter i.on { background: var(--accent); }
-.mods { list-style: none; margin: 10px 0 0; padding: 0; counter-reset: m; }
-.mods li { counter-increment: m; border-top: 1px solid var(--line); }
-.mods button { display: grid; grid-template-columns: 30px 1fr auto; gap: 1px 10px; align-items: baseline; width: 100%; text-align: left; background: none; border: 0; border-radius: 12px; padding: 13px 8px; cursor: pointer; }
-.mods button:hover { background: var(--fill); }
-.mods .num { font-weight: 300; font-size: 1.05rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.mods .num::before { content: counter(m); }
-.mods .mt { font-weight: 500; font-size: 0.98rem; letter-spacing: -0.005em; }
-.mods .mg { grid-column: 2; color: var(--muted); font-size: 0.88rem; }
-.mods .ms { font-size: 0.78rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.mods li.done .ms { color: var(--ok); }
-.mods li.now .mt { color: var(--accent); }
-.resetrow { margin: 14px 0 0; }
+/* page top: back link or lesson position, share */
+.pagetop { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 34px; margin-bottom: 12px; }
+.backlink { display: inline-flex; align-items: center; gap: 7px; min-width: 0; background: none; border: 0; padding: 6px 0; color: var(--accent); font-size: 0.94rem; cursor: pointer; }
+.backlink .ico { width: 8px; height: 14px; }
+.backlink span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kicker { margin: 0; font-size: 0.84rem; color: var(--muted); }
+.kicker.accent { color: var(--accent); font-weight: 500; }
+.iconbtn { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--fill); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+.iconbtn:hover { background: var(--fill-2); }
+.iconbtn .ico { width: 15px; height: 17px; }
+
+/* reading */
+.details h2.title { font-size: 1.9rem; font-weight: 600; line-height: 1.12; letter-spacing: -0.025em; margin: 0; text-wrap: balance; }
+.subtitle { margin: 6px 0 0; color: var(--muted); font-size: 1rem; }
+.metaline { display: flex; align-items: center; gap: 7px; margin: 10px 0 0; font-size: 0.85rem; color: var(--muted); }
+.lead { margin: 22px 0 0; font-size: 1.2rem; line-height: 1.5; letter-spacing: -0.01em; max-width: 36em; }
+.lead.muted { color: var(--muted); font-size: 1.06rem; margin-top: 10px; }
+.part { margin-top: 26px; }
+.part h3 { margin: 0 0 4px; font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; }
+.part p { margin: 0; font-size: 1rem; line-height: 1.6; max-width: 38em; }
+.card { margin-top: 24px; padding: 16px 18px 17px; border-radius: 18px; background: var(--fill); }
+.card h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 0.95rem; font-weight: 600; }
+.card p { margin: 0; font-size: 1.02rem; line-height: 1.55; }
+.analogy h3 .ico { width: 15px; height: 17px; color: var(--learn); }
+.io { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 0.97rem; }
+.io dt { color: var(--muted); }
+.io dd { margin: 0; }
+
+/* go deeper */
+.deeper { margin-top: 30px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.deeper summary { list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 15px 2px; cursor: pointer; font-size: 1.02rem; font-weight: 600; }
+.deeper summary::-webkit-details-marker { display: none; }
+.deeper summary .ico { width: 8px; height: 14px; color: var(--muted); transform: rotate(90deg); transition: transform 0.2s; }
+.deeper[open] summary .ico { transform: rotate(-90deg); }
+.deeper-body { padding: 0 2px 22px; }
+.deeper-body .part:first-child { margin-top: 0; }
+.facts { margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.86rem; color: var(--muted); }
+.facts a { color: var(--accent); text-decoration: none; }
+.facts a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* grouped lists, like iOS settings */
+.group { margin-top: 30px; }
+.group-h { margin: 0 0 8px 4px; font-size: 0.82rem; font-weight: 500; color: var(--muted); }
+.list { background: var(--fill); border-radius: 14px; overflow: hidden; }
+.rowi { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 11px 14px; text-align: left; background: none; border: 0; cursor: pointer; }
+.rowi + .rowi::before { content: ""; position: absolute; top: 0; right: 0; left: 46px; border-top: 1px solid var(--line); }
+.rowi:hover { background: var(--fill); }
+.rowi:active { background: var(--fill-2); }
+.rowi:disabled { cursor: default; }
+.rowi > .dot { width: 9px; height: 9px; margin: 0 8px 0 6px; }
+.rowt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.rowtitle { font-size: 0.98rem; }
+.rowsub { font-size: 0.8rem; color: var(--muted); }
+.rowside { font-size: 0.82rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rowi > .chev { width: 7px; height: 12px; color: var(--muted); opacity: 0.55; }
+.num { width: 24px; height: 24px; border-radius: 50%; background: var(--panel); color: var(--muted); font-size: 0.78rem; display: inline-flex; align-items: center; justify-content: center; flex: none; font-variant-numeric: tabular-nums; }
+.ring { width: 24px; height: 24px; color: var(--accent); flex: none; }
+.ring svg { width: 100%; height: 100%; display: block; }
+
+/* course */
+.hero { margin-top: 22px; padding: 20px 20px 18px; border-radius: 20px; background: var(--accent-soft); }
+.hero h3 { margin: 4px 0 6px; font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em; }
+.hero p.hero-g { margin: 0 0 16px; color: var(--muted); font-size: 0.97rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.goals { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 10px; }
+.goals li { display: flex; gap: 11px; align-items: flex-start; font-size: 1rem; line-height: 1.5; }
+.goals .ico { width: 18px; height: 18px; margin-top: 3px; color: var(--accent); }
+.block-actions { margin-top: 28px; }
+.btn.wide { width: 100%; justify-content: center; padding: 14px; font-size: 1rem; border-radius: 14px; }
+.resetrow { margin: 24px 0 0; text-align: center; }
 .coursebar { flex: none; border-top: 1px solid var(--line); padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
 .cb-mid { min-width: 0; text-align: center; }
 .cb-label { font-size: 0.78rem; color: var(--muted); white-space: nowrap; display: flex; gap: 6px; justify-content: center; align-items: center; }
@@ -236,35 +249,36 @@ button.tag:hover { color: var(--accent); background: var(--accent-soft); }
 .cb-label button:hover { color: var(--ink); }
 .cb-mid .meter { margin-top: 6px; }
 .cb-mid .btn { font-size: 0.8rem; padding: 6px 12px; }
+.meter { flex: 1; display: flex; gap: 3px; }
+.meter i { flex: 1; height: 3px; background: var(--fill-2); border-radius: 2px; }
+.meter i.on { background: var(--accent); }
 
-/* ---------- quiz ---------- */
-.quiz .q { margin-top: 24px; }
-.quiz .q > p { font-weight: 500; margin: 0 0 10px; max-width: 60ch; }
-.quiz .opts { display: grid; gap: 7px; }
-.quiz .opts button { text-align: left; background: var(--fill); border: 0; border-radius: 13px; padding: 12px 15px; cursor: pointer; font-size: 0.95rem; }
-.quiz .opts button:hover:not(:disabled) { background: var(--fill-2); }
-.quiz .opts button:disabled { cursor: default; color: var(--muted); }
-.quiz .opts button.right { background: var(--ok-soft); color: var(--ink); }
-.quiz .opts button.wrongpick { background: var(--bad-soft); color: var(--ink); }
-.quiz .fb { margin: 9px 2px 0; font-size: 0.9rem; color: var(--muted); }
-.quiz .fb b { color: var(--ok); font-weight: 500; } .quiz .fb.no b { color: var(--bad); }
-.quiz .result { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); }
-.quiz .result p { margin: 0 0 14px; font-size: 1.1rem; }
-.quiz .result .actions { margin-bottom: 0; }
+/* quiz */
+.qtext { margin: 30px 0 10px; font-size: 1.02rem; font-weight: 600; line-height: 1.45; max-width: 38em; }
+.mark { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--fill-2); flex: none; display: inline-flex; align-items: center; justify-content: center; color: var(--on-accent); }
+.mark .ico { width: 12px; height: 12px; }
+.rowi.right .mark { background: var(--ok); border-color: var(--ok); color: #FFFFFF; }
+.rowi.wrongpick .mark { background: var(--bad); border-color: var(--bad); color: #FFFFFF; }
+.rowi:disabled .rowtitle { color: var(--muted); }
+.rowi.right .rowtitle, .rowi.wrongpick .rowtitle { color: var(--ink); }
+.fb { margin: 10px 4px 0; font-size: 0.93rem; line-height: 1.5; color: var(--muted); }
+.fb b { font-weight: 600; color: var(--ok); }
+.fb.no b { color: var(--bad); }
+.result { margin-top: 30px; }
+.result .card h3 { font-size: 1.2rem; margin-bottom: 14px; }
 
-/* ---------- about, timeline ---------- */
-.about h3 { margin-top: 22px; }
-.about p { margin: 0; font-size: 0.95rem; max-width: 62ch; }
+/* about, timeline */
+.about .part p { font-size: 0.98rem; }
 .about a { color: var(--accent); text-decoration: none; }
-.about .actions { margin: 22px 0 0; }
-.tl { list-style: none; margin: 10px 0 0; padding: 0; position: relative; }
+.about .actions { margin-top: 26px; }
+.tl { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
 .tl::before { content: ""; position: absolute; left: 53px; top: 12px; bottom: 12px; border-left: 1px solid var(--line); }
-.tl button { display: grid; grid-template-columns: 44px 18px 1fr; align-items: start; gap: 0 4px; width: 100%; text-align: left; background: none; border: 0; border-radius: 12px; padding: 9px 8px 9px 0; cursor: pointer; }
+.tl button { display: grid; grid-template-columns: 44px 18px 1fr; align-items: start; gap: 0 4px; width: 100%; text-align: left; background: none; border: 0; border-radius: 12px; padding: 10px 8px 10px 0; cursor: pointer; }
 .tl button:hover, .tl button[aria-current="true"] { background: var(--fill); }
 .tl .yr { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.88rem; color: var(--muted); padding-top: 1px; }
 .tl .pin { width: 7px; height: 7px; border-radius: 50%; margin: 8px 0 0 6px; background: var(--c); box-shadow: 0 0 0 3px var(--panel); position: relative; }
-.tl .txt { font-size: 0.93rem; }
-.tl .kind { display: block; font-size: 0.75rem; color: var(--muted); }
+.tl .txt { font-size: 0.95rem; line-height: 1.5; }
+.tl .kind { display: block; font-size: 0.76rem; color: var(--muted); }
 
 /* ---------- graph: quiet branches, one clear path ---------- */
 .lens-build { --c: var(--build); } .lens-learn { --c: var(--learn); } .lens-tasks { --c: var(--tasks); } .lens-data { --c: var(--data); }
@@ -4469,6 +4483,102 @@ Object.assign(UI.pt, {
   aboutPrivacy:"Privacidade", aboutPrivacyText:"Seu progresso e suas configurações ficam salvos só neste navegador. A página carrega as fontes do Google Fonts e a biblioteca D3 do cdnjs; não envia mais nada para lugar nenhum."
 });
 
+
+// ---- module pages: an introduction, what you'll learn (o) and the key ideas to remember before the quiz (r) ----
+const MODTEXT = [
+ { en:{ i:"AI is a broad name for computer systems that do things we would normally call intelligent: recognising a face, answering a question, recommending a film. Behind that one name there are two very different ways of building such a system. In this module you’ll meet both, and see how the words AI, machine learning and deep learning fit together.",
+     o:["Explain what people mean when they say “AI”","Tell systems that follow written rules apart from systems that learn from data","Put AI, machine learning and deep learning in the right order"],
+     r:["AI is the whole field; machine learning and deep learning are ways of doing it.","Rule-based systems follow knowledge that people wrote down. Machine learning finds patterns in examples instead.","Most real products mix both: learned models surrounded by ordinary rules."] },
+   pt:{ i:"IA é um nome amplo para sistemas de computador que fazem coisas que normalmente chamaríamos de inteligentes: reconhecer um rosto, responder a uma pergunta, recomendar um filme. Por trás desse nome existem dois jeitos bem diferentes de construir um sistema assim. Neste módulo você conhece os dois e vê como as palavras IA, machine learning e deep learning se encaixam.",
+     o:["Explicar o que as pessoas querem dizer com “IA”","Diferenciar sistemas que seguem regras escritas de sistemas que aprendem com dados","Colocar IA, machine learning e deep learning na ordem certa"],
+     r:["IA é a área inteira; machine learning e deep learning são jeitos de fazê-la.","Sistemas baseados em regras seguem o conhecimento que pessoas escreveram. O machine learning encontra padrões em exemplos.","A maioria dos produtos reais mistura os dois: modelos treinados cercados de regras comuns."] } },
+
+ { en:{ i:"A model learns by adjusting itself to examples. What changes from one method to another is what those examples contain: the right answers, no answers at all, or rewards for good behaviour. These learning styles show up everywhere, from spam filters to chatbots.",
+     o:["Recognise the main ways a model can learn","Say which one a real system uses","Explain why chatbots need so little hand-labelled data to get started"],
+     r:["Supervised learning uses examples that come with the right answer.","Unsupervised learning finds groups without answers; self-supervised learning makes its own answers by hiding part of the data.","Reinforcement learning learns by trial and error, guided by rewards."] },
+   pt:{ i:"Um modelo aprende se ajustando a exemplos. O que muda de um método para outro é o que esses exemplos trazem: as respostas certas, nenhuma resposta ou recompensas pelo bom comportamento. Esses estilos de aprendizado aparecem em todo lugar, dos filtros de spam aos chatbots.",
+     o:["Reconhecer as principais formas de um modelo aprender","Dizer qual delas um sistema real usa","Explicar por que os chatbots precisam de tão poucos dados rotulados à mão para começar"],
+     r:["O aprendizado supervisionado usa exemplos que vêm com a resposta certa.","O não supervisionado encontra grupos sem respostas; o autossupervisionado cria as próprias respostas escondendo parte dos dados.","O aprendizado por reforço aprende por tentativa e erro, guiado por recompensas."] } },
+
+ { en:{ i:"A model that only remembers its examples is useless on anything new. This module is about the difference between memorising and really learning, how people test for it, and why the quality of the data matters more than almost anything else.",
+     o:["Explain why a model is tested on data it has never seen","Spot the warning signs of overfitting and data leakage","Describe how a changing world makes a model less accurate over time"],
+     r:["Only new, unseen data shows whether a model learned the pattern.","Results that look too good to be true often come from leakage.","A model is only as good as its data, and the world keeps changing after training ends."] },
+   pt:{ i:"Um modelo que só lembra dos exemplos não serve para nada novo. Este módulo trata da diferença entre decorar e aprender de verdade, de como se testa isso e de por que a qualidade dos dados importa mais do que quase qualquer outra coisa.",
+     o:["Explicar por que um modelo é testado com dados que nunca viu","Identificar os sinais de overfitting e de vazamento de dados","Descrever como um mundo em mudança deixa um modelo menos preciso com o tempo"],
+     r:["Só dados novos, nunca vistos, mostram se o modelo aprendeu o padrão.","Resultados bons demais para ser verdade muitas vezes vêm de vazamento.","Um modelo só é tão bom quanto seus dados, e o mundo continua mudando depois do treino."] } },
+
+ { en:{ i:"Almost every modern AI model is a neural network: a huge number of simple units connected in layers, each holding numbers called weights. Here you’ll see what one unit does, how many of them learn together, and the first designs made for images and for sequences.",
+     o:["Describe what an artificial neuron does","Explain in plain words how a network learns from its mistakes","Know which kind of network was made for images and which for sequences"],
+     r:["A network is layers of simple units, and what it knows lives in its weights.","Training nudges every weight a little so the answers get less wrong each time.","Convolutional networks were designed for images; recurrent networks for sequences such as text."] },
+   pt:{ i:"Quase todo modelo de IA moderno é uma rede neural: uma quantidade enorme de unidades simples ligadas em camadas, cada uma guardando números chamados pesos. Aqui você vê o que uma unidade faz, como muitas delas aprendem juntas e os primeiros projetos feitos para imagens e para sequências.",
+     o:["Descrever o que um neurônio artificial faz","Explicar em palavras simples como uma rede aprende com os próprios erros","Saber que tipo de rede foi feito para imagens e qual para sequências"],
+     r:["Uma rede é feita de camadas de unidades simples, e o que ela sabe fica nos pesos.","O treino ajusta cada peso um pouquinho para as respostas errarem menos a cada vez.","As redes convolucionais foram feitas para imagens; as recorrentes, para sequências como texto."] } },
+
+ { en:{ i:"Chat assistants such as ChatGPT, Claude and Gemini are built on one design: the transformer. This module follows a question on its way through such a model. It is cut into tokens, turned into numbers, compared with every other word, and answered one token at a time.",
+     o:["Explain what tokens and embeddings are","Describe what attention lets a model do","Explain how a large language model writes an answer and how it is trained"],
+     r:["Text is cut into tokens, and each token becomes a list of numbers called an embedding.","Attention lets every token look at the others to work out what matters.","A language model writes by predicting the next token again and again. Pretraining teaches it language; fine-tuning teaches it to be a helpful assistant."] },
+   pt:{ i:"Assistentes como ChatGPT, Claude e Gemini são construídos sobre um mesmo projeto: o transformer. Este módulo acompanha uma pergunta pelo caminho dentro de um modelo assim. Ela é cortada em tokens, transformada em números, comparada com todas as outras palavras e respondida um token por vez.",
+     o:["Explicar o que são tokens e embeddings","Descrever o que a atenção permite a um modelo fazer","Explicar como um grande modelo de linguagem escreve uma resposta e como é treinado"],
+     r:["O texto é cortado em tokens, e cada token vira uma lista de números chamada embedding.","A atenção deixa cada token olhar para os outros e descobrir o que importa.","Um modelo de linguagem escreve prevendo o próximo token, de novo e de novo. O pré-treino ensina a língua; o fine-tuning ensina a ser um assistente útil."] } },
+
+ { en:{ i:"Generative AI creates something new instead of labelling something that already exists. Text and images are made with different recipes, and newer models handle several kinds of data at once. You’ll see how each recipe works, without any maths.",
+     o:["Tell generating apart from predicting","Explain how text is written token by token and how images emerge from noise","Say what makes a model multimodal"],
+     r:["Text generators write one token at a time, each based on everything before it.","Diffusion models start from random noise and clean it up, step by step, into an image.","Multimodal models read and produce more than one kind of data, such as text and images."] },
+   pt:{ i:"A IA generativa cria algo novo em vez de rotular algo que já existe. Texto e imagens são feitos com receitas diferentes, e os modelos mais novos lidam com vários tipos de dados ao mesmo tempo. Você vai ver como cada receita funciona, sem nenhuma matemática.",
+     o:["Diferenciar gerar de prever","Explicar como o texto é escrito token por token e como as imagens surgem do ruído","Dizer o que torna um modelo multimodal"],
+     r:["Geradores de texto escrevem um token por vez, cada um baseado em tudo o que veio antes.","Modelos de difusão começam com ruído aleatório e o limpam, passo a passo, até virar uma imagem.","Modelos multimodais leem e produzem mais de um tipo de dado, como texto e imagens."] } },
+
+ { en:{ i:"On its own, a model only turns text into text. Real products wrap it in software that gives it the right documents, lets it use tools, checks its answers and stops unsafe ones. This module shows the building blocks behind AI apps and agents.",
+     o:["Explain how apps call a model and shape its answers","Describe how RAG and tool calling connect a model to information and actions","Tell evaluation apart from guardrails"],
+     r:["The prompt and the information you supply shape the answer as much as the model does.","RAG brings in relevant documents; tool calling lets the app act on the model’s requests; an agent repeats this in a loop.","Evaluation measures quality before and after changes; guardrails block unsafe inputs and outputs while the system runs."] },
+   pt:{ i:"Sozinho, um modelo só transforma texto em texto. Os produtos reais o envolvem em software que entrega os documentos certos, permite usar ferramentas, confere as respostas e barra as inseguras. Este módulo mostra as peças por trás dos apps e agentes de IA.",
+     o:["Explicar como os apps chamam um modelo e moldam suas respostas","Descrever como RAG e chamada de ferramentas ligam um modelo a informações e ações","Diferenciar avaliação de guardrails"],
+     r:["O prompt e as informações fornecidas moldam a resposta tanto quanto o modelo.","O RAG traz documentos relevantes; a chamada de ferramentas deixa o app agir a pedido do modelo; um agente repete isso em ciclo.","A avaliação mede a qualidade antes e depois das mudanças; os guardrails barram entradas e saídas inseguras enquanto o sistema roda."] } },
+
+ { en:{ i:"AI tools are useful, and they are also wrong in predictable ways. Knowing those ways is the most practical skill in this course: it tells you when you can rely on an answer and when you should check it first.",
+     o:["Explain why language models sometimes make things up","Recognise why a confident tone says little about accuracy","Use simple habits to check answers and their sources"],
+     r:["Models produce plausible text, not verified facts, so they can invent details.","They know nothing after their training cutoff unless the app gives them that information.","Check what matters: open the sources, cross-check key facts, and take most care with names, numbers and quotes."] },
+   pt:{ i:"As ferramentas de IA são úteis e também erram de jeitos previsíveis. Conhecer esses jeitos é a habilidade mais prática deste curso: ela diz quando dá para confiar numa resposta e quando é melhor conferir antes.",
+     o:["Explicar por que os modelos de linguagem às vezes inventam coisas","Reconhecer por que um tom confiante diz pouco sobre acerto","Usar hábitos simples para conferir respostas e fontes"],
+     r:["Os modelos produzem texto plausível, não fatos verificados, então podem inventar detalhes.","Eles não sabem nada depois da data de corte do treino, a não ser que o app forneça a informação.","Confira o que importa: abra as fontes, cruze os fatos principais e redobre o cuidado com nomes, números e citações."] } },
+
+ { en:{ i:"Once an AI system can read your email or take actions for you, it becomes something attackers try to trick. This module covers the main risks for people and organisations, and the simple controls that keep them in check.",
+     o:["Explain prompt injection and why it is hard to prevent","Apply least privilege and human approval to AI tools","Protect personal data and recognise synthetic media"],
+     r:["Models can’t reliably tell instructions from content, so hidden text can hijack them.","Limit what an AI system can access, and have a person approve actions that matter.","Think before sharing personal data, verify surprising media, and remember that people stay responsible for AI-assisted decisions."] },
+   pt:{ i:"Quando um sistema de IA pode ler seu e-mail ou agir por você, ele vira algo que atacantes tentam enganar. Este módulo cobre os principais riscos para pessoas e organizações e os controles simples que os mantêm sob controle.",
+     o:["Explicar o prompt injection e por que é difícil de evitar","Aplicar privilégio mínimo e aprovação humana às ferramentas de IA","Proteger dados pessoais e reconhecer mídia sintética"],
+     r:["Os modelos não distinguem bem instruções de conteúdo, então um texto escondido pode sequestrá-los.","Limite o que um sistema de IA pode acessar e faça uma pessoa aprovar as ações que importam.","Pense antes de compartilhar dados pessoais, confira mídias surpreendentes e lembre que as pessoas continuam responsáveis pelas decisões apoiadas por IA."] } },
+
+ { en:{ i:"News about AI is full of names: models, apps, versions and leaderboards. This module gives you a simple way to sort them, so you can tell what a new announcement actually is and how much it matters to you.",
+     o:["Tell a model apart from the product built around it","Explain the difference between closed and open-weight models","Read benchmark claims with healthy caution"],
+     r:["A model is the engine; an app or an agent is the product built around it.","Open-weight models can be downloaded and run by anyone the licence allows; closed models are used through the company’s own services.","Benchmarks measure narrow skills, so try a model on your own tasks before relying on it."] },
+   pt:{ i:"As notícias sobre IA estão cheias de nomes: modelos, apps, versões e rankings. Este módulo dá um jeito simples de organizá-los, para você entender o que um anúncio novo realmente é e o quanto ele importa para você.",
+     o:["Diferenciar um modelo do produto construído em volta dele","Explicar a diferença entre modelos fechados e de pesos abertos","Ler resultados de benchmarks com uma dose saudável de cautela"],
+     r:["O modelo é o motor; um app ou um agente é o produto construído em volta dele.","Modelos de pesos abertos podem ser baixados e rodados por quem a licença permitir; os fechados são usados pelos serviços da própria empresa.","Benchmarks medem habilidades estreitas, então teste um modelo nas suas próprias tarefas antes de confiar nele."] } }
+];
+MODTEXT.forEach(function (m, i) { Object.assign(COURSE[i].en, m.en); Object.assign(COURSE[i].pt, m.pt); });
+
+Object.assign(UI.en, {
+  welcomeTitle:"Understand AI, one idea at a time",
+  welcomeLead:"A free course for curious people, from teenagers to professionals. Ten short modules of about ten minutes, each ending with a three-question quiz. No maths or coding needed.",
+  startHere:"Start here", upNext:"Up next", explore:"Explore the map", modulesH:"Modules", moduleN:"Module {n}",
+  lessonsN:"{n} lessons", lessonOf:"Lesson {n} of {t}", lessonsH:"Lessons", goalsH:"What you’ll learn", keyIdeas:"Key ideas",
+  startModule:"Start the module", allModules:"All modules", quizRow:"Quiz", quizRowSub:"3 questions", lessonsLeft:"{n} of {t} lessons done",
+  analogyH:"Think of it this way", worldH:"Where you’ll see it", mythH:"A common mix-up", deeper:"Go deeper",
+  howH:"How it works", histH:"A bit of history", todayH:"Where things stand", inCourse:"In the course", insideH:"Inside this topic", relatedH:"Related ideas",
+  share:"Share", shared:"Link copied", statusL:"Status", done:"Done", back:"Back"
+});
+Object.assign(UI.pt, {
+  welcomeTitle:"Entenda a IA, uma ideia por vez",
+  welcomeLead:"Um curso gratuito para gente curiosa, de adolescentes a profissionais. Dez módulos curtos de cerca de dez minutos, cada um terminando com um quiz de três perguntas. Não precisa de matemática nem de programação.",
+  startHere:"Comece aqui", upNext:"A seguir", explore:"Explorar o mapa", modulesH:"Módulos", moduleN:"Módulo {n}",
+  lessonsN:"{n} aulas", lessonOf:"Aula {n} de {t}", lessonsH:"Aulas", goalsH:"O que você vai aprender", keyIdeas:"Ideias principais",
+  startModule:"Começar o módulo", allModules:"Todos os módulos", quizRow:"Quiz", quizRowSub:"3 perguntas", lessonsLeft:"{n} de {t} aulas concluídas",
+  analogyH:"Pense assim", worldH:"Onde você vai ver isso", mythH:"Uma confusão comum", deeper:"Para ir além",
+  howH:"Como funciona", histH:"Um pouco de história", todayH:"Como está hoje", inCourse:"No curso", insideH:"Dentro deste tema", relatedH:"Ideias relacionadas",
+  share:"Compartilhar", shared:"Link copiado", statusL:"Situação", done:"Concluído", back:"Voltar"
+});
+
 (function () {
   "use strict";
 
@@ -4896,7 +5006,7 @@ Object.assign(UI.pt, {
     view = v;
     if (v !== "node") inLesson = false;
     else inLesson = !!cur && inLesson;
-    const tab = v === "quiz" ? "course" : v;
+    const tab = v === "quiz" || v === "module" ? "course" : v;
     document.querySelectorAll("#tabs button").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-view") === tab ? "true" : "false"); });
     renderPanel();
     if (!quiet) setSheet(true);
@@ -4904,6 +5014,7 @@ Object.assign(UI.pt, {
   function renderPanel() {
     if (view === "course") showCourse();
     else if (view === "quiz") showQuiz();
+    else if (view === "module") showModule();
     else if (view === "timeline") showTimeline();
     else if (view === "about") showAbout();
     else showDetails(selected);
@@ -4918,107 +5029,140 @@ Object.assign(UI.pt, {
     return m;
   }
 
-  // ---------- concept details ----------
-  function chip(id, small) {
-    const n = NODES.get(id), b = btn("lens-" + n.lens, null, function () { reveal(id); });
-    if (small) b.append(el("small", null, small));
-    b.append(el("span", "dot"));
-    b.append(document.createTextNode(L(id)));
+  // ---------- small building blocks for the panel ----------
+  const ICON = {
+    chev: '<svg viewBox="0 0 8 14"><path d="M1.5 1.5 6.5 7l-5 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    back: '<svg viewBox="0 0 8 14"><path d="M6.5 1.5 1.5 7l5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    share: '<svg viewBox="0 0 16 18"><path d="M8 11.5V1.8M4.9 4.7 8 1.6l3.1 3.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.2 7.4H3.6A1.6 1.6 0 0 0 2 9v6.4A1.6 1.6 0 0 0 3.6 17h8.8a1.6 1.6 0 0 0 1.6-1.6V9a1.6 1.6 0 0 0-1.6-1.6h-1.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    bulb: '<svg viewBox="0 0 16 18"><path d="M5.6 13.6h4.8M6.3 16.2h3.4M8 1.4a5.2 5.2 0 0 0-3.1 9.4c.6.5.9 1.1.9 1.8v.6h4.4v-.6c0-.7.3-1.3.9-1.8A5.2 5.2 0 0 0 8 1.4Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
+    check: '<svg viewBox="0 0 14 14"><path d="M3 7.3 5.8 10 11 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    cross: '<svg viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    goal: '<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="currentColor" opacity="0.14"/><path d="M5.4 9.3 7.8 11.6 12.6 6.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  };
+  function ico(name, cls) { const s = el("span", "ico" + (cls ? " " + cls : "")); s.innerHTML = ICON[name]; return s; }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function part(title, text) { const d = el("section", "part"); d.append(el("h3", null, title)); d.append(el("p", null, text)); return d; }
+  function group(title) {
+    const w = el("section", "group");
+    if (title) w.append(el("h3", "group-h", title));
+    const l = el("div", "list"); w.append(l);
+    return { wrap: w, list: l };
+  }
+  function row(o) {                 // one tappable line in a grouped list
+    const b = btn("rowi" + (o.lens ? " lens-" + o.lens : "") + (o.cls ? " " + o.cls : ""), null, o.onClick);
+    if (o.lead) b.append(o.lead); else if (o.lens) b.append(el("span", "dot"));
+    const t = el("span", "rowt");
+    t.append(el("span", "rowtitle", o.title));
+    if (o.sub) t.append(el("span", "rowsub", o.sub));
+    b.append(t);
+    if (o.side) b.append(el("span", "rowside", o.side));
+    if (!o.noChev) b.append(ico("chev", "chev"));
     return b;
   }
-  function sec(title, text, cls) {
-    const d = el("div", cls === "think" || cls === "myth" ? cls : "sec" + (cls ? " " + cls : ""));
-    d.append(el("h3", null, title)); d.append(el("p", null, text));
-    return d;
+  function ring(frac, done) {       // progress ring; a filled check once done
+    const s = el("span", "ring");
+    const c = 2 * Math.PI * 9;
+    s.innerHTML = done
+      ? '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="currentColor"/><path d="M6.6 11.3 9.6 14.2 15.4 8.1" fill="none" style="stroke:var(--on-accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="9" fill="none" style="stroke:var(--fill-2)" stroke-width="2"/>' +
+        (frac > 0 ? '<circle cx="11" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + (c * frac).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 11 11)"/>' : "") + '</svg>';
+    return s;
   }
+  function backlink(text, fn) { const b = btn("backlink", null, fn); b.append(ico("back")); b.append(el("span", null, text)); return b; }
   function checkedLabel() {
     const p = CHECKED.date.split("-");
     const d = new Date(Number(p[0]), Number(p[1]) - 1, 1);
     return U("checked") + ": " + d.toLocaleDateString(lang === "pt" ? "pt-BR" : "en-GB", { month: "long", year: "numeric" });
   }
+  function shareBtn(id, title) {
+    const b = btn("iconbtn", null, function () {
+      const url = location.href.split("#")[0] + "#" + id;
+      const done = function () { b.replaceChildren(ico("check")); setTimeout(function () { b.replaceChildren(ico("share")); }, 1500); };
+      if (navigator.share && sheetMQ.matches) navigator.share({ title: title, url: url }).catch(function () { /* closed */ });
+      else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt(U("share"), url); });
+      else window.prompt(U("share"), url);
+    });
+    b.append(ico("share")); b.setAttribute("aria-label", U("share")); b.title = U("share");
+    return b;
+  }
+  function put(f, cls) { panel.className = "details" + (cls ? " " + cls : ""); panel.replaceChildren(f); }
+
+  // ---------- a concept, written as a short lesson ----------
   function showDetails(id) {
     const info = T(id), n = NODES.get(id), f = document.createDocumentFragment();
-    const full = level === "full";
-    const anc = []; for (let a = n.parent; a; a = a.parent) anc.unshift(a);
-    if (anc.length) {
-      const c = el("nav", "crumbs"); c.setAttribute("aria-label", U("path"));
-      anc.forEach(function (a, i) {
-        if (i) c.append(el("span", null, "›"));
-        c.append(btn(null, L(a.id), function () { reveal(a.id); }));
-      });
+    const lesson = inLesson && cur && stepId() === id;
+    const top = el("div", "pagetop");
+    if (lesson) top.append(el("p", "kicker", fill(U("moduleN"), { n: cur.m + 1 }) + " · " + fill(U("lessonOf"), { n: cur.s + 1, t: COURSE[cur.m].steps.length })));
+    else if (n.parent) top.append(backlink(L(n.parent.id), function () { reveal(n.parent.id); }));
+    else top.append(el("span"));
+    top.append(shareBtn(id, info.l));
+    f.append(top);
+
+    f.append(el("h2", "title", info.l));
+    if (info.f && info.f !== info.l) f.append(el("p", "subtitle", info.f));
+    if (n.lens !== "root") {
+      const m = el("p", "metaline lens-" + n.lens);
+      m.append(el("span", "dot"));
+      m.append(document.createTextNode(U("lens")[n.lens] + " · " + U("type")[TYPE[id]]));
+      f.append(m);
+    }
+    f.append(el("p", "lead", info.p));
+    if (info.k) {
+      const c = el("aside", "card analogy"), h = el("h3");
+      h.append(ico("bulb")); h.append(document.createTextNode(U("analogyH")));
+      c.append(h); c.append(el("p", null, info.k));
       f.append(c);
     }
-    const tr = el("div", "titlerow");
-    tr.append(el("h2", null, info.l));
-    const cp = btn("btn", U("copyLink"), function () {
-      const url = location.href.split("#")[0] + "#" + id;
-      const ok = function () { cp.textContent = U("copied"); setTimeout(function () { cp.textContent = U("copyLink"); }, 1600); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { window.prompt(U("copyLink"), url); });
-      else window.prompt(U("copyLink"), url);
-    });
-    tr.append(cp);
-    f.append(tr);
-    if (info.f && info.f !== info.l) f.append(el("p", "full", info.f));
-    const meta = el("div", "meta");
-    if (n.lens !== "root") {
-      const t = el("span", "tag lensTag lens-" + n.lens); t.append(el("span", "dot")); t.append(document.createTextNode(U("lens")[n.lens])); meta.append(t);
-    }
-    if (full) {
-      meta.append(el("span", "tag", U("type")[TYPE[id]]));
-      meta.append(el("span", "tag" + (info.s === "core" ? " core" : ""), U("status")[info.s]));
-    }
-    if (STEP_OF.has(id) && !(inLesson && stepId() === id)) {
-      const at = STEP_OF.get(id);
-      meta.append(btn("tag", U("module") + " " + (at[0] + 1) + ": " + C(at[0]).t, function () { goStep(at[0], at[1]); }));
-    }
-    f.append(meta);
+    f.append(part(U("worldH"), info.w));
+    if (info.m) f.append(part(U("mythH"), info.m));
 
-    f.append(sec(U("plain"), info.p, "lead"));
-    if (info.k) f.append(sec(U("think"), info.k, "think"));
-    if (full) {
-      f.append(sec(U("tech"), info.t));
-      if (info.io) {
-        const d = el("div", "sec"), dl = el("dl", "io");
-        dl.append(el("dt", null, U("takes"))); dl.append(el("dd", null, info.io[0]));
-        dl.append(el("dt", null, U("gives"))); dl.append(el("dd", null, info.io[1]));
-        d.append(dl); f.append(d);
-      }
-      if (info.h) f.append(sec(U("hist"), info.h));
+    const d = el("details", "deeper");
+    if (level === "full") d.open = true;
+    const sm = el("summary"); sm.append(el("span", null, U("deeper"))); sm.append(ico("chev")); d.append(sm);
+    const body = el("div", "deeper-body");
+    body.append(part(U("howH"), info.t));
+    if (info.io) {
+      const s = el("section", "part"), dl = el("dl", "io");
+      dl.append(el("dt", null, U("takes"))); dl.append(el("dd", null, info.io[0]));
+      dl.append(el("dt", null, U("gives"))); dl.append(el("dd", null, info.io[1]));
+      s.append(dl); body.append(s);
     }
-    f.append(sec(U("world"), info.w));
-    if (full) f.append(sec(U("today"), info.n));
-    if (info.m) f.append(sec(U("myth"), info.m, "myth"));
-    if (full && REFS[id]) {
-      const line = el("p", "srcline"), a = el("a", "ref"), isPaper = REFS[id].indexOf("arxiv.org") > -1;
+    if (info.h) body.append(part(U("histH"), info.h));
+    body.append(part(U("todayH"), info.n));
+    const facts = el("p", "facts");
+    facts.append(el("span", null, U("statusL") + ": " + U("status")[info.s]));
+    if (REFS[id]) {
+      const a = el("a"), isPaper = REFS[id].indexOf("arxiv.org") > -1;
       a.href = REFS[id]; a.target = "_blank"; a.rel = "noopener noreferrer";
       a.textContent = isPaper ? (READING.has(id) ? U("reading") : U("paper")) + " (arXiv)" : U("source") + ": " + REFS[id].replace(/^https?:\/\/(www\.)?/, "").split("/")[0];
-      line.append(a);
-      if (CHECKED_IDS.has(id)) line.append(el("span", null, checkedLabel()));
-      f.append(line);
+      facts.append(a);
+      if (CHECKED_IDS.has(id)) facts.append(el("span", null, checkedLabel()));
     }
-    if (!full) {
-      const more = btn("btn morebtn", U("moreDetail"), function () { setLevel("full"); });
-      f.append(more);
+    body.append(facts);
+    d.append(body); f.append(d);
+
+    if (STEP_OF.has(id) && !lesson) {
+      const at = STEP_OF.get(id), g = group(U("inCourse"));
+      g.list.append(row({ lead: el("span", "num", String(at[0] + 1)), title: C(at[0]).t, sub: fill(U("lessonOf"), { n: at[1] + 1, t: COURSE[at[0]].steps.length }), onClick: function () { goStep(at[0], at[1]); } }));
+      f.append(g.wrap);
+    }
+    if (n.kids.length) {
+      const g = group(U("insideH"));
+      n.kids.forEach(function (k) { g.list.append(row({ lens: k.lens, title: L(k.id), onClick: function () { reveal(k.id); } })); });
+      f.append(g.wrap);
     }
     const xs = XBY.get(id) || [];
-    if (n.kids.length || xs.length) {
-      const nv = el("div", "navs");
-      if (n.kids.length) {
-        nv.append(el("h3", null, U("opens")));
-        const r = el("div", "row"); n.kids.forEach(function (k) { r.append(chip(k.id)); }); nv.append(r);
-      }
-      if (xs.length) {
-        nv.append(el("h3", null, U("connects")));
-        const r = el("div", "row"); xs.forEach(function (x) { r.append(chip(x.other, rel(x.type, x.back))); }); nv.append(r);
-      }
-      f.append(nv);
+    if (xs.length) {
+      const g = group(U("relatedH"));
+      xs.forEach(function (x) { const o = NODES.get(x.other); g.list.append(row({ lens: o.lens, title: L(x.other), sub: cap(rel(x.type, x.back)), onClick: function () { reveal(x.other); } })); });
+      f.append(g.wrap);
     }
-    panel.className = "details";
-    panel.replaceChildren(f);
+    put(f);
     toTop();
   }
 
   // ---------- course ----------
+  let modView = 0;                   // the module whose overview page is showing
   function quizDone(mi) {
     const a = prog.quiz[mi] || [], q = COURSE[mi].en.quiz;
     for (let i = 0; i < q.length; i++) if (a[i] == null) return false;
@@ -5034,47 +5178,42 @@ Object.assign(UI.pt, {
     inLesson = true;
     reveal(id);
   }
-  function startModule(mi) {
+  function firstOpen(mi) {           // the lesson to continue from in a module
     const steps = COURSE[mi].steps;
-    let si = 0;
-    if (!quizDone(mi)) { si = steps.findIndex(function (id) { return !prog.seen[id]; }); if (si < 0) si = steps.length - 1; }
-    goStep(mi, si);
+    if (quizDone(mi)) return 0;
+    const si = steps.findIndex(function (id) { return !prog.seen[id]; });
+    return si < 0 ? steps.length - 1 : si;
   }
-  function resume() {
-    if (cur) { goStep(cur.m, cur.s); return; }
-    let mi = COURSE.findIndex(function (m, i) { return !quizDone(i); });
-    startModule(mi < 0 ? 0 : mi);
-  }
+  function startModule(mi) { goStep(mi, firstOpen(mi)); }
+  function openModule(mi) { modView = mi; setView("module"); }
+  function nextModule() { const mi = COURSE.findIndex(function (m, i) { return !quizDone(i); }); return mi < 0 ? 0 : mi; }
+  function resume() { if (cur && !quizDone(cur.m)) goStep(cur.m, cur.s); else openModule(nextModule()); }
   function openQuiz(mi) { cur = { m: mi, s: COURSE[mi].steps.length - 1 }; save("aimap-pos", JSON.stringify(cur)); setView("quiz"); }
 
   function showCourse() {
     const f = document.createDocumentFragment();
     const started = Object.keys(prog.seen).length > 0, all = doneCount() === COURSE.length;
-    f.append(el("h2", null, all ? U("courseDone") : U("welcomeTitle")));
-    f.append(el("p", "lede", all ? U("courseDoneLead") : U("welcomeLead")));
-    if (!started) {
-      const ul = el("ul", "how"); U("welcomeHow").forEach(function (s) { ul.append(el("li", null, s)); }); f.append(ul);
+    f.append(el("h2", "title", all ? U("courseDone") : U("welcomeTitle")));
+    f.append(el("p", "lead muted", all ? U("courseDoneLead") : U("welcomeLead")));
+    const explore = function () { if (sheetMQ.matches) setSheet(false); else setView("node"); };
+    if (!all) {
+      const mi = cur && !quizDone(cur.m) ? cur.m : nextModule(), c = C(mi), h = el("div", "hero");
+      h.append(el("p", "kicker accent", started ? U("upNext") : U("startHere")));
+      h.append(el("h3", null, c.t));
+      h.append(el("p", "hero-g", fill(U("moduleN"), { n: mi + 1 }) + " · " + (seenCount(mi) ? fill(U("lessonsLeft"), { n: seenCount(mi), t: COURSE[mi].steps.length }) : fill(U("lessonsN"), { n: COURSE[mi].steps.length }))));
+      const act = el("div", "actions");
+      act.append(btn("btn primary big", started ? U("resume") : U("start"), resume));
+      act.append(btn("btn big", U("explore"), explore));
+      h.append(act); f.append(h);
+    } else {
+      const act = el("div", "actions block-actions"); act.append(btn("btn primary big", U("explore"), explore)); f.append(act);
     }
-    const act = el("div", "actions");
-    if (!all) act.append(btn("btn primary big", started ? U("resume") : U("start"), resume));
-    act.append(btn("btn", U("explore"), function () { if (sheetMQ.matches) setSheet(false); else setView("node"); }));
-    f.append(act);
-    const pr = el("p", "prog");
-    pr.append(el("span", null, fill(U("progress"), { n: doneCount(), t: COURSE.length })));
-    pr.append(meter(doneCount(), COURSE.length));
-    f.append(pr);
-    const ol = el("ol", "mods");
+    const g = group(U("modulesH"));
     COURSE.forEach(function (m, mi) {
-      const c = C(mi), li = el("li"), b = btn(null, null, function () { startModule(mi); });
       const done = quizDone(mi), seen = seenCount(mi);
-      if (done) li.className = "done"; else if (cur && cur.m === mi) li.className = "now";
-      b.append(el("span", "num"));
-      b.append(el("span", "mt", c.t));
-      b.append(el("span", "ms", done ? "✓ " + U("done") : seen ? seen + "/" + m.steps.length : m.steps.length + " " + U("steps")));
-      b.append(el("span", "mg", c.g));
-      li.append(b); ol.append(li);
+      g.list.append(row({ lead: ring(seen / (m.steps.length + 1), done), title: C(mi).t, sub: fill(U("moduleN"), { n: mi + 1 }) + " · " + fill(U("lessonsN"), { n: m.steps.length }), onClick: function () { openModule(mi); } }));
     });
-    f.append(ol);
+    f.append(g.wrap);
     if (started) {
       const rr = el("p", "resetrow");
       rr.append(btn("btn quiet", U("restart"), function () {
@@ -5083,51 +5222,77 @@ Object.assign(UI.pt, {
       }));
       f.append(rr);
     }
-    panel.className = "details welcome";
-    panel.replaceChildren(f);
+    put(f, "welcome");
+    toTop();
+  }
+
+  function showModule() {
+    const mi = modView, c = C(mi), m = COURSE[mi], f = document.createDocumentFragment();
+    const top = el("div", "pagetop"); top.append(backlink(U("allModules"), function () { setView("course"); })); f.append(top);
+    f.append(el("p", "kicker", fill(U("moduleN"), { n: mi + 1 })));
+    f.append(el("h2", "title", c.t));
+    f.append(el("p", "lead", c.i));
+    const goals = el("section", "part"); goals.append(el("h3", null, U("goalsH")));
+    const ul = el("ul", "goals"); c.o.forEach(function (t) { const li = el("li"); li.append(ico("goal")); li.append(el("span", null, t)); ul.append(li); });
+    goals.append(ul); f.append(goals);
+    const g = group(U("lessonsH"));
+    m.steps.forEach(function (id, si) {
+      const seen = !!prog.seen[id];
+      g.list.append(row({ lead: seen ? ring(1, true) : el("span", "num", String(si + 1)), title: L(id), onClick: function () { goStep(mi, si); } }));
+    });
+    const ans = prog.quiz[mi] || [], right = c.quiz.filter(function (q, i) { return ans[i] === q.c; }).length;
+    g.list.append(row({ lead: quizDone(mi) ? ring(1, true) : el("span", "num", "?"), title: U("quizRow"), sub: U("quizRowSub"), side: quizDone(mi) ? right + "/" + c.quiz.length : "", onClick: function () { openQuiz(mi); } }));
+    f.append(g.wrap);
+    const seen = seenCount(mi), act = el("div", "block-actions");
+    act.append(btn("btn primary wide", seen && !quizDone(mi) ? U("resume") : U("startModule"), function () { startModule(mi); }));
+    f.append(act);
+    put(f);
     toTop();
   }
 
   function showQuiz() {
     const mi = cur.m, c = C(mi), f = document.createDocumentFragment();
     const ans = prog.quiz[mi] || (prog.quiz[mi] = []);
-    f.append(el("p", "full", U("module") + " " + (mi + 1) + ": " + c.t));
-    f.append(el("h2", null, U("quizTitle")));
+    const top = el("div", "pagetop"); top.append(backlink(c.t, function () { openModule(mi); })); f.append(top);
+    f.append(el("p", "kicker", fill(U("moduleN"), { n: mi + 1 }) + " · " + U("quizRow")));
+    f.append(el("h2", "title", U("quizTitle")));
+    const k = el("aside", "card"), kh = el("h3", null, U("keyIdeas")), kl = el("ul", "goals");
+    c.r.forEach(function (t) { const li = el("li"); li.append(ico("goal")); li.append(el("span", null, t)); kl.append(li); });
+    k.append(kh, kl); f.append(k);
     c.quiz.forEach(function (q, qi) {
-      const box = el("div", "q");
-      box.append(el("p", null, (qi + 1) + ". " + q.q));
-      const opts = el("div", "opts");
-      const picked = ans[qi];
+      f.append(el("p", "qtext", (qi + 1) + ". " + q.q));
+      const list = el("div", "list"), picked = ans[qi];
       q.a.forEach(function (text, ai) {
-        const b = btn(null, text, function () { ans[qi] = ai; saveProg(); renderPanelKeep(); });
+        const mark = el("span", "mark");
+        let cls = "";
         if (picked != null) {
-          b.disabled = true;
-          if (ai === q.c) b.className = "right";
-          else if (ai === picked) b.className = "wrongpick";
+          if (ai === q.c) { cls = "right"; mark.append(ico("check")); }
+          else if (ai === picked) { cls = "wrongpick"; mark.append(ico("cross")); }
         }
-        opts.append(b);
+        const b = row({ lead: mark, title: text, cls: cls, noChev: true, onClick: function () { ans[qi] = ai; saveProg(); renderPanelKeep(); } });
+        if (picked != null) b.disabled = true;
+        list.append(b);
       });
-      box.append(opts);
+      f.append(list);
       if (picked != null) {
         const ok = picked === q.c, fb = el("p", "fb" + (ok ? "" : " no"));
         fb.setAttribute("role", "status");
         fb.append(el("b", null, ok ? U("correct") : U("wrong"))); fb.append(document.createTextNode(" " + q.why));
-        box.append(fb);
+        f.append(fb);
       }
-      f.append(box);
     });
     if (quizDone(mi)) {
-      const res = el("div", "result"), right = c.quiz.filter(function (q, i) { return ans[i] === q.c; }).length;
-      res.append(el("p", null, fill(U("quizScore"), { n: right, t: c.quiz.length })));
+      const right = c.quiz.filter(function (q, i) { return ans[i] === q.c; }).length;
+      const res = el("div", "result"), card = el("div", "card");
+      card.append(el("h3", null, fill(U("quizScore"), { n: right, t: c.quiz.length })));
       const act = el("div", "actions");
-      if (mi + 1 < COURSE.length) act.append(btn("btn primary", U("nextModule"), function () { startModule(mi + 1); }));
+      if (mi + 1 < COURSE.length) act.append(btn("btn primary", U("nextModule"), function () { openModule(mi + 1); }));
       else act.append(btn("btn primary", U("tabCourse"), function () { setView("course"); }));
       act.append(btn("btn", U("quizRetry"), function () { prog.quiz[mi] = []; saveProg(); renderPanelKeep(); }));
       act.append(btn("btn", U("review"), function () { goStep(mi, 0); }));
-      res.append(act); f.append(res);
+      card.append(act); res.append(card); f.append(res);
     }
-    panel.className = "details quiz";
-    panel.replaceChildren(f);
+    put(f, "quiz");
   }
   function renderPanelKeep() { const y = panel.scrollTop, wy = window.scrollY; renderPanel(); panel.scrollTop = y; window.scrollTo(0, wy); }
 
@@ -5138,15 +5303,14 @@ Object.assign(UI.pt, {
     const mi = cur.m, steps = COURSE[mi].steps, last = steps.length - 1, onQuiz = view === "quiz", off = !onQuiz && selected !== stepId();
     bar.replaceChildren();
     const back = btn("btn", "‹ " + U("prev"), function () {
-      if (onQuiz) goStep(mi, last); else if (cur.s > 0) goStep(mi, cur.s - 1);
+      if (onQuiz) goStep(mi, last); else if (cur.s > 0) goStep(mi, cur.s - 1); else openModule(mi);
     });
-    back.disabled = !onQuiz && cur.s === 0;
     const mid = el("div", "cb-mid");
     if (off) mid.append(btn("btn", U("backToLesson"), function () { goStep(mi, cur.s); }));
     else {
       const lab = el("div", "cb-label");
-      lab.append(el("span", null, U("module") + " " + (mi + 1) + " • " + (onQuiz ? U("quizBtn") : phone.matches ? (cur.s + 1) + "/" + steps.length : U("step") + " " + (cur.s + 1) + " " + U("of") + " " + steps.length)));
-      const x = btn(null, "×", function () { inLesson = false; setView("course"); });
+      lab.append(el("span", null, onQuiz ? U("quizRow") : (cur.s + 1) + " / " + steps.length));
+      const x = btn(null, "×", function () { inLesson = false; openModule(mi); });
       x.setAttribute("aria-label", U("leave")); x.title = U("leave");
       lab.append(x);
       mid.append(lab);
@@ -5163,7 +5327,7 @@ Object.assign(UI.pt, {
   // ---------- timeline ----------
   function showTimeline() {
     const f = document.createDocumentFragment();
-    f.append(el("h2", null, U("tlTitle")));
+    f.append(el("h2", "title", U("tlTitle")));
     const ol = el("ol", "tl");
     TIMELINE.forEach(function (it, i) {
       const li = el("li"), b = btn("lens-" + NODES.get(it.id).lens, null, function () {
@@ -5181,26 +5345,25 @@ Object.assign(UI.pt, {
       li.append(b); ol.append(li);
     });
     f.append(ol);
-    panel.className = "details";
-    panel.replaceChildren(f);
+    put(f);
   }
 
   // ---------- about ----------
   function showAbout() {
     const f = document.createDocumentFragment();
-    f.append(el("h2", null, U("aboutTitle")));
-    function part(h, text) { f.append(el("h3", null, h)); const p = el("p", null, text); f.append(p); return p; }
-    part(U("aboutWho"), U("aboutWhoText"));
-    part(U("aboutHow"), U("aboutHowText"));
-    part(U("aboutSrc"), U("aboutSrcText") + " " + checkedLabel() + ".");
+    f.append(el("h2", "title", U("aboutTitle")));
+    function add(h, text) { const s = part(h, text); f.append(s); return s.querySelector("p"); }
+    add(U("aboutWho"), U("aboutWhoText"));
+    add(U("aboutHow"), U("aboutHowText"));
+    add(U("aboutSrc"), U("aboutSrcText") + " " + checkedLabel() + ".");
     if (SITE.contactUrl) {
-      const p = part(U("aboutFix"), U("aboutFixText") + " ");
+      const p = add(U("aboutFix"), U("aboutFixText") + " ");
       const a = el("a", null, U("aboutFixLink")); a.href = SITE.contactUrl; a.target = "_blank"; a.rel = "noopener noreferrer"; p.append(a);
     }
-    if (SITE.license[lang] || SITE.license.en) part(U("aboutReuse"), SITE.license[lang] || SITE.license.en);
-    part(U("aboutPrivacy"), U("aboutPrivacyText"));
+    if (SITE.license[lang] || SITE.license.en) add(U("aboutReuse"), SITE.license[lang] || SITE.license.en);
+    add(U("aboutPrivacy"), U("aboutPrivacyText"));
     if (SITE.author) {
-      const p = part(U("aboutBy"), "");
+      const p = add(U("aboutBy"), "");
       if (SITE.authorUrl) { const a = el("a", null, SITE.author); a.href = SITE.authorUrl; a.target = "_blank"; a.rel = "noopener noreferrer"; p.append(a); }
       else p.textContent = SITE.author;
     }
@@ -5208,8 +5371,7 @@ Object.assign(UI.pt, {
       const act = el("div", "actions"), a = el("a", "btn primary", "♥ " + U("support"));
       a.href = SITE.donateUrl; a.target = "_blank"; a.rel = "noopener noreferrer"; act.append(a); f.append(act);
     }
-    panel.className = "details about";
-    panel.replaceChildren(f);
+    put(f, "about");
     toTop();
   }
 
