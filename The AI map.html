@@ -107,7 +107,24 @@ button { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .mark { width: 26px; height: 26px; flex: none; color: var(--accent); }
 h1 { font-weight: 500; font-size: 1.12rem; line-height: 1.1; letter-spacing: -0.01em; margin: 0; white-space: nowrap; }
-.prefs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; justify-self: end; min-width: 0; }
+.prefs { display: flex; flex-wrap: nowrap; gap: 8px; align-items: center; min-width: 0; overflow-x: auto; scrollbar-width: none; padding: 4px; margin: -4px; }
+.prefs::-webkit-scrollbar { display: none; }
+.prefs > * { flex: none; }
+.sc-prefs { justify-self: end; max-width: 100%; }
+/* rows that slide sideways: arrows appear only when there is more to see */
+.sc { position: relative; display: flex; min-width: 0; }
+.sc-btn {
+  position: absolute; z-index: 3; top: 50%; width: 30px; height: 30px; margin-top: -15px; padding: 0; border: 0; border-radius: 50%;
+  display: none; align-items: center; justify-content: center; cursor: pointer;
+  background: var(--panel); color: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 3px 10px rgba(0, 0, 0, 0.14);
+}
+.sc-btn svg { width: 7px; height: 12px; }
+.sc-l { left: -6px; } .sc-r { right: -6px; }
+.sc.can-l .sc-l, .sc.can-r .sc-r { display: inline-flex; }
+.sc.can-r > .scroller { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 46px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 46px), transparent); }
+.sc.can-l > .scroller { -webkit-mask-image: linear-gradient(to right, transparent, #000 46px); mask-image: linear-gradient(to right, transparent, #000 46px); }
+.sc.can-l.can-r > .scroller { -webkit-mask-image: linear-gradient(to right, transparent, #000 46px, #000 calc(100% - 46px), transparent); mask-image: linear-gradient(to right, transparent, #000 46px, #000 calc(100% - 46px), transparent); }
+.mapbar > .sc { flex: 0 1 auto; }
 .search { position: relative; width: 100%; min-width: 0; }
 .search input { width: 100%; font: inherit; font-size: 0.88rem; color: var(--ink); background: var(--fill); border: 0; border-radius: 999px; padding: 8px 15px; -webkit-appearance: none; appearance: none; }
 .search input::placeholder { color: var(--muted); }
@@ -338,7 +355,6 @@ html.sheet .hint { display: none; }
 html.sheet #sheetBtn { display: inline-flex; }
 html.sheet .btn { padding: 10px 17px; font-size: 0.9rem; }
 html.sheet .mapbar .seg button { padding: 9px 12px; }
-html.sheet .tools { padding-right: 34px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); }
 html.sheet .seg button { padding: 7px 12px; }
 html.sheet .mapbar { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 html.sheet .side { position: fixed; z-index: 40; display: none; border-radius: 22px; }
@@ -380,16 +396,15 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
 @media (max-width: 1100px) {
   .top { grid-template-columns: auto minmax(120px, 1fr) auto; padding-left: 16px; padding-right: 16px; }
   .search { width: 100%; max-width: 340px; justify-self: center; }
-  .prefs { flex-wrap: nowrap; gap: 6px; }
+  .prefs { gap: 6px; }
   html.sheet .top .seg button { padding: 6px 10px; }
 }
 @media (max-width: 700px) {
   .top { grid-template-columns: minmax(0, 1fr); }
   .search { width: 100%; max-width: none; }
-  .prefs { flex-wrap: wrap; justify-self: start; justify-content: flex-start; }
+  .sc-prefs { justify-self: stretch; }
 }
 @media (max-width: 640px) {
-  .prefs { justify-self: start; justify-content: flex-start; }
   .mapbar { left: 10px; right: 10px; gap: 6px; }
   html.sheet .mapbar .btn { padding: 10px 14px; }
   html.sheet.sheet-open .side, html.sheet.sheet-open.sheet-max .side { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: 100%; height: min(88dvh, calc(100dvh - 40px)); border-radius: 22px 22px 0 0; animation: sheetin 0.26s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -7719,6 +7734,34 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
     const id = decodeURIComponent(location.hash.slice(1));
     if (NODES.has(id) && id !== selected) reveal(id);
   });
+  // ---------- rows that slide sideways get arrows when they overflow ----------
+  const scrollers = [];
+  function scrollHints(el, cls) {
+    const wrap = el.parentNode.insertBefore(document.createElement("div"), el);
+    wrap.className = "sc" + (cls ? " " + cls : "");
+    el.classList.add("scroller");
+    function arrow(side) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "sc-btn sc-" + side; b.tabIndex = -1; b.setAttribute("aria-hidden", "true");
+      b.innerHTML = '<svg viewBox="0 0 8 14"><path d="' + (side === "l" ? "M6.5 1.5 1.5 7l5 5.5" : "M1.5 1.5 6.5 7l-5 5.5") + '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      b.addEventListener("click", function () { el.scrollBy({ left: (side === "l" ? -1 : 1) * Math.max(120, el.clientWidth * 0.7), behavior: reduce ? "auto" : "smooth" }); });
+      return b;
+    }
+    wrap.append(arrow("l"), el, arrow("r"));
+    function update() {
+      const max = el.scrollWidth - el.clientWidth;
+      wrap.classList.toggle("can-l", el.scrollLeft > 4);
+      wrap.classList.toggle("can-r", max - el.scrollLeft > 4);
+    }
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el); Array.prototype.forEach.call(el.children, function (c) { ro.observe(c); });
+    scrollers.push(update);
+    update();
+  }
+  scrollHints(document.getElementById("tools"));
+  scrollHints(document.querySelector(".prefs"), "sc-prefs");
+
   let lastW = 0, rz = null;
   new ResizeObserver(function () {          // keep the map framed when its width changes (window resize, panel shown or hidden)
     const w = canvasEl.clientWidth;
