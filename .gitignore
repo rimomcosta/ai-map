@@ -1,3 +1,4 @@
 .DS_Store
 *.backup-*.html
 .claude/settings.local.json
+dist/
