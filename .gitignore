@@ -2,3 +2,4 @@
 *.backup-*.html
 .claude/settings.local.json
 dist/
+.wrangler/

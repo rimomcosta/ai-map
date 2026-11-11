@@ -336,12 +336,17 @@ html.sheet .tabs button { padding: 18px 12px 16px; font-size: 0.95rem; }
 html.sheet .details { padding: 24px 28px 30px; }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
 @media (max-width: 1100px) {
-  .top { grid-template-columns: minmax(0, 1fr) auto; }
-  .search { grid-column: 1 / -1; grid-row: 2; width: min(100%, 360px); justify-self: center; }
+  .top { grid-template-columns: auto minmax(120px, 1fr) auto; padding-left: 16px; padding-right: 16px; }
+  .search { width: 100%; max-width: 340px; justify-self: center; }
+  .prefs { flex-wrap: nowrap; gap: 6px; }
+  html.sheet .top .seg button { padding: 6px 10px; }
+}
+@media (max-width: 700px) {
+  .top { grid-template-columns: minmax(0, 1fr); }
+  .search { width: 100%; max-width: none; }
+  .prefs { flex-wrap: wrap; justify-self: start; justify-content: flex-start; }
 }
 @media (max-width: 640px) {
-  .top { grid-template-columns: minmax(0, 1fr); }
-  .search { width: 100%; }
   .prefs { justify-self: start; justify-content: flex-start; }
   .mapbar { left: 10px; right: 10px; gap: 6px; }
   html.sheet .mapbar .btn { padding: 10px 14px; }
@@ -4420,7 +4425,7 @@ Object.assign(UI.en, {
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
   welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No maths or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
@@ -4445,7 +4450,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -5265,7 +5270,7 @@ Object.assign(UI.pt, {
     document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
     document.title = U("title");
     document.querySelectorAll("[data-i]").forEach(function (e) { e.textContent = U(e.getAttribute("data-i")); });
-    q.placeholder = U("search"); q.setAttribute("aria-label", U("search"));
+    q.placeholder = q.clientWidth && q.clientWidth < 220 ? U("searchShort") : U("search"); q.setAttribute("aria-label", U("search"));
     document.getElementById("langSeg").setAttribute("aria-label", U("lang"));
     document.getElementById("levelSeg").setAttribute("aria-label", U("level"));
     document.getElementById("themeSeg").setAttribute("aria-label", U("theme"));
@@ -5393,7 +5398,7 @@ Object.assign(UI.pt, {
     const w = canvasEl.clientWidth;
     if (!lastW || w === lastW) { lastW = w; return; }
     lastW = w; clearTimeout(rz);
-    rz = setTimeout(function () { if (selected === "ai" || everything) fit(); else panTo(selected); }, 120);
+    rz = setTimeout(function () { if (selected === "ai" || everything) fit(); else panTo(selected); q.placeholder = q.clientWidth < 220 ? U("searchShort") : U("search"); }, 120);
   }).observe(canvasEl);
   if (SITE.donateUrl) { const s = document.getElementById("supportBtn"); s.href = SITE.donateUrl; s.hidden = false; }
 
@@ -5408,7 +5413,7 @@ Object.assign(UI.pt, {
     for (let a = NODES.get(linked).parent; a; a = a.parent) open.add(a.id);
     selected = linked; view = "node"; hinted = true; document.getElementById("hint").classList.add("gone");
   }
-  setView(view);
+  setView(view, view !== "node");
   applyLang();
   initialView();
   render(null, view === "node" ? function () { panTo(selected); } : fit);
