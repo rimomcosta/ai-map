@@ -166,6 +166,7 @@ html.panel-closed:not(.sheet) .side { display: none; }
 .tabs button[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; border-radius: 2px; background: var(--accent); }
 .close { display: inline-flex; flex: none; width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--fill); color: var(--muted); font-size: 1.15rem; line-height: 1; cursor: pointer; align-items: center; justify-content: center; }
 .close:hover { background: var(--fill-2); color: var(--ink); }
+.close + .close { margin-left: 0; }
 .details { flex: 1; min-height: 0; overflow: auto; padding: 18px 26px 34px; -webkit-overflow-scrolling: touch; }
 .details:focus { outline: none; }
 .ico { display: inline-flex; width: 1em; height: 1em; flex: none; }
@@ -188,6 +189,7 @@ html.panel-closed:not(.sheet) .side { display: none; }
 .subtitle { margin: 6px 0 0; color: var(--muted); font-size: 1rem; }
 .metaline { display: flex; align-items: center; gap: 7px; margin: 10px 0 0; font-size: 0.85rem; color: var(--muted); }
 .lead { margin: 22px 0 0; font-size: 1.2rem; line-height: 1.5; letter-spacing: -0.01em; max-width: 36em; }
+.explain { margin: 14px 0 0; font-size: 1.02rem; line-height: 1.65; max-width: 38em; }
 .lead.muted { color: var(--muted); font-size: 1.06rem; margin-top: 10px; }
 .part { margin-top: 26px; }
 .part h3 { margin: 0 0 4px; font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; }
@@ -339,15 +341,28 @@ html.sheet .mapbar .seg button { padding: 9px 12px; }
 html.sheet .tools { padding-right: 34px; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); }
 html.sheet .seg button { padding: 7px 12px; }
 html.sheet .mapbar { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
-html.sheet .side {
-  position: fixed; z-index: 40; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: min(640px, calc(100vw - 40px)); height: min(820px, calc(100dvh - 60px));
-  border-radius: 24px; display: none;
+html.sheet .side { position: fixed; z-index: 40; display: none; border-radius: 22px; }
+/* tablets: a side panel on the right, the map stays visible and usable */
+html.sheet.sheet-open .side {
+  display: flex; left: auto; right: 12px; top: calc(var(--hdr, 60px) + 2px); bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  width: min(400px, 48vw); height: auto; transform: none; animation: sidein 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-html.sheet.sheet-open .side { display: flex; animation: sheetin 0.26s cubic-bezier(0.2, 0.8, 0.2, 1); }
-html.sheet.sheet-open .scrim { display: block; position: fixed; z-index: 39; inset: 0; background: var(--scrim); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); animation: fadein 0.2s ease; }
-html.sheet .tabs button { padding: 18px 12px 16px; font-size: 0.95rem; }
-html.sheet .details { padding: 24px 28px 30px; }
+html.sheet.sheet-open .tabs { gap: 0; }
+html.sheet.sheet-open .tabs button { padding: 16px 7px 14px; font-size: 0.9rem; }
+html.sheet.sheet-open .sidehead { padding: 0 10px 0 12px; }
+html.sheet.sheet-open .details { padding: 18px 22px 28px; }
+/* maximized: a large centered modal over the blurred map */
+html.sheet.sheet-open.sheet-max .side {
+  left: 50%; right: auto; top: 50%; bottom: auto; transform: translate(-50%, -50%);
+  width: min(680px, calc(100vw - 40px)); height: min(860px, calc(100dvh - 60px)); border-radius: 24px; animation: sheetin 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html.sheet.sheet-open.sheet-max .tabs button { padding: 18px 12px 16px; font-size: 0.95rem; }
+html.sheet.sheet-open.sheet-max .details { padding: 24px 32px 32px; }
+html.sheet.sheet-open.sheet-max .scrim { display: block; position: fixed; z-index: 39; inset: 0; background: var(--scrim); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); animation: fadein 0.2s ease; }
+html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
+.maxbtn { display: none; }
+.maxbtn .ico { width: 14px; height: 14px; }
+@keyframes sidein { from { opacity: 0; transform: translateX(24px); } }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
 @media (max-width: 1100px) {
   .top { grid-template-columns: auto minmax(120px, 1fr) auto; padding-left: 16px; padding-right: 16px; }
@@ -364,9 +379,11 @@ html.sheet .details { padding: 24px 28px 30px; }
   .prefs { justify-self: start; justify-content: flex-start; }
   .mapbar { left: 10px; right: 10px; gap: 6px; }
   html.sheet .mapbar .btn { padding: 10px 14px; }
-  html.sheet .side { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: 100%; height: min(88dvh, calc(100dvh - 40px)); border-radius: 22px 22px 0 0; }
-  html.sheet .details { padding: 20px 20px 26px; }
-  html.sheet .tabs button { padding: 16px 9px 14px; font-size: 0.9rem; }
+  html.sheet.sheet-open .side, html.sheet.sheet-open.sheet-max .side { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: 100%; height: min(88dvh, calc(100dvh - 40px)); border-radius: 22px 22px 0 0; animation: sheetin 0.26s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  html.sheet.sheet-open .scrim { display: block; position: fixed; z-index: 39; inset: 0; background: var(--scrim); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); }
+  html.sheet.sheet-open .details, html.sheet.sheet-open.sheet-max .details { padding: 20px 20px 26px; }
+  html.sheet.sheet-open .tabs button, html.sheet.sheet-open.sheet-max .tabs button { padding: 16px 9px 14px; font-size: 0.9rem; }
+  html.sheet .maxbtn { display: none; }
   @keyframes sheetin { from { opacity: 0; transform: translateY(24px); } }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -443,6 +460,7 @@ html.sheet .details { padding: 24px 28px 30px; }
         <button type="button" role="tab" data-view="timeline" data-i="tabTimeline" aria-selected="false">Timeline</button>
         <button type="button" role="tab" data-view="about" data-i="tabAbout" aria-selected="false">About</button>
       </div>
+      <button type="button" class="close maxbtn" id="sheetMax"></button>
       <button type="button" class="close" id="sheetClose"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="details" id="details" tabindex="-1"></div>
@@ -685,8 +703,8 @@ other: {l:"Other Neural Architectures", s:"wide",
  n:"Specialist tools, and autoencoders hide inside most image generators."},
 
 gnn: {l:"Graph Neural Networks", s:"wide",
- p:"Networks that learn from graphs: each node updates itself using messages from its neighbours.",
- t:"Message-passing layers (GCN, GraphSAGE, GAT) aggregate neighbour features, giving predictions per node, per edge or per whole graph.",
+ p:"Networks that learn from graphs: each node updates itself using messages from its neighbors.",
+ t:"Message-passing layers (GCN, GraphSAGE, GAT) aggregate neighbor features, giving predictions per node, per edge or per whole graph.",
  h:"Early work around 2005–2009 (Scarselli and colleagues); GCN (Kipf and Welling, 2016) made them popular.",
  w:"Pinterest’s PinSage recommendations, Google DeepMind’s GraphCast weather forecasts, drug discovery.",
  n:"Strong in science, recommendations and fraud detection, and a natural partner for knowledge graphs."},
@@ -833,7 +851,7 @@ games: {l:"Game-playing agents", s:"found",
 
 rlhf: {l:"RLHF for LLMs", s:"core", add:true,
  p:"Using human preferences as the reward, so a raw LLM becomes a helpful and safe assistant.",
- t:"Collect human comparisons of answers, train a reward model, then optimize the LLM with RL (PPO), or skip the reward model with DPO. Newer methods reward verifiable outcomes, such as passing tests or correct maths.",
+ t:"Collect human comparisons of answers, train a reward model, then optimize the LLM with RL (PPO), or skip the reward model with DPO. Newer methods reward verifiable outcomes, such as passing tests or correct math.",
  h:"InstructGPT (OpenAI, 2022) showed that a 1.3-billion-parameter RLHF model was preferred over the 175-billion-parameter GPT-3.",
  w:"Every major chat assistant is post-trained with some form of preference optimization.",
  n:"Explains much of how assistants behave, including why they refuse, hedge or flatter."},
@@ -1393,7 +1411,7 @@ upd("trans", { m:"Transformers aren’t only for language: the same design runs 
 upd("vt", { m:"These categories overlap. ViT is itself an encoder-only transformer, and DiT is a transformer used inside diffusion. Families named after their use (vision, diffusion) and families named after their structure (encoder, decoder) aren’t mutually exclusive." });
 upd("dit", { f:"DiT", m:"DiT is not an alternative to diffusion; it is the network that does the denoising inside a diffusion or flow-matching model." });
 upd("rlhf", { f:"Reinforcement Learning from Human Feedback",
-  t:"Collect human comparisons of answers, train a reward model, then optimize the LLM with an RL algorithm such as PPO. Newer methods reward verifiable outcomes, such as passing tests or correct maths." });
+  t:"Collect human comparisons of answers, train a reward model, then optimize the LLM with an RL algorithm such as PPO. Newer methods reward verifiable outcomes, such as passing tests or correct math." });
 upd("agents", { l:"Route planners & agent plans",
   p:"From computing the fastest route to an LLM breaking a goal into steps.",
   t:"Route planners use graph search (Dijkstra, A*, contraction hierarchies). LLM-based planners draft a list of steps that an agent then carries out and revises.",
@@ -1628,7 +1646,7 @@ mstruct: {l:"Structured data", s:"core",
  p:"Tables, time series, logs and graphs: data with fixed fields and relationships.",
  t:"Often handled best by classical ML (gradient boosting) or specialized models. LLMs work with it by reading it as text, or by writing SQL and code that do the calculation.",
  w:"Sales tables, sensor readings, transaction graphs.",
- n:"Huge in business. A common pattern: the LLM writes the query, the database does the maths."},
+ n:"Huge in business. A common pattern: the LLM writes the query, the database does the math."},
 multi: {l:"Multimodal", s:"core",
  p:"Models that work with more than one kind of data, such as text and images together.",
  t:"Usually one encoder per modality (for example a ViT for images) projected into a shared space or into the LLM’s token space. What a model can take in and what it can produce are separate questions.",
@@ -1733,7 +1751,7 @@ hw: {l:"Running models", f:"Inference hardware & deployment", s:"core",
  n:"Core for AI engineers."},
 chips: {l:"CPU, GPU & NPU", f:"Central, Graphics and Neural Processing Units", s:"core",
  p:"Three kinds of processors: general-purpose (CPU), massively parallel (GPU) and specialized for neural networks (NPU).",
- t:"GPUs run thousands of matrix operations in parallel and dominate training and serving. NPUs and TPUs are accelerators built for neural-network maths, for low power or large scale. CPUs can run small or quantized models, slowly.",
+ t:"GPUs run thousands of matrix operations in parallel and dominate training and serving. NPUs and TPUs are accelerators built for neural-network math, for low power or large scale. CPUs can run small or quantized models, slowly.",
  w:"Data-centre GPUs for serving; NPUs in phones and laptops for on-device features.",
  n:"Core."},
 memory: {l:"RAM, VRAM & unified memory", s:"core",
@@ -1783,7 +1801,7 @@ embmodel: {l:"Embedding models", s:"core",
  m:"Embedding models don’t generate text. They produce representations used for search, clustering and classification."},
 vectordb: {l:"Vector databases & similarity search", s:"core",
  p:"Storage that quickly finds the vectors closest to a query vector, even among millions.",
- t:"Approximate nearest-neighbour indexes (HNSW, IVF) trade a little accuracy for large speed gains. Options range from dedicated vector databases to vector extensions in existing ones, such as pgvector for PostgreSQL.",
+ t:"Approximate nearest-neighbor indexes (HNSW, IVF) trade a little accuracy for large speed gains. Options range from dedicated vector databases to vector extensions in existing ones, such as pgvector for PostgreSQL.",
  w:"Finding the 20 policy paragraphs most relevant to a question.",
  n:"Core.",
  m:"A vector database doesn’t understand text; it only stores and compares vectors that an embedding model produced."},
@@ -2918,7 +2936,7 @@ closed: {l:"Closed-weight models", f:"Proprietary models", s:"core",
  k:"Like a famous restaurant’s secret recipe: you can eat the dish whenever you like, but you can’t take the recipe home and cook it in your own kitchen."},
 ogpt: {l:"GPT-6 (OpenAI)", s:"core",
  p:"OpenAI’s current model family, the engine behind ChatGPT and Codex.",
- t:"Launched in stages in 2026: GPT-6 Astra (September 3), the top model, rolled out slowly because of its cyber capabilities; then the cheaper GPT-6 Sol and GPT-6 Luna. The API catalog now lists GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra and GPT-6 Luna, plus a specialised GPT-6-Cyber. Size and architecture are not published. OpenAI also releases open-weight gpt-oss models.",
+ t:"Launched in stages in 2026: GPT-6 Astra (September 3), the top model, rolled out slowly because of its cyber capabilities; then the cheaper GPT-6 Sol and GPT-6 Luna. The API catalog now lists GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra and GPT-6 Luna, plus a specialized GPT-6-Cyber. Size and architecture are not published. OpenAI also releases open-weight gpt-oss models.",
  h:"GPT-3 (2020) → GPT-4 (2023) → GPT-5 (August 2025) → GPT-5.x updates in 2026 (5.5 was codenamed “Spud”) → GPT-6.",
  w:"In ChatGPT, paid plans get GPT-6 Sol and Free and Go users get GPT-6 Luna; developers choose IDs such as gpt-6.1-sol in the API.",
  n:"One of the top model families as of November 2026.",
@@ -3125,7 +3143,7 @@ vibe: {l:"Vibe coding", s:"core",
  k:"Like telling a builder “make it cosy” and moving in without checking the wiring: lovely for a treehouse, risky for a hospital."},
 reasoning: {l:"Reasoning models", f:"Thinking models", s:"core",
  p:"Models that “think” through hidden steps before answering, trading time for accuracy on hard problems.",
- t:"Trained with reinforcement learning on tasks with checkable answers (maths, code) to produce long internal chains of thought. Most providers let you choose the reasoning effort; more thinking costs more tokens and time.",
+ t:"Trained with reinforcement learning on tasks with checkable answers (math, code) to produce long internal chains of thought. Most providers let you choose the reasoning effort; more thinking costs more tokens and time.",
  h:"OpenAI’s o1 (September 2024) and DeepSeek-R1 (January 2025) popularized them; by 2026 most frontier models think by default or on request.",
  w:"Choosing high effort for a tricky bug and low effort for a quick summary.",
  n:"Core: thinking is now a setting on most frontier models.",
@@ -3154,7 +3172,7 @@ codenames: {l:"Codenames & versions", s:"core",
  p:"Why model names are so confusing: internal codenames, marketing names, version numbers and API IDs.",
  t:"Labs test many checkpoints under codenames, and some names leak before launch. A launched model can have a public name (Gemini 4 Carbon), an API ID (gemini-4-carbon), dated snapshots and tiers such as Pro, Flash, Mini or Luna. The same marketing name can also point to a newer model later.",
  h:"GPT-5.5 was codenamed “Spud”, Mistral Large 4 is nicknamed “Le Chonk”, and Gemini 4 checkpoints were called Argon, Barium and Carbon.",
- w:"Pinning a dated model ID in production so your app doesn’t change behaviour overnight.",
+ w:"Pinning a dated model ID in production so your app doesn’t change behavior overnight.",
  n:"A core practical habit: always check the exact model ID you are calling.",
  m:"A codename doesn’t guarantee the public name: Google’s public Argon was internally called Barium-B, while Carbon kept its codename at launch.",
  k:"Like a film’s working title during shooting, then its release title, then the director’s cut and the extended edition."}
@@ -3478,7 +3496,7 @@ vit:"Like a jigsaw solver who looks at all the pieces at once instead of startin
 dit:"Like replacing an old art restorer with a team that can see the whole painting at once while cleaning it.",
 ditimg:"Like a photo studio that turns pure static into a picture, run by that new team.",
 other:"Like specialist tools: a pipe wrench isn’t for every job, but nothing else grips a pipe so well.",
-gnn:"Like gossip in a village: each person updates their opinion based on what their neighbours say.",
+gnn:"Like gossip in a village: each person updates their opinion based on what their neighbors say.",
 ssm:"Like keeping a running tally on a whiteboard as items arrive, instead of rereading the whole list every time.",
 mamba:"Like a speed-reader who decides, word by word, what is worth adding to their notes.",
 ae:"Like summarizing a film in one sentence and then retelling the whole film from that sentence.",
@@ -3554,14 +3572,14 @@ compress:"Like vacuum-packing clothes for a trip: the same clothes in a much sma
 quant:"Like saving a photo as a smaller JPEG: the same picture with fewer details stored, usually hard to notice.",
 prune:"Like trimming a hedge: cut the branches that add little and it keeps its shape.",
 hw:"Like choosing between cooking at home, in a restaurant kitchen or ordering takeaway: where the cooking happens changes speed, cost and control.",
-chips:"A CPU is a brilliant professor solving one problem at a time; a GPU is a stadium full of students doing simple sums all at once; an NPU is a calculator built for one kind of maths.",
+chips:"A CPU is a brilliant professor solving one problem at a time; a GPU is a stadium full of students doing simple sums all at once; an NPU is a calculator built for one kind of math.",
 memory:"Like your desk versus your bookshelf: work happens on the desk, and if the model doesn’t fit on it, it can’t run fast.",
 localcloud:"Like cooking at home versus eating out: home is private and cheap per meal, the restaurant has the best chef.",
 talk:"Like ordering at a counter: say what you want in a way the kitchen understands, and get your order back.",
 inference:"Like a restaurant kitchen during the dinner rush: many orders at once, served as fast as possible.",
 prompting:"Like briefing a new colleague: clear instructions, an example of good work, and the format you need it in.",
 retrieval:"Like a librarian who fetches the right three pages before you answer an exam question.",
-embmodel:"Like a machine that gives every document a GPS position based on its meaning, so documents about similar things end up neighbours.",
+embmodel:"Like a machine that gives every document a GPS position based on its meaning, so documents about similar things end up neighbors.",
 vectordb:"Like a postcode lookup that finds the shops nearest your address in a split second.",
 rag:"Like an open-book exam: look up the relevant pages first, then write the answer and say where you found it.",
 acting:"Like giving an assistant a phone and a set of keys, not just a notepad.",
@@ -3808,7 +3826,7 @@ upd("ddpm", { l:"DDPM", s:"found",
  w:"The training recipe behind most image, video and audio diffusion models that followed.",
  n:"Rarely used as-is: faster samplers, latent diffusion and flow matching improved on it, but the core idea is unchanged.",
  m:"DDPM is a method, not a product. Stable Diffusion is one system built on the method.",
- k:"Like learning to restore a photo by practising on copies you smudged yourself, a little more each time." });
+ k:"Like learning to restore a photo by practicing on copies you smudged yourself, a little more each time." });
 upd("evals", { l:"Evaluation", f:"Evals",
  p:"Measuring whether the system gives good answers, before and after every change.",
  t:"Test sets with expected answers, LLM-as-judge scoring, human review, and regression tests on every prompt or model change. Evaluation measures quality; it doesn’t block anything by itself. Blocking is the job of guardrails.",
@@ -3903,7 +3921,7 @@ shift: {l:"Distribution shift", s:"core",
 
 dataq: {l:"Data quality & labels", s:"core",
  p:"A model can only be as good as the examples it learns from. Wrong, missing or one-sided data produces a wrong or one-sided model.",
- t:"Typical problems: label errors, duplicates, missing groups, outdated records and classes with very few examples. Even famous benchmark datasets contain a few percent of wrong labels. The fixes are unglamorous: clear labelling guidelines, several annotators per item, audits of random samples and documentation of where the data came from.",
+ t:"Typical problems: label errors, duplicates, missing groups, outdated records and classes with very few examples. Even famous benchmark datasets contain a few percent of wrong labels. The fixes are unglamorous: clear labeling guidelines, several annotators per item, audits of random samples and documentation of where the data came from.",
  h:"“Garbage in, garbage out” dates from the early days of computing. The data-centric AI movement (around 2021) argued for improving the data before changing the model.",
  w:"A face-recognition system that works worse for groups that were rare in its training photos.",
  n:"For LLMs, curating and filtering training data is one of the main quality levers, and one of the least published.",
@@ -4028,7 +4046,7 @@ society: {l:"Responsible use", s:"core",
 
 deepfake: {l:"Deepfakes & synthetic media", s:"core",
  p:"Realistic fake images, audio and video of real people, now cheap and fast to make.",
- t:"Image and video generators and voice-cloning models can imitate a person from a few photos or seconds of audio. Detection tools exist but are unreliable. The stronger approach is provenance: labelling AI content, watermarks, and signed metadata such as Content Credentials (C2PA) that record where a file came from.",
+ t:"Image and video generators and voice-cloning models can imitate a person from a few photos or seconds of audio. Detection tools exist but are unreliable. The stronger approach is provenance: labeling AI content, watermarks, and signed metadata such as Content Credentials (C2PA) that record where a file came from.",
  h:"The word comes from a 2017 Reddit account that posted face-swapped videos made with deep learning.",
  w:"Scam calls that clone a relative’s voice to ask for money urgently.",
  n:"Many platforms now label AI-generated media, and several countries have laws against non-consensual and deceptive deepfakes.",
@@ -4434,14 +4452,14 @@ const COURSE = [
 // ---- interface text for the course, levels, themes and the About tab ----
 Object.assign(UI.en, {
   tabCourse:"Course", tabNode:"Concept", tabTimeline:"Timeline", tabAbout:"About", panelTabs:"Panel",
-  lvlSimple:"Simple", lvlFull:"Detailed", level:"Reading level", theme:"Colour theme", thAuto:"Auto", thLight:"Light", thDark:"Dark",
+  lvlSimple:"Simple", lvlFull:"Detailed", level:"Reading level", theme:"Color theme", thAuto:"Auto", thLight:"Light", thDark:"Dark",
   support:"Support this project", skip:"Skip to the content",
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", maximize:"Make bigger", minimize:"Back to the side", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
-  welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No maths or coding needed.",
+  welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No math or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
   start:"Start the course", resume:"Continue", explore:"Explore the map freely", restart:"Reset my progress", restartAsk:"Reset all course progress?",
   syllabus:"Modules", module:"Module", step:"Step", of:"of", steps:"steps", done:"Done", quizBtn:"Quiz",
@@ -4450,7 +4468,7 @@ Object.assign(UI.en, {
   correct:"Correct.", wrong:"Not quite.", courseDone:"You finished the course.", courseDoneLead:"Keep exploring the map, or share it with someone who is curious about AI.",
   review:"Review the module", progress:"{n} of {t} modules completed",
   aboutTitle:"About this map",
-  aboutWho:"Who it is for", aboutWhoText:"Anyone curious about AI: students from about 13 up, professionals who use AI at work, and people who want to understand the words in the news. It assumes no maths or programming.",
+  aboutWho:"Who it is for", aboutWhoText:"Anyone curious about AI: students from about 13 up, professionals who use AI at work, and people who want to understand the words in the news. It assumes no math or programming.",
   aboutHow:"How to use it", aboutHowText:"Follow the course for a guided path, or explore the map on your own. Simple mode shows the plain explanation, a comparison, a real example and a common mistake. Detailed mode adds the technical layer, the history and the sources.",
   aboutSrc:"Sources and updates", aboutSrcText:"Concepts link to the original paper or an official source where one exists. Model and product names change fast: those entries link to an official page and show when they were last checked. Treat version names and numbers as a snapshot of that date.",
   aboutFix:"Corrections", aboutFixText:"Found a mistake or a missing topic?", aboutFixLink:"Send a correction",
@@ -4464,7 +4482,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", maximize:"Ampliar", minimize:"Voltar para a lateral", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -4486,21 +4504,21 @@ Object.assign(UI.pt, {
 
 // ---- module pages: an introduction, what you'll learn (o) and the key ideas to remember before the quiz (r) ----
 const MODTEXT = [
- { en:{ i:"AI is a broad name for computer systems that do things we would normally call intelligent: recognising a face, answering a question, recommending a film. Behind that one name there are two very different ways of building such a system. In this module you’ll meet both, and see how the words AI, machine learning and deep learning fit together.",
+ { en:{ i:"AI is a broad name for computer systems that do things we would normally call intelligent: recognizing a face, answering a question, recommending a film. Behind that one name there are two very different ways of building such a system. In this module you’ll meet both, and see how the words AI, machine learning and deep learning fit together.",
      o:["Explain what people mean when they say “AI”","Tell systems that follow written rules apart from systems that learn from data","Put AI, machine learning and deep learning in the right order"],
      r:["AI is the whole field; machine learning and deep learning are ways of doing it.","Rule-based systems follow knowledge that people wrote down. Machine learning finds patterns in examples instead.","Most real products mix both: learned models surrounded by ordinary rules."] },
    pt:{ i:"IA é um nome amplo para sistemas de computador que fazem coisas que normalmente chamaríamos de inteligentes: reconhecer um rosto, responder a uma pergunta, recomendar um filme. Por trás desse nome existem dois jeitos bem diferentes de construir um sistema assim. Neste módulo você conhece os dois e vê como as palavras IA, machine learning e deep learning se encaixam.",
      o:["Explicar o que as pessoas querem dizer com “IA”","Diferenciar sistemas que seguem regras escritas de sistemas que aprendem com dados","Colocar IA, machine learning e deep learning na ordem certa"],
      r:["IA é a área inteira; machine learning e deep learning são jeitos de fazê-la.","Sistemas baseados em regras seguem o conhecimento que pessoas escreveram. O machine learning encontra padrões em exemplos.","A maioria dos produtos reais mistura os dois: modelos treinados cercados de regras comuns."] } },
 
- { en:{ i:"A model learns by adjusting itself to examples. What changes from one method to another is what those examples contain: the right answers, no answers at all, or rewards for good behaviour. These learning styles show up everywhere, from spam filters to chatbots.",
-     o:["Recognise the main ways a model can learn","Say which one a real system uses","Explain why chatbots need so little hand-labelled data to get started"],
+ { en:{ i:"A model learns by adjusting itself to examples. What changes from one method to another is what those examples contain: the right answers, no answers at all, or rewards for good behavior. These learning styles show up everywhere, from spam filters to chatbots.",
+     o:["Recognize the main ways a model can learn","Say which one a real system uses","Explain why chatbots need so little hand-labeled data to get started"],
      r:["Supervised learning uses examples that come with the right answer.","Unsupervised learning finds groups without answers; self-supervised learning makes its own answers by hiding part of the data.","Reinforcement learning learns by trial and error, guided by rewards."] },
    pt:{ i:"Um modelo aprende se ajustando a exemplos. O que muda de um método para outro é o que esses exemplos trazem: as respostas certas, nenhuma resposta ou recompensas pelo bom comportamento. Esses estilos de aprendizado aparecem em todo lugar, dos filtros de spam aos chatbots.",
      o:["Reconhecer as principais formas de um modelo aprender","Dizer qual delas um sistema real usa","Explicar por que os chatbots precisam de tão poucos dados rotulados à mão para começar"],
      r:["O aprendizado supervisionado usa exemplos que vêm com a resposta certa.","O não supervisionado encontra grupos sem respostas; o autossupervisionado cria as próprias respostas escondendo parte dos dados.","O aprendizado por reforço aprende por tentativa e erro, guiado por recompensas."] } },
 
- { en:{ i:"A model that only remembers its examples is useless on anything new. This module is about the difference between memorising and really learning, how people test for it, and why the quality of the data matters more than almost anything else.",
+ { en:{ i:"A model that only remembers its examples is useless on anything new. This module is about the difference between memorizing and really learning, how people test for it, and why the quality of the data matters more than almost anything else.",
      o:["Explain why a model is tested on data it has never seen","Spot the warning signs of overfitting and data leakage","Describe how a changing world makes a model less accurate over time"],
      r:["Only new, unseen data shows whether a model learned the pattern.","Results that look too good to be true often come from leakage.","A model is only as good as its data, and the world keeps changing after training ends."] },
    pt:{ i:"Um modelo que só lembra dos exemplos não serve para nada novo. Este módulo trata da diferença entre decorar e aprender de verdade, de como se testa isso e de por que a qualidade dos dados importa mais do que quase qualquer outra coisa.",
@@ -4521,7 +4539,7 @@ const MODTEXT = [
      o:["Explicar o que são tokens e embeddings","Descrever o que a atenção permite a um modelo fazer","Explicar como um grande modelo de linguagem escreve uma resposta e como é treinado"],
      r:["O texto é cortado em tokens, e cada token vira uma lista de números chamada embedding.","A atenção deixa cada token olhar para os outros e descobrir o que importa.","Um modelo de linguagem escreve prevendo o próximo token, de novo e de novo. O pré-treino ensina a língua; o fine-tuning ensina a ser um assistente útil."] } },
 
- { en:{ i:"Generative AI creates something new instead of labelling something that already exists. Text and images are made with different recipes, and newer models handle several kinds of data at once. You’ll see how each recipe works, without any maths.",
+ { en:{ i:"Generative AI creates something new instead of labeling something that already exists. Text and images are made with different recipes, and newer models handle several kinds of data at once. You’ll see how each recipe works, without any math.",
      o:["Tell generating apart from predicting","Explain how text is written token by token and how images emerge from noise","Say what makes a model multimodal"],
      r:["Text generators write one token at a time, each based on everything before it.","Diffusion models start from random noise and clean it up, step by step, into an image.","Multimodal models read and produce more than one kind of data, such as text and images."] },
    pt:{ i:"A IA generativa cria algo novo em vez de rotular algo que já existe. Texto e imagens são feitos com receitas diferentes, e os modelos mais novos lidam com vários tipos de dados ao mesmo tempo. Você vai ver como cada receita funciona, sem nenhuma matemática.",
@@ -4536,14 +4554,14 @@ const MODTEXT = [
      r:["O prompt e as informações fornecidas moldam a resposta tanto quanto o modelo.","O RAG traz documentos relevantes; a chamada de ferramentas deixa o app agir a pedido do modelo; um agente repete isso em ciclo.","A avaliação mede a qualidade antes e depois das mudanças; os guardrails barram entradas e saídas inseguras enquanto o sistema roda."] } },
 
  { en:{ i:"AI tools are useful, and they are also wrong in predictable ways. Knowing those ways is the most practical skill in this course: it tells you when you can rely on an answer and when you should check it first.",
-     o:["Explain why language models sometimes make things up","Recognise why a confident tone says little about accuracy","Use simple habits to check answers and their sources"],
+     o:["Explain why language models sometimes make things up","Recognize why a confident tone says little about accuracy","Use simple habits to check answers and their sources"],
      r:["Models produce plausible text, not verified facts, so they can invent details.","They know nothing after their training cutoff unless the app gives them that information.","Check what matters: open the sources, cross-check key facts, and take most care with names, numbers and quotes."] },
    pt:{ i:"As ferramentas de IA são úteis e também erram de jeitos previsíveis. Conhecer esses jeitos é a habilidade mais prática deste curso: ela diz quando dá para confiar numa resposta e quando é melhor conferir antes.",
      o:["Explicar por que os modelos de linguagem às vezes inventam coisas","Reconhecer por que um tom confiante diz pouco sobre acerto","Usar hábitos simples para conferir respostas e fontes"],
      r:["Os modelos produzem texto plausível, não fatos verificados, então podem inventar detalhes.","Eles não sabem nada depois da data de corte do treino, a não ser que o app forneça a informação.","Confira o que importa: abra as fontes, cruze os fatos principais e redobre o cuidado com nomes, números e citações."] } },
 
- { en:{ i:"Once an AI system can read your email or take actions for you, it becomes something attackers try to trick. This module covers the main risks for people and organisations, and the simple controls that keep them in check.",
-     o:["Explain prompt injection and why it is hard to prevent","Apply least privilege and human approval to AI tools","Protect personal data and recognise synthetic media"],
+ { en:{ i:"Once an AI system can read your email or take actions for you, it becomes something attackers try to trick. This module covers the main risks for people and organizations, and the simple controls that keep them in check.",
+     o:["Explain prompt injection and why it is hard to prevent","Apply least privilege and human approval to AI tools","Protect personal data and recognize synthetic media"],
      r:["Models can’t reliably tell instructions from content, so hidden text can hijack them.","Limit what an AI system can access, and have a person approve actions that matter.","Think before sharing personal data, verify surprising media, and remember that people stay responsible for AI-assisted decisions."] },
    pt:{ i:"Quando um sistema de IA pode ler seu e-mail ou agir por você, ele vira algo que atacantes tentam enganar. Este módulo cobre os principais riscos para pessoas e organizações e os controles simples que os mantêm sob controle.",
      o:["Explicar o prompt injection e por que é difícil de evitar","Aplicar privilégio mínimo e aprovação humana às ferramentas de IA","Proteger dados pessoais e reconhecer mídia sintética"],
@@ -4560,7 +4578,7 @@ MODTEXT.forEach(function (m, i) { Object.assign(COURSE[i].en, m.en); Object.assi
 
 Object.assign(UI.en, {
   welcomeTitle:"Understand AI, one idea at a time",
-  welcomeLead:"A free course for curious people, from teenagers to professionals. Ten short modules of about ten minutes, each ending with a three-question quiz. No maths or coding needed.",
+  welcomeLead:"A free course for curious people, from teenagers to professionals. Ten short modules of about ten minutes, each ending with a three-question quiz. No math or coding needed.",
   startHere:"Start here", upNext:"Up next", explore:"Explore the map", modulesH:"Modules", moduleN:"Module {n}",
   lessonsN:"{n} lessons", lessonOf:"Lesson {n} of {t}", lessonsH:"Lessons", goalsH:"What you’ll learn", keyIdeas:"Key ideas",
   startModule:"Start the module", allModules:"All modules", quizRow:"Quiz", quizRowSub:"3 questions", lessonsLeft:"{n} of {t} lessons done",
@@ -4578,6 +4596,782 @@ Object.assign(UI.pt, {
   howH:"Como funciona", histH:"Um pouco de história", todayH:"Como está hoje", inCourse:"No curso", insideH:"Dentro deste tema", relatedH:"Ideias relacionadas",
   share:"Compartilhar", shared:"Link copiado", statusL:"Situação", done:"Concluído", back:"Voltar"
 });
+
+// ---- rewritten lesson texts: e = the explanation under the lead; w, p, m replace the older wording ----
+const LESSON_TEXT = {
+"ai": {
+"en": {
+"e": "There are two main ways to build it. In the older one, people write the knowledge down as explicit rules the computer follows. In the newer one, the computer works out its own rules by studying lots of examples, which is called machine learning. Most of the AI you meet today, from chatbots to photo apps, is built the second way, but both still matter.",
+"w": "Your phone uses AI many times a day: to unlock with your face, correct your typing, filter spam, find photos when you search “dog” or “beach”, and turn your voice into text.",
+"p": "AI means building computer systems that do things we would normally call intelligent, such as understanding language, recognizing images, predicting and deciding."
+},
+"pt": {
+"e": "Existem dois grandes jeitos de construir isso. No mais antigo, pessoas escrevem o conhecimento em regras explícitas que o computador segue. No mais novo, o computador descobre as próprias regras estudando muitos exemplos: é o chamado machine learning. Quase toda a IA que você encontra hoje, do chatbot ao app de fotos, é feita do segundo jeito, mas os dois continuam importantes.",
+"w": "Seu celular usa IA várias vezes por dia: para desbloquear com o seu rosto, corrigir o que você digita, filtrar spam, achar fotos quando você busca “cachorro” ou “praia” e transformar sua voz em texto.",
+"p": "IA é construir sistemas de computador que fazem coisas que normalmente chamaríamos de inteligentes, como entender linguagem, reconhecer imagens, prever e decidir."
+}
+},
+"sym": {
+"en": {
+"e": "A programmer or expert describes the world in a form the computer can work with, for example “every invoice over a set amount needs a manager’s approval”. The computer then combines these rules to reach conclusions, step by step. Because every step is written down, you can always see why it decided something. The weakness is that it only knows what someone thought to write, so an unexpected case leaves it stuck.",
+"w": "Tax-filing software, benefit eligibility checks and the systems that build airline crew schedules still run largely on hand-written rules and logic. When an online form rejects a request and names the exact rule you failed, a rule system is often behind it.",
+"p": "The older approach to AI: people write the intelligence down by hand, as facts, rules and logical steps the computer follows exactly."
+},
+"pt": {
+"e": "Um programador ou especialista descreve o mundo num formato que o computador consegue manipular, por exemplo “toda nota fiscal acima de certo valor precisa da aprovação de um gerente”. O computador então combina essas regras para chegar a conclusões, passo a passo. Como cada passo está escrito, dá para ver sempre por que ele decidiu algo. A fraqueza é que ele só sabe o que alguém lembrou de escrever, e um caso inesperado o deixa travado.",
+"w": "Programas de declaração do imposto de renda, checagens de quem tem direito a um benefício e os sistemas que montam as escalas de tripulação das companhias aéreas ainda funcionam, em boa parte, com regras e lógica escritas à mão. Quando um formulário on-line recusa um pedido e diz exatamente qual regra você não cumpriu, muitas vezes há um sistema desses por trás.",
+"p": "A abordagem mais antiga de IA: pessoas escrevem a inteligência à mão, como fatos, regras e passos lógicos que o computador segue à risca."
+}
+},
+"rules": {
+"en": {
+"e": "Knowledge engineers interview experts, such as doctors or loan officers, and turn what they know into rules like “if income is below X and debt is above Y, decline”. A program called an inference engine then checks which rules match the facts of a case and chains them together to reach a conclusion. These systems are predictable and easy to audit, but keeping thousands of rules consistent as the world changes is hard work.",
+"w": "Banks and insurers use rule engines to decide who qualifies for a loan, how much a policy costs and whether a transaction breaks compliance rules. Companies that offer chatbots often add a similar layer of rules around the AI to block answers they do not allow.",
+"p": "An expert system stores a specialist’s know-how as hundreds or thousands of if-then rules, so a computer can give expert-style answers."
+},
+"pt": {
+"e": "Engenheiros do conhecimento entrevistam especialistas, como médicos ou analistas de crédito, e transformam o que eles sabem em regras como “se a renda for menor que X e a dívida maior que Y, recusar”. Um programa chamado motor de inferência confere quais regras se aplicam aos fatos de um caso e as encadeia até chegar a uma conclusão. São sistemas previsíveis e fáceis de auditar, mas manter milhares de regras coerentes enquanto o mundo muda dá muito trabalho.",
+"w": "Bancos e seguradoras usam motores de regras para decidir quem pode receber um empréstimo, quanto custa uma apólice e se uma transação fere regras de compliance. Empresas que oferecem chatbots costumam colocar uma camada de regras parecida em volta da IA para bloquear respostas que não permitem.",
+"p": "Um sistema especialista guarda o conhecimento de um especialista em centenas ou milhares de regras se-então, para o computador responder como esse especialista responderia."
+}
+},
+"ml": {
+"en": {
+"e": "You give the system many examples, such as thousands of emails each marked “spam” or “not spam”. It starts with a rough guess, measures how often it is wrong, and adjusts its internal settings, called parameters, a tiny bit to be wrong less often. After many rounds it has found patterns no one wrote down, like which words and senders tend to mean spam. The result of this process is called a model.",
+"w": "When a streaming service suggests your next show, a bank scores a credit application, or your email moves a scam into the spam folder, a machine learning model is usually making that call."
+},
+"pt": {
+"e": "Você dá ao sistema muitos exemplos, como milhares de e-mails marcados como “spam” ou “não é spam”. Ele começa com um palpite grosseiro, mede quanto erra e ajusta um pouquinho suas configurações internas, chamadas parâmetros, para errar menos. Depois de muitas rodadas, ele encontra padrões que ninguém escreveu, como quais palavras e remetentes costumam indicar spam. O resultado desse processo se chama modelo.",
+"w": "Quando o streaming sugere sua próxima série, o banco avalia um pedido de crédito ou seu e-mail joga um golpe na caixa de spam, quase sempre é um modelo de machine learning tomando essa decisão."
+}
+},
+"classical": {
+"en": {
+"e": "Each row of the table is one case, say one customer, and each column is a piece of information about it, such as age, monthly bill or number of complaints. People choose which columns matter, and the model learns how much weight to give each one to predict something, like who is likely to cancel. A popular method, the decision tree, learns a chain of yes-or-no questions you can read and check yourself.",
+"w": "When a bank sets a credit limit, an insurer prices a car policy, or a phone company tries to predict which customers are about to leave, the model is often a classical one working on a spreadsheet-like table of customer data.",
+"p": "The simpler, older family of machine learning methods. The models are small and usually work on tables of data, like a spreadsheet of customers."
+},
+"pt": {
+"e": "Cada linha da tabela é um caso, por exemplo um cliente, e cada coluna é uma informação sobre ele, como idade, valor da fatura ou número de reclamações. Pessoas escolhem quais colunas importam, e o modelo aprende quanto peso dar a cada uma para prever algo, como quem tende a cancelar. Um método popular, a árvore de decisão, aprende uma sequência de perguntas de sim ou não que você mesmo consegue ler e conferir.",
+"w": "Quando um banco define o limite do cartão, uma seguradora calcula o preço do seguro do carro ou uma operadora tenta prever quais clientes estão para cancelar, o modelo muitas vezes é de ML clássico, trabalhando numa tabela de dados de clientes parecida com uma planilha.",
+"p": "A família mais simples e mais antiga de métodos de machine learning. Os modelos são pequenos e costumam trabalhar com tabelas de dados, como uma planilha de clientes."
+}
+},
+"dl": {
+"en": {
+"e": "A neural network is a large web of numbers loosely inspired by brain cells, where each layer passes its results to the next. In classical ML, people decide which details matter. Here the network discovers them: early layers pick up simple things like edges in a photo, and later layers combine them into eyes, then whole faces. This needs huge amounts of data and computing power, usually from graphics chips called GPUs.",
+"w": "Deep learning is behind voice assistants that understand speech, instant translation apps, face unlock on your phone, tools that create images from a sentence, and chatbots like ChatGPT.",
+"p": "Machine learning with neural networks: many stacked layers of simple calculations that work out for themselves what to look for in raw photos, sound or text."
+},
+"pt": {
+"e": "Uma rede neural é uma grande teia de números inspirada, de longe, nos neurônios do cérebro, em que cada camada passa seus resultados para a seguinte. No ML clássico, são as pessoas que decidem quais detalhes importam. Aqui a rede descobre sozinha: as primeiras camadas percebem coisas simples, como bordas numa foto, e as seguintes juntam isso em olhos e depois em rostos inteiros. Isso exige muitos dados e muito poder de computação, geralmente de chips gráficos chamados GPUs.",
+"w": "O deep learning está por trás dos assistentes de voz que entendem fala, dos apps de tradução instantânea, do desbloqueio facial do celular, das ferramentas que criam imagens a partir de uma frase e de chatbots como o ChatGPT.",
+"p": "Machine learning com redes neurais: muitas camadas empilhadas de cálculos simples, que descobrem sozinhas o que procurar em fotos, sons ou textos brutos."
+}
+},
+"paradigms": {
+"en": {
+"e": "Sometimes every example comes with the right answer, and sometimes there are no answers at all, so the model just looks for patterns. Sometimes the answers are hidden inside the data itself, like the next word of a sentence. And sometimes the model acts, then receives a reward or a penalty. These four styles are called supervised, unsupervised, self-supervised and reinforcement learning, and the next lessons look at each one.",
+"w": "A spam filter learns from emails people marked as spam (supervised). A shop groups customers by buying habits with no labels at all (unsupervised), a chatbot first learns language by predicting the next word (self-supervised), and game-playing programs improve by winning and losing (reinforcement).",
+"p": "Machines can learn in a few different ways. What separates them is the kind of feedback the model gets while it learns."
+},
+"pt": {
+"e": "Às vezes cada exemplo vem com a resposta certa, e às vezes não há resposta nenhuma, então o modelo só procura padrões. Às vezes as respostas estão escondidas nos próprios dados, como a próxima palavra de uma frase. E às vezes o modelo age e depois recebe uma recompensa ou uma penalidade. Esses quatro estilos se chamam aprendizado supervisionado, não supervisionado, auto-supervisionado e por reforço, e as próximas lições tratam de cada um.",
+"w": "Um filtro de spam aprende com e-mails que as pessoas marcaram como spam (supervisionado). Uma loja agrupa clientes por hábitos de compra sem rótulo nenhum (não supervisionado), um chatbot aprende a língua prevendo a próxima palavra (auto-supervisionado) e programas que jogam melhoram ganhando e perdendo partidas (reforço).",
+"p": "Máquinas podem aprender de alguns jeitos diferentes. O que separa um do outro é o tipo de retorno que o modelo recebe enquanto aprende."
+}
+},
+"sup": {
+"en": {
+"e": "Each training example is a pair: an input, like a photo or an email, and its correct answer, called a label, like “cat” or “spam”. The model guesses, compares its guess with the label, and adjusts itself to shrink the difference. After thousands or millions of pairs it can label new inputs on its own. Those labels usually come from people, which makes good labeled data slow and expensive to collect.",
+"w": "When you mark an email as spam, you are creating the kind of labeled example these systems learn from. Fraud alerts on card payments and tools that flag problems on X-rays are also trained on cases that people have already labeled."
+},
+"pt": {
+"e": "Cada exemplo de treino é um par: uma entrada, como uma foto ou um e-mail, e a resposta certa, chamada rótulo, como “gato” ou “spam”. O modelo dá um palpite, compara com o rótulo e se ajusta para diminuir a diferença. Depois de milhares ou milhões de pares, ele consegue rotular entradas novas sozinho. Esses rótulos costumam vir de pessoas, por isso juntar bons dados rotulados é lento e caro.",
+"w": "Quando você marca um e-mail como spam, está criando o tipo de exemplo rotulado com que esses sistemas aprendem. Os alertas de fraude no cartão e as ferramentas que apontam problemas em raios-X também são treinados com casos que pessoas já classificaram."
+}
+},
+"unsup": {
+"en": {
+"e": "Nobody tells the model what to look for. It compares the examples with each other and puts similar ones together, or notices which ones look nothing like the rest. A shop’s purchase records, for instance, might fall into groups such as bargain hunters and weekend shoppers. The model finds the groups, but a person still has to look at them and decide what they mean.",
+"w": "Shops and streaming services use it to sort customers into groups with similar habits. Banks and IT teams use it to flag activity that looks unlike anything normal, such as a strange burst of network traffic or an unusual card payment.",
+"p": "Learning from data that comes with no answers at all. The model looks for groups and patterns on its own."
+},
+"pt": {
+"e": "Ninguém diz ao modelo o que procurar. Ele compara os exemplos entre si e junta os parecidos, ou percebe quais não se parecem com nenhum outro. O histórico de compras de uma loja, por exemplo, pode se dividir em grupos como caçadores de promoção e quem só compra no fim de semana. O modelo encontra os grupos, mas uma pessoa ainda precisa olhar para eles e decidir o que significam.",
+"w": "Lojas e serviços de streaming usam isso para separar clientes em grupos com hábitos parecidos. Bancos e equipes de TI usam para sinalizar atividades fora do normal, como um pico estranho de tráfego na rede ou uma compra incomum no cartão.",
+"p": "Aprender com dados que não trazem resposta nenhuma. O modelo procura grupos e padrões por conta própria."
+}
+},
+"selfsup": {
+"en": {
+"e": "Take any sentence, hide its last word, and ask the model to guess it. The real word was there all along, so the text itself grades the guess, with no person involved. Because no one has to label anything, this works on enormous amounts of text, images or audio. Along the way the model picks up grammar, facts and how ideas connect, which is why this is the first stage of training for today’s chatbots.",
+"w": "Every major chatbot, such as ChatGPT, Claude or Gemini, first learned language this way, by predicting missing or next words across huge amounts of text. Many image tools learn to understand pictures in a similar way, by matching photos with their captions or filling in hidden patches."
+},
+"pt": {
+"e": "Pegue uma frase qualquer, esconda a última palavra e peça ao modelo para adivinhá-la. A palavra verdadeira estava lá o tempo todo, então o próprio texto corrige o palpite, sem nenhuma pessoa envolvida. Como ninguém precisa rotular nada, isso funciona com quantidades enormes de texto, imagens ou áudio. No caminho, o modelo aprende gramática, fatos e como as ideias se ligam, e por isso esta é a primeira etapa do treino dos chatbots atuais.",
+"w": "Todos os grandes chatbots, como ChatGPT, Claude e Gemini, aprenderam a língua primeiro desse jeito, prevendo palavras escondidas ou a próxima palavra em quantidades enormes de texto. Muitas ferramentas de imagem aprendem a entender fotos de forma parecida, associando fotos às suas legendas ou preenchendo pedaços escondidos."
+}
+},
+"rl": {
+"en": {
+"e": "The learner, called an agent, takes an action, sees what happens and gets a score: a reward for good outcomes, a penalty for bad ones. Nobody shows it the right move in advance. Over many thousands of tries it works out which actions lead to the most reward in the long run, even when the payoff comes much later, as when giving up a piece early in a game leads to a win.",
+"w": "The programs that beat the world’s best players at the board game Go learned largely by playing millions of games against themselves. Chatbots are also refined with reinforcement learning, using feedback from people who rated which answers were better."
+},
+"pt": {
+"e": "Quem aprende, chamado de agente, toma uma ação, vê o que acontece e recebe uma nota: recompensa quando o resultado é bom, penalidade quando é ruim. Ninguém mostra a jogada certa antes. Ao longo de milhares de tentativas, ele descobre quais ações trazem mais recompensa no longo prazo, mesmo quando o ganho só vem bem depois, como entregar uma peça no início de uma partida e acabar vencendo.",
+"w": "Os programas que venceram os melhores jogadores do mundo no Go, um jogo de tabuleiro, aprenderam em grande parte jogando milhões de partidas contra si mesmos. Os chatbots também são refinados com aprendizado por reforço, usando a avaliação de pessoas que indicaram quais respostas eram melhores."
+}
+},
+"general": {
+"en": {
+"e": "During training, a model sees a fixed set of examples and gets better at those. The real test is how it does on cases it has never seen, like next month’s customers or a photo taken with a different phone. A model that has learned the underlying pattern handles them well. One that has only memorized details of its examples, even accidental ones like the background of the photos, falls apart.",
+"w": "A medical AI can work well in the hospital where it was built and then make mistakes in another hospital that uses different scanners. Researchers have documented this kind of failure, which is why careful teams test medical models at hospitals that were not part of training."
+},
+"pt": {
+"e": "No treino, o modelo vê um conjunto fixo de exemplos e melhora neles. O teste de verdade é como ele se sai em casos que nunca viu, como os clientes do mês que vem ou uma foto tirada com outro celular. Um modelo que aprendeu o padrão de fundo lida bem com eles. Um que só decorou detalhes dos exemplos, até detalhes acidentais como o fundo das fotos, desmorona.",
+"w": "Uma IA médica pode funcionar bem no hospital onde foi criada e errar em outro hospital que usa aparelhos diferentes. Pesquisadores já documentaram esse tipo de falha, e por isso equipes cuidadosas testam modelos médicos em hospitais que não participaram do treino."
+}
+},
+"datasplit": {
+"en": {
+"e": "The model learns only from the training pile. While building it, you check progress on the validation pile, which the model never trains on, to choose settings and decide when to stop. The test pile stays untouched until the very end, so its score tells you honestly how the model will do on new cases. If you peeked at it earlier, that score would be too optimistic.",
+"w": "On Kaggle, a popular website for data science competitions, part of the test data stays hidden until the contest ends, so nobody can tune a model to it. Companies do the same when they hold back recent cases to check a model before launching it."
+},
+"pt": {
+"e": "O modelo aprende só com a parte de treino. Durante o desenvolvimento, você confere o progresso na parte de validação, com a qual o modelo nunca treina, para escolher configurações e decidir quando parar. A parte de teste fica intocada até o final, então a nota nela mostra com honestidade como o modelo vai se sair em casos novos. Se você espiar antes, essa nota fica otimista demais.",
+"w": "No Kaggle, um site popular de competições de ciência de dados, parte dos dados de teste fica escondida até o fim da disputa, para ninguém ajustar o modelo a ela. Empresas fazem o mesmo quando separam casos recentes para conferir um modelo antes de colocá-lo no ar."
+}
+},
+"overfit": {
+"en": {
+"e": "A model with lots of room can fit every quirk of its examples, including random noise and coincidences, so it looks perfect on training data and stumbles on anything new. A model that is too simple misses even the obvious pattern and does badly everywhere. You tell them apart by comparing scores: overfitting shows a big gap between training data and new data, underfitting shows poor scores on both.",
+"w": "Investment strategies that look perfect when tested on past prices and then lose money in real trading are a classic case of overfitting. It also shows up when a company trains a chatbot further on a small set of its own examples and the chatbot starts copying them almost word for word."
+},
+"pt": {
+"e": "Um modelo com muita capacidade consegue se encaixar em cada detalhe dos exemplos, inclusive ruído e coincidências, então parece perfeito nos dados de treino e tropeça em qualquer coisa nova. Um modelo simples demais perde até o padrão óbvio e vai mal em tudo. Para saber qual é o caso, compare as notas: no overfitting há uma grande distância entre o treino e os dados novos; no underfitting, as duas notas são ruins.",
+"w": "Estratégias de investimento que parecem perfeitas quando testadas em preços passados e depois perdem dinheiro no mercado real são um caso clássico de overfitting. Ele também aparece quando uma empresa treina um chatbot um pouco mais com um conjunto pequeno de exemplos próprios e o chatbot passa a copiá-los quase palavra por palavra."
+}
+},
+"leakage": {
+"en": {
+"e": "Leakage happens when the training data contains a clue that will not be available when the model is used for real. The model grabs that shortcut instead of learning the real pattern, and tests do not catch it because the same clue is in the test data too. A classic case is predicting which customers will cancel using a column that is only filled in after they have already cancelled.",
+"w": "Leakage has fooled researchers in medicine and finance, producing models that seemed nearly perfect until they met real cases. With chatbots, it appears when test questions end up in the training text, so a high score on a public test may partly reflect memory rather than skill."
+},
+"pt": {
+"e": "O vazamento acontece quando os dados de treino trazem uma pista que não vai existir quando o modelo for usado de verdade. O modelo agarra esse atalho em vez de aprender o padrão real, e os testes não percebem, porque a mesma pista está nos dados de teste. Um caso clássico é prever quais clientes vão cancelar usando uma coluna que só é preenchida depois que eles já cancelaram.",
+"w": "O vazamento já enganou pesquisadores em medicina e finanças, gerando modelos que pareciam quase perfeitos até encontrarem casos reais. Nos chatbots, ele aparece quando questões de teste vão parar nos textos de treino, e uma nota alta num teste público pode refletir, em parte, memória e não habilidade."
+}
+},
+"shift": {
+"en": {
+"e": "A model learns from a snapshot of the past and quietly assumes the future will look the same. Sometimes the inputs change, like photos from a new camera or new slang in messages. Sometimes the meaning changes, as when scammers invent a new trick and a pattern that used to be “safe” is now fraud. Either way the model keeps answering with confidence, so teams watch its results and retrain it with fresh data.",
+"w": "When the pandemic suddenly changed how people shopped and traveled, many forecasting and fraud models built on older data stopped working well. Chatbots show it too: they can be unaware of events, products and slang that appeared after their training data was collected.",
+"m": "Many people assume a model stays as accurate as it was on launch day. Its accuracy was measured on data from one moment, and it can drop quietly as the world moves on."
+},
+"pt": {
+"e": "Um modelo aprende com um retrato do passado e supõe, sem avisar, que o futuro vai ser igual. Às vezes mudam as entradas, como fotos de uma câmera nova ou gírias novas nas mensagens. Às vezes muda o significado, como quando golpistas inventam um truque novo e um padrão que era “seguro” vira fraude. Nos dois casos o modelo continua respondendo com confiança, por isso as equipes acompanham os resultados e o retreinam com dados novos.",
+"w": "Quando a pandemia mudou de repente o jeito de as pessoas comprarem e viajarem, muitos modelos de previsão e de fraude feitos com dados antigos deixaram de funcionar bem. Os chatbots também mostram isso: podem não saber de eventos, produtos e gírias que surgiram depois que seus dados de treino foram coletados.",
+"m": "Muita gente supõe que um modelo continua tão preciso quanto era no dia do lançamento. A precisão foi medida com dados de um momento específico e pode cair sem alarde à medida que o mundo muda."
+}
+},
+"dataq": {
+"en": {
+"e": "A model treats its training examples as the truth. If some labels are wrong, it learns the mistakes; if a group of people or situations is missing, it has no idea how to handle them. It cannot tell good data from bad on its own. That is why teams spend so much effort checking labels, removing duplicates and making sure the data covers the cases the model will really meet.",
+"w": "Independent tests have found that some face recognition systems make more mistakes with groups that were rare in their training photos. At work, the same problem shows up when a sales forecast or support bot trained on messy, outdated records gives messy, outdated answers."
+},
+"pt": {
+"e": "Um modelo trata os exemplos de treino como verdade. Se alguns rótulos estão errados, ele aprende os erros; se falta um grupo de pessoas ou de situações, ele não sabe o que fazer com eles. Sozinho, ele não distingue dado bom de dado ruim. Por isso as equipes gastam tanto esforço conferindo rótulos, tirando duplicatas e garantindo que os dados cubram os casos que o modelo vai encontrar de verdade.",
+"w": "Testes independentes já mostraram que alguns sistemas de reconhecimento facial erram mais com grupos que eram raros nas fotos de treino. No trabalho, o mesmo problema aparece quando uma previsão de vendas ou um bot de atendimento treinado com registros bagunçados e desatualizados devolve respostas bagunçadas e desatualizadas."
+}
+},
+"nnbasics": {
+"en": {
+"e": "Each neuron receives some numbers, multiplies each one by its own weight, which marks how much that input matters, and adds up the results. Then it decides how strongly to pass the total on to the next layer. On its own, one neuron does very little. Millions of them, with weights tuned on many examples, can tell a cat from a dog or predict the next word in a sentence.",
+"w": "Every AI you use today, from face unlock on your phone to chat assistants like ChatGPT, is built from these same pieces: neurons, layers and weights.",
+"p": "A neural network is built from many tiny calculators called artificial neurons, arranged in layers. It learns by slowly adjusting the numbers inside them."
+},
+"pt": {
+"e": "Cada neurônio recebe alguns números, multiplica cada um por um peso próprio, que indica o quanto aquela entrada importa, e soma tudo. Depois decide com que força passar o resultado para a camada seguinte. Sozinho, um neurônio faz muito pouco. Milhões deles, com pesos ajustados a partir de muitos exemplos, conseguem diferenciar um gato de um cachorro ou prever a próxima palavra de uma frase.",
+"w": "Toda IA que você usa hoje, do desbloqueio facial do celular a assistentes como o ChatGPT, é feita dessas mesmas peças: neurônios, camadas e pesos.",
+"p": "Uma rede neural é feita de muitas calculadoras minúsculas, os neurônios artificiais, organizadas em camadas. Ela aprende ajustando aos poucos os números dentro deles."
+}
+},
+"perceptron": {
+"en": {
+"e": "It gives each input a weight, adds everything up and answers “yes” if the total passes a set cutoff, or “no” if it doesn’t. Training is simple: whenever it gets an example wrong, it shifts its weights a little toward the right answer. Think of sorting emails into spam and not spam from a few clues. If one straight line can split the two groups, the perceptron will find it; if no straight line can, it cannot get them all right.",
+"w": "Today it lives mostly in classrooms: it is often the first model students code by hand when they learn machine learning. Every neuron in a modern network is a close relative of it.",
+"p": "The simplest machine that learns: a single artificial neuron that sorts things into two groups by drawing a straight line between them."
+},
+"pt": {
+"e": "Ele dá um peso a cada entrada, soma tudo e responde “sim” se o total passar de um valor de corte, ou “não” caso contrário. O treino é simples: sempre que erra um exemplo, ele mexe um pouco nos pesos na direção da resposta certa. Pense em separar e-mails entre spam e não spam a partir de algumas pistas. Se uma linha reta conseguir dividir os dois grupos, o perceptron acaba achando essa linha; se nenhuma conseguir, ele não tem como acertar todos.",
+"w": "Hoje ele vive principalmente nas salas de aula: costuma ser o primeiro modelo que estudantes programam à mão quando aprendem machine learning. Cada neurônio de uma rede moderna é um parente próximo dele.",
+"p": "A máquina mais simples que aprende: um único neurônio artificial que separa as coisas em dois grupos traçando uma linha reta entre eles."
+}
+},
+"mlp": {
+"en": {
+"e": "The middle layers are called hidden layers because you never see their output directly. Each one turns what the previous layer found into something more useful, and a small bend added after each neuron, called an activation function, lets the network follow curves instead of only straight lines. This fixes the perceptron’s big weakness. Information always flows one way, from input to answer, which is why these are also called feed-forward networks.",
+"w": "They make predictions from spreadsheet-style data, such as whether a customer is likely to cancel a subscription, and help recommendation systems rank what to show you next. A block of this kind also sits inside every layer of the transformers behind chat assistants.",
+"p": "Neurons are stacked in layers, each passing its results to the next. The middle layers let the network learn curved patterns a single straight line could never separate."
+},
+"pt": {
+"e": "As camadas do meio se chamam camadas ocultas, porque você nunca vê diretamente o que elas produzem. Cada uma transforma o que a anterior encontrou em algo mais útil, e uma pequena “dobra” aplicada depois de cada neurônio, chamada função de ativação, permite seguir curvas em vez de só linhas retas. É isso que resolve a grande limitação do perceptron. A informação anda sempre num só sentido, da entrada à resposta, daí o nome feed-forward.",
+"w": "Elas fazem previsões a partir de dados em formato de planilha, como estimar se um cliente tende a cancelar uma assinatura, e ajudam sistemas de recomendação a escolher o que mostrar a seguir. Um bloco desse tipo também fica dentro de cada camada dos transformers que movem os assistentes de chat.",
+"p": "Os neurônios ficam empilhados em camadas, e cada camada passa seus resultados à seguinte. As do meio permitem aprender padrões curvos que nenhuma linha reta separa."
+}
+},
+"backprop": {
+"en": {
+"e": "The error is measured by a single number called the loss: how far the network’s answer was from the right one. Backpropagation works backward from the answer, layer by layer, to find how much each weight pushed that number up or down. Gradient descent then moves every weight a small step in the direction that lowers the loss. Repeat this over millions of examples and the errors shrink.",
+"w": "Every AI model you use was shaped by this loop, from the spam filter in your inbox to the chat assistant you ask questions. Training a large model means repeating it an enormous number of times on powerful computers, which is a big part of why training is so expensive."
+},
+"pt": {
+"e": "O erro é medido por um único número, chamado perda (loss): o quanto a resposta da rede ficou longe da certa. A retropropagação percorre a rede de trás para a frente, camada por camada, para descobrir quanto cada peso empurrou esse número para cima ou para baixo. Depois, a descida do gradiente move cada peso um passinho na direção que diminui a perda. Repetindo isso com milhões de exemplos, os erros vão encolhendo.",
+"w": "Todo modelo de IA que você usa foi moldado por esse ciclo, do filtro de spam da sua caixa de entrada ao assistente de chat a quem você faz perguntas. Treinar um modelo grande significa repetir o ciclo um número enorme de vezes em computadores potentes, e isso explica boa parte do custo do treinamento."
+}
+},
+"cnn": {
+"en": {
+"e": "A filter is a tiny grid of weights, often just 3 by 3 pixels, that slides across the whole picture and lights up wherever its pattern appears. Because the same filter is reused everywhere, a cat’s ear is recognized whether it sits in a corner or in the center. Each layer builds on the one before: lines combine into corners, corners into eyes, eyes into faces.",
+"w": "When your phone groups photos by the faces in them, or a factory camera spots a scratch on a part, a CNN is often doing the work. Doctors also use CNN-based tools that flag suspicious areas in X-rays and other scans.",
+"p": "Convolutional networks look at an image through small learned filters, spotting simple edges first, then shapes, then whole objects."
+},
+"pt": {
+"e": "Um filtro é uma gradezinha de pesos, muitas vezes de só 3 por 3 pixels, que desliza pela foto inteira e “acende” onde encontra o seu padrão. Como o mesmo filtro é reaproveitado na imagem toda, a orelha de um gato é reconhecida esteja ela num canto ou no centro. Cada camada se apoia na anterior: linhas viram cantos, cantos viram olhos, olhos viram rostos.",
+"w": "Quando o celular agrupa suas fotos pelos rostos que aparecem nelas, ou uma câmera de fábrica encontra um risco numa peça, muitas vezes é uma CNN trabalhando. Médicos também usam ferramentas baseadas em CNNs que apontam áreas suspeitas em raios X e outros exames.",
+"p": "As redes convolucionais olham a imagem através de pequenos filtros aprendidos: primeiro percebem bordas, depois formas, depois objetos inteiros."
+}
+},
+"rnn": {
+"en": {
+"e": "At each step the network takes two things: the new word and its memory so far, called the hidden state. It blends them into an updated memory and moves on, so by the end the memory holds a summary of everything it read. That summary is small, so early words fade as the text grows. Each step must also wait for the one before, which makes training slow, a limit the transformers of the next module removed.",
+"w": "Before transformers took over, RNNs (mostly an improved kind called LSTM) powered Google Translate, the speech recognition in voice assistants and the next-word suggestions on phone keyboards.",
+"p": "Recurrent networks read a sequence, such as a sentence, one piece at a time, carrying a running memory of what came before."
+},
+"pt": {
+"e": "A cada passo, a rede recebe duas coisas: a palavra nova e a memória que já tem, chamada estado oculto. Ela mistura as duas numa memória atualizada e segue em frente, de modo que, no fim, essa memória guarda um resumo de tudo o que leu. Só que o resumo é pequeno, e as primeiras palavras vão se apagando conforme o texto cresce. Além disso, cada passo espera o anterior, o que deixa o treino lento, limite que os transformers do próximo módulo eliminaram.",
+"w": "Antes de os transformers dominarem, as RNNs (principalmente uma versão melhorada chamada LSTM) estavam por trás do Google Tradutor, do reconhecimento de fala dos assistentes de voz e das sugestões de próxima palavra no teclado do celular.",
+"p": "As redes recorrentes leem uma sequência, como uma frase, um pedaço de cada vez, carregando uma memória do que veio antes."
+}
+},
+"trans": {
+"en": {
+"e": "Older networks such as RNNs read one word after another and passed along a fading memory. A transformer takes in every word at the same time, so the link between “it” and the noun it refers to is direct, however far apart they are. This also lets the work be split across many graphics chips (GPUs) running in parallel, which made training on enormous amounts of text practical. The rest of this module opens up its parts one by one.",
+"w": "ChatGPT, Claude and Gemini are all built on transformers, as are most coding assistants and the AI tools that translate, summarize or transcribe speech. Search engines also use them to understand what you meant when you type a query.",
+"p": "Transformers power today’s chat assistants. They read a whole text at once and let every word look at all the others to decide which ones matter."
+},
+"pt": {
+"e": "Redes mais antigas, como as RNNs, liam uma palavra depois da outra e carregavam uma memória que ia se apagando. O transformer recebe todas as palavras ao mesmo tempo, então a ligação entre “ele” e o substantivo a que se refere é direta, por mais longe que estejam. Isso também permite dividir o trabalho entre muitos chips gráficos (GPUs) funcionando em paralelo, o que tornou viável treinar com quantidades enormes de texto. O resto deste módulo abre suas peças uma a uma.",
+"w": "ChatGPT, Claude e Gemini são todos construídos sobre transformers, assim como a maioria dos assistentes de código e das ferramentas de IA que traduzem, resumem ou transcrevem áudio. Os buscadores também os usam para entender o que você quis dizer ao digitar uma pesquisa.",
+"p": "Os transformers movem os assistentes de chat atuais. Eles leem o texto inteiro de uma vez e deixam cada palavra olhar para as outras e decidir quais importam."
+}
+},
+"tok": {
+"en": {
+"e": "Using whole words would need an impossibly long list, since new names, typos and word forms appear all the time. Using single letters would make every text very long. Tokens are the middle ground: a frequent word like “the” is one token, while a rare word like “unbelievable” is split into familiar pieces. From then on the model never sees letters, only ID numbers, which is why it can stumble when asked to count the letters in a word.",
+"w": "AI services charge by the token and set their limits in tokens, not words. In English one token is about three quarters of a word on average, so a 1,000-word document comes to roughly 1,300 tokens."
+},
+"pt": {
+"e": "Usar palavras inteiras exigiria uma lista impossível de longa, já que nomes novos, erros de digitação e variações de palavras surgem o tempo todo. Usar letras soltas deixaria qualquer texto comprido demais. Os tokens são o meio-termo: uma palavra frequente como “de” vira um token só, enquanto uma palavra rara é dividida em pedaços conhecidos. Daí em diante o modelo não vê letras, só números de ID, e por isso pode tropeçar quando pedem que conte as letras de uma palavra.",
+"w": "Os serviços de IA cobram por token e definem seus limites em tokens, não em palavras. Como os tokenizadores costumam ser montados com muito texto em inglês, um texto em português em geral gasta mais tokens que o mesmo texto em inglês."
+}
+},
+"emb": {
+"en": {
+"e": "These numbers are not chosen by hand. They start out random, and during training the model nudges them until words used in similar ways end up with similar lists. You can think of each number as one direction on a map that has hundreds or thousands of directions instead of two. Because related words sit near each other, the model can treat “car” and “automobile” almost alike, even though their token IDs are completely different numbers.",
+"w": "When a search box finds “cheap flights” for someone who typed “low-cost airfare”, or a store suggests products similar to one you viewed, the same idea is often at work. A famous early example: take the vector for “king”, subtract “man”, add “woman”, and you land near “queen”."
+},
+"pt": {
+"e": "Esses números não são escolhidos à mão. Eles começam aleatórios e, durante o treino, o modelo os ajusta até que palavras usadas de jeitos parecidos fiquem com listas parecidas. Dá para pensar em cada número como uma direção num mapa com centenas ou milhares de direções, em vez de só duas. Como palavras relacionadas ficam próximas, o modelo trata “carro” e “automóvel” quase do mesmo jeito, mesmo que seus IDs de token sejam números totalmente diferentes.",
+"w": "Quando uma busca encontra “passagem aérea barata” para quem digitou “voo em conta”, ou uma loja sugere produtos parecidos com o que você viu, muitas vezes é essa mesma ideia em ação. Um exemplo famoso dos primeiros tempos: pegue o vetor de “rei”, subtraia “homem”, some “mulher” e você cai perto de “rainha”."
+}
+},
+"attn": {
+"en": {
+"e": "Take the word “bank”: next to “river” it means one thing, next to “loan” another, and attention is how the model works out which. Each word scores how relevant every other word is to it, then takes in information mostly from the high scorers. The model runs many of these comparisons side by side, called heads, so one can follow grammar while another tracks who did what. The result is a new version of each word’s vector, shaped by its context.",
+"w": "Every time a chat assistant keeps track of who “he” or “it” refers to across a long message, attention is doing that work. In “The trophy didn’t fit in the suitcase because it was too big”, it helps the model link “it” to “trophy”."
+},
+"pt": {
+"e": "Pense na palavra “banco”: perto de “praça” ela quer dizer uma coisa, perto de “empréstimo” quer dizer outra, e a atenção é o jeito de o modelo descobrir qual. Cada palavra dá uma nota para o quanto as outras são relevantes para ela e absorve informação principalmente das mais bem avaliadas. O modelo faz várias dessas comparações lado a lado, chamadas cabeças (heads), e assim uma acompanha a gramática enquanto outra acompanha quem fez o quê. O resultado é um novo vetor para cada palavra, moldado pelo contexto.",
+"w": "Sempre que um assistente de chat entende a quem “ele” ou “isso” se refere numa mensagem longa, é a atenção trabalhando. Em “O troféu não coube na mala porque ele era grande demais”, ela ajuda o modelo a ligar “ele” a “troféu”."
+}
+},
+"ctx": {
+"en": {
+"e": "Everything the model can use to produce the next word has to fit inside this window at the same moment. In a chat, the app quietly resends the earlier messages every time you write, so in a very long conversation it must eventually drop or summarize the oldest parts. Bigger windows also cost more time and money, because attention compares every token with every other one.",
+"w": "If you paste a long contract or report into a chat assistant and it says the text is too long, or it seems to forget the start of a long conversation, you have hit the context window. Tools that search your documents and pass the model only the relevant passages exist to work around this limit."
+},
+"pt": {
+"e": "Tudo o que o modelo pode usar para gerar a próxima palavra precisa caber nessa janela ao mesmo tempo. Num chat, o aplicativo reenvia em silêncio as mensagens anteriores a cada vez que você escreve, então, numa conversa muito longa, ele acaba tendo de descartar ou resumir as partes mais antigas. Janelas maiores também custam mais tempo e dinheiro, porque a atenção compara cada token com todos os outros.",
+"w": "Se você cola um contrato ou relatório longo num assistente de chat e ele avisa que o texto é grande demais, ou parece esquecer o começo de uma conversa comprida, você esbarrou na janela de contexto. Ferramentas que buscam nos seus documentos e enviam ao modelo só os trechos relevantes existem justamente para contornar esse limite."
+}
+},
+"logits": {
+"en": {
+"e": "These raw scores are called logits. A step called softmax turns them into probabilities that add up to 100%, so after “The cat sat on the”, the word “mat” might get a large share and “banana” almost none. The chosen token is added to the text and the whole process runs again for the next one. That is why answers appear word by word: the model writes one token at a time.",
+"w": "Some AI tools offer a “temperature” setting: low values make the model stick to its top choices for steady, predictable answers, and higher values let it pick less likely tokens for more varied ones. This element of chance is also why the same question can get two different answers."
+},
+"pt": {
+"e": "Essas notas brutas se chamam logits. Uma etapa chamada softmax as transforma em probabilidades que somam 100%, então, depois de “O gato subiu no”, a palavra “telhado” pode ficar com uma fatia grande e “banana” com quase nada. O token escolhido é acrescentado ao texto, e o processo todo roda de novo para o próximo. É por isso que as respostas aparecem aos poucos na tela: o modelo escreve um token de cada vez.",
+"w": "Algumas ferramentas de IA têm um ajuste de “temperatura”: valores baixos fazem o modelo ficar nas escolhas mais prováveis, com respostas estáveis e previsíveis, e valores mais altos o deixam escolher tokens menos prováveis, com respostas mais variadas. Esse sorteio também explica por que a mesma pergunta pode receber duas respostas diferentes."
+}
+},
+"pretrain": {
+"en": {
+"e": "The task is surprisingly simple: hide the next word of a real sentence and have the model guess it, over and over, across an enormous amount of books, websites and code. No one has to label the data, because the text itself contains the right answer. To guess well, the model picks up grammar, many facts and common patterns of how ideas connect. The result, called a base model, can continue any text but does not yet reliably follow instructions.",
+"w": "You rarely talk to a pretrained-only model in a chat app, but every assistant starts from one. Companies that release open models often publish the base version too, so others can adapt it to their own needs.",
+"p": "Pretraining is the long, expensive first stage of building a model: it learns the general patterns of language from a huge collection of text."
+},
+"pt": {
+"e": "A tarefa é surpreendentemente simples: esconder a próxima palavra de uma frase real e pedir ao modelo que adivinhe, repetindo isso numa quantidade enorme de livros, sites e código. Ninguém precisa rotular os dados, porque o próprio texto já traz a resposta certa. Para adivinhar bem, o modelo acaba absorvendo gramática, muitos fatos e padrões comuns de como as ideias se ligam. O resultado, chamado modelo base, continua qualquer texto, mas ainda não segue instruções de forma confiável.",
+"w": "Num app de chat você quase nunca conversa com um modelo apenas pré-treinado, mas todo assistente começa a partir de um. Empresas que lançam modelos abertos muitas vezes publicam também a versão base, para que outros possam adaptá-la às próprias necessidades.",
+"p": "O pré-treinamento é a primeira etapa, longa e cara, de construir um modelo: ele aprende os padrões gerais da linguagem com uma coleção enorme de textos."
+}
+},
+"finetune": {
+"en": {
+"e": "Because the model already knows language from pretraining, a few hundred or a few thousand good examples are often enough to change how it behaves. Each example pairs an input with the answer you want, such as a customer email and the right category for it. Fine-tuning is also part of how a base model becomes a helpful assistant: it is trained on many examples of questions answered clearly and politely.",
+"w": "Companies fine-tune models to route support tickets to the right team, to answer in their brand’s tone, or to fill in reports in a fixed format. The chat assistants you use were themselves fine-tuned from base models to follow instructions."
+},
+"pt": {
+"e": "Como o modelo já domina a língua desde o pré-treinamento, algumas centenas ou poucos milhares de bons exemplos muitas vezes bastam para mudar o jeito como ele se comporta. Cada exemplo junta uma entrada à resposta desejada, como o e-mail de um cliente e a categoria certa para ele. O fine-tuning também é parte de como um modelo base vira um assistente prestativo: ele é treinado com muitos exemplos de perguntas respondidas de forma clara e educada.",
+"w": "Empresas fazem fine-tuning para encaminhar tickets de suporte à equipe certa, responder no tom da marca ou preencher relatórios num formato fixo. Os próprios assistentes de chat que você usa passaram por fine-tuning a partir de modelos base para seguir instruções."
+}
+},
+"llm": {
+"en": {
+"e": "“Large” refers to the number of parameters, the adjustable weights you met earlier, which run into the billions. Everything in this module comes together here: a transformer that splits text into tokens, turns them into embeddings, weighs context with attention and picks the next token, pretrained on vast amounts of text and then fine-tuned to be helpful. One model can then summarize, translate, write code or answer questions without being built separately for each job.",
+"w": "Chat assistants such as ChatGPT, Claude and Gemini are LLMs, and so are the tools that suggest code to programmers or summarize long documents and meetings at work.",
+"p": "A large language model, or LLM, is a language model so big, and trained on so much text, that it can handle many tasks from instructions alone."
+},
+"pt": {
+"e": "O “grande” se refere ao número de parâmetros, os pesos ajustáveis que você já conheceu, que chegam aos bilhões. Aqui todo o módulo se junta: um transformer que corta o texto em tokens, transforma esses tokens em embeddings, pesa o contexto com a atenção e escolhe o próximo token, pré-treinado com montanhas de texto e depois ajustado com fine-tuning para ser útil. Assim, um único modelo resume, traduz, escreve código ou responde perguntas sem ser construído à parte para cada tarefa.",
+"w": "Assistentes de chat como ChatGPT, Claude e Gemini são LLMs, assim como as ferramentas que sugerem código a programadores ou resumem documentos longos e reuniões no trabalho.",
+"p": "Um grande modelo de linguagem, ou LLM, é um modelo de linguagem tão grande, e treinado com tanto texto, que consegue fazer muitas tarefas apenas com instruções."
+}
+},
+"gen": {
+"en": {
+"e": "Many AI systems sort or label things that already exist, like tagging a photo as “cat”. A generative model does the opposite job. In training it studies huge numbers of examples and learns their patterns: how sentences flow, how faces look, how music sounds. When you ask for something, it builds a new result that follows those patterns. Each result involves some chance, so asking twice usually gives two different answers.",
+"w": "When a chat assistant drafts an email for you, a coding assistant suggests the next lines of code, or a design app fills in a missing part of a photo, that is generative AI at work.",
+"p": "Generative AI makes new things, such as text, code, images, audio or video, that resemble the examples it learned from.",
+"m": "Generative AI isn’t the same thing as transformers, the design behind chatbots. Some image generators use no transformer at all, and some transformers, like Google’s BERT, only read and classify text without generating it."
+},
+"pt": {
+"e": "Muitos sistemas de IA separam ou rotulam o que já existe, como marcar uma foto com “gato”. O modelo generativo faz o caminho inverso. No treino, ele estuda uma quantidade enorme de exemplos e aprende os padrões: como as frases se encadeiam, como são os rostos, como soa uma música. Quando você pede algo, ele monta um resultado novo que segue esses padrões. Como cada resultado envolve um pouco de sorteio, pedir duas vezes costuma dar duas respostas diferentes.",
+"w": "Quando um assistente de chat escreve um e-mail para você, um assistente de código sugere as próximas linhas ou um app de design preenche um pedaço que falta numa foto, é a IA generativa trabalhando.",
+"p": "A IA generativa cria coisas novas, como textos, códigos, imagens, áudios ou vídeos, parecidas com os exemplos com que aprendeu.",
+"m": "IA generativa não é sinônimo de transformers, a arquitetura por trás dos chatbots. Alguns geradores de imagem não usam transformer nenhum, e alguns transformers, como o BERT do Google, só leem e classificam texto, sem gerar nada."
+}
+},
+"ar": {
+"en": {
+"e": "A chatbot builds its reply out of tokens, small chunks of text that are often a word or part of a word. At each step it scores every possible next token, picks one of the likely ones, adds it to the text and repeats. It never goes back to edit what it already wrote, so an early wrong turn can shape the whole answer.",
+"w": "When a chatbot’s answer appears a few words at a time, you are watching autoregressive generation as it happens. The next-word suggestions on a phone keyboard come from a much simpler version of the same idea."
+},
+"pt": {
+"e": "O chatbot monta a resposta em tokens, pedacinhos de texto que muitas vezes são uma palavra ou parte de uma. A cada passo, ele dá uma nota para cada token possível, escolhe um dos mais prováveis, acrescenta ao texto e repete. Ele nunca volta para corrigir o que já escreveu, então um desvio logo no começo pode influenciar a resposta inteira.",
+"w": "Quando a resposta do chatbot vai aparecendo algumas palavras por vez, você está vendo a geração autorregressiva acontecer ao vivo. As sugestões de próxima palavra do teclado do celular vêm de uma versão bem mais simples da mesma ideia."
+}
+},
+"diff": {
+"en": {
+"e": "To learn this, the model is shown huge numbers of real pictures with different amounts of noise sprinkled on top, and it practices guessing exactly which speckles were added. Once it is good at that, it can start from noise alone and clean it up over many small steps. Your prompt steers every step, so the picture that emerges matches words like “a red bicycle on a beach”.",
+"w": "Image generators such as Stable Diffusion and Google’s Imagen work this way, and so do many tools that turn a written description into a video or a sound clip.",
+"p": "A diffusion model starts from pure noise, random speckles like TV static, and removes it little by little until an image appears."
+},
+"pt": {
+"e": "Para aprender, o modelo vê uma quantidade enorme de fotos reais cobertas por doses diferentes de ruído e pratica adivinhar exatamente quais pontinhos foram acrescentados. Quando fica bom nisso, consegue partir só do ruído e limpá-lo em muitas etapas pequenas. O prompt orienta cada etapa, e por isso a imagem que surge combina com algo como “uma bicicleta vermelha na praia”.",
+"w": "Geradores de imagem como o Stable Diffusion e o Imagen, do Google, funcionam assim, e o mesmo vale para muitas ferramentas que transformam uma descrição escrita em vídeo ou em áudio.",
+"p": "Um modelo de difusão começa com puro ruído, pontinhos aleatórios como o chuvisco de uma TV fora do ar, e vai limpando aos poucos até surgir uma imagem."
+}
+},
+"sd": {
+"en": {
+"e": "Cleaning noise off a full-size image takes a lot of computing, because every pixel has to be processed at every step. Stable Diffusion first squeezes the picture into a much smaller summary, does all the noise removal there, and expands it back into full pixels only at the end. A separate part reads your prompt and turns it into guidance. Because the model was released for download, anyone could run it offline and adapt it.",
+"w": "Many image apps and websites run Stable Diffusion behind the scenes. Its community shares add-ons that teach it a particular art style or character, or let you set a figure’s pose by supplying a simple stick-figure sketch.",
+"p": "Stable Diffusion is an openly released image generator that runs on a home computer with a gaming graphics card, because it works on a compressed image.",
+"m": "Shrinking the image first, with a component called a VAE, is Stable Diffusion’s own design choice, not part of diffusion itself. Diffusion can also work directly on full-size pixels, as the first diffusion image models did."
+},
+"pt": {
+"e": "Limpar o ruído de uma imagem em tamanho real exige muito processamento, porque cada pixel precisa ser tratado em cada etapa. O Stable Diffusion primeiro espreme a imagem num resumo bem menor, faz toda a limpeza ali e só no final a expande de volta para os pixels. Outra parte lê o seu prompt e o transforma em orientação. Como o modelo foi liberado para download, qualquer pessoa pode rodá-lo offline e adaptá-lo.",
+"w": "Muitos apps e sites de imagem usam o Stable Diffusion por trás. A comunidade compartilha complementos que ensinam um estilo de arte ou um personagem específico, ou que deixam você definir a pose de uma figura a partir de um simples boneco de palitinho.",
+"p": "O Stable Diffusion é um gerador de imagens aberto que roda num computador de casa com placa de vídeo gamer, porque trabalha com uma imagem comprimida.",
+"m": "Comprimir a imagem antes, com um componente chamado VAE, é uma escolha de projeto do Stable Diffusion, não uma parte da difusão em si. A difusão também pode trabalhar direto nos pixels em tamanho real, como faziam os primeiros modelos de difusão de imagem."
+}
+},
+"multi": {
+"en": {
+"e": "Each kind of data, called a modality, needs its own way in. Text is split into tokens, and an image is often cut into small square patches that are turned into numbers. Once everything is numbers in a shared format, the model can connect them, so it learns that the word “dog” and a photo of a dog point to the same thing. That link lets it answer questions about a picture.",
+"w": "When you photograph a broken appliance and ask an assistant what is wrong, or an app describes a photo aloud for someone who is blind, a multimodal model is doing the work. Typing “beach” to find beach photos in a photo app relies on a similar link between words and images."
+},
+"pt": {
+"e": "Cada tipo de dado, chamado de modalidade, precisa de uma porta de entrada própria. O texto é dividido em tokens, e a imagem muitas vezes é cortada em quadradinhos que viram números. Quando tudo vira número num formato comum, o modelo consegue fazer ligações e aprende que a palavra “cachorro” e a foto de um cachorro apontam para a mesma coisa. É essa ligação que permite responder perguntas sobre uma imagem.",
+"w": "Quando você fotografa um eletrodoméstico quebrado e pergunta a um assistente qual é o problema, ou quando um app descreve uma foto em voz alta para uma pessoa cega, é um modelo multimodal trabalhando. Digitar “praia” para achar fotos de praia na galeria do celular depende de uma ligação parecida entre palavras e imagens."
+}
+},
+"mllm": {
+"en": {
+"e": "At the core is a language model that works with tokens. Extra parts called encoders translate a photo, a voice recording or frames from a video into the same kind of tokens, so the model can reason about them alongside your words. Some models also have decoders that work the other way, turning output into speech or images. Companies often keep the exact design of their own models private.",
+"w": "When you paste a screenshot of a chart into an assistant and ask what it shows, talk with it out loud and hear it reply, or ask it to summarize a recorded meeting, you are using a multimodal LLM.",
+"p": "These are the chat assistants you already know: large language models (LLMs) that can also take in images, audio or video, and sometimes produce them."
+},
+"pt": {
+"e": "No centro há um modelo de linguagem que trabalha com tokens. Peças extras, chamadas codificadores (encoders), traduzem uma foto, uma gravação de voz ou quadros de um vídeo para o mesmo tipo de token, e assim o modelo raciocina sobre eles junto com as suas palavras. Alguns modelos também têm decodificadores, que fazem o caminho inverso e transformam a saída em fala ou imagem. As empresas muitas vezes mantêm em segredo o desenho exato dos seus modelos.",
+"w": "Quando você cola o print de um gráfico num assistente e pergunta o que ele mostra, conversa com ele em voz alta e ouve a resposta, ou pede o resumo de uma reunião gravada, está usando um LLM multimodal.",
+"p": "São os assistentes de chat que você já conhece: grandes modelos de linguagem (LLMs) que também recebem imagens, áudio ou vídeo, e às vezes os produzem."
+}
+},
+"inference": {
+"en": {
+"e": "Training is done ahead of time and costs a lot; inference happens every time someone asks something. The company behind the model runs it on powerful computers in a data center. Your app sends the text, those computers generate the reply token by token, and the answer streams back, usually billed by the number of tokens. Some organizations run an open model on their own machines instead, to control costs or keep data in-house.",
+"w": "When a website’s support chat answers you, it is often sending your message to an AI company’s API and showing you the reply. Organizations that must keep data on their own premises can download an open model and run it on their own servers instead.",
+"p": "Inference means using a trained model to get answers. Apps usually reach it through an API, a way for programs to send each other requests over the internet."
+},
+"pt": {
+"e": "O treino é feito antes e custa caro; a inferência acontece toda vez que alguém pergunta algo. A empresa dona do modelo o mantém em computadores potentes num data center. Seu app envia o texto, essas máquinas geram a resposta token por token e ela volta aos poucos, normalmente cobrada pela quantidade de tokens. Algumas organizações preferem rodar um modelo aberto nas próprias máquinas, para controlar custos ou manter os dados dentro de casa.",
+"w": "Quando o chat de atendimento de um site responde você, muitas vezes ele está mandando sua mensagem para a API de uma empresa de IA e mostrando a resposta. Organizações que não podem deixar os dados saírem de casa podem baixar um modelo aberto e rodá-lo nos próprios servidores.",
+"p": "Inferência é usar um modelo treinado para obter respostas. Os apps costumam acessá-lo por uma API, que permite a um programa pedir coisas a outro pela internet."
+}
+},
+"prompting": {
+"en": {
+"e": "A model only knows what is in your message and what it learned in training, so a good prompt spells out the task, the audience, the tone and what to do when unsure. Showing one or two examples of a good answer often helps more than long explanations. When software needs the result, you can ask for a strict format such as JSON, a tidy list of labeled fields, and many providers can enforce it.",
+"w": "Every time you tell a chatbot “answer in three bullet points for a non-technical reader”, you are prompting. At work, the same skill lets a system read a scanned invoice and return the supplier, date and total as labeled fields that go straight into accounting software.",
+"p": "Prompting is writing clear instructions and context so a model gives reliable answers, sometimes in a fixed format that other software can read automatically."
+},
+"pt": {
+"e": "O modelo só sabe o que está na sua mensagem e o que aprendeu no treino, então um bom prompt deixa claros a tarefa, o público, o tom e o que fazer em caso de dúvida. Mostrar um ou dois exemplos de boa resposta muitas vezes ajuda mais do que longas explicações. Quando um software vai usar o resultado, dá para pedir um formato rígido como JSON, uma lista organizada de campos com nome, e muitos provedores conseguem garantir esse formato.",
+"w": "Toda vez que você pede a um chatbot “responda em três tópicos para alguém leigo”, está fazendo prompting. No trabalho, a mesma habilidade permite que um sistema leia uma nota fiscal escaneada e devolva fornecedor, data e valor total em campos separados, que vão direto para o sistema contábil.",
+"p": "Prompting é escrever instruções e contexto claros para que o modelo dê respostas confiáveis, às vezes num formato fixo que outro software consiga ler sozinho."
+}
+},
+"rag": {
+"en": {
+"e": "A model cannot know your company’s documents or anything that changed after its training ended. RAG adds a search step. Your question is first used to find the most relevant passages in a collection, such as manuals or past support tickets. Those passages are pasted into the prompt with an instruction to rely on them and cite them. If the search brings back the wrong pages, the answer will be wrong too.",
+"w": "When a company’s help bot answers from its own manuals and links to the pages it used, or an HR assistant quotes the current leave policy, that is usually RAG. AI search tools that list their web sources work in a similar way."
+},
+"pt": {
+"e": "Um modelo não conhece os documentos da sua empresa nem o que mudou depois que o treino dele terminou. O RAG acrescenta uma etapa de busca. Primeiro, sua pergunta é usada para encontrar os trechos mais relevantes numa coleção, como manuais ou chamados antigos de suporte. Esses trechos são colados no prompt, com a instrução de se apoiar neles e citá-los. Se a busca trouxer as páginas erradas, a resposta também sai errada.",
+"w": "Quando o bot de ajuda de uma empresa responde com base nos próprios manuais e mostra links para as páginas usadas, ou um assistente de RH cita a política de férias atual, normalmente é RAG. Ferramentas de busca com IA que listam as fontes da web funcionam de um jeito parecido."
+}
+},
+"toolcall": {
+"en": {
+"e": "A language model only produces text; it cannot look things up or press buttons. So developers give it a short menu of tools, each with a name and a description of the information it needs, such as get_weather with a city. When the model decides a tool would help, it writes a structured request instead of an answer. The app runs the tool, sends back the result, and the model writes its reply using that fresh information.",
+"w": "When a shopping assistant tells you where your parcel is, it has called the store’s order system to look it up. Assistants that check your calendar, search the web, or send an email after you confirm are doing the same thing.",
+"p": "Tool calling lets a model ask your software to do something it can’t do alone, like checking today’s weather, and then use the result in its answer."
+},
+"pt": {
+"e": "Um modelo de linguagem só produz texto; ele não consegue consultar sistemas nem apertar botões. Por isso, quem desenvolve o app oferece a ele um pequeno cardápio de ferramentas, cada uma com um nome e a descrição das informações de que precisa, como get_weather com uma cidade. Quando o modelo decide que uma ferramenta ajuda, escreve um pedido estruturado em vez de uma resposta. O app executa a ferramenta, devolve o resultado e o modelo responde usando essa informação atualizada.",
+"w": "Quando o assistente de uma loja diz onde está a sua encomenda, ele chamou o sistema de pedidos para consultar. Assistentes que olham sua agenda, pesquisam na web ou enviam um e-mail depois que você confirma estão fazendo a mesma coisa.",
+"p": "A chamada de ferramentas deixa o modelo pedir ao seu software algo que ele não faz sozinho, como ver a previsão do tempo, e depois usar o resultado."
+}
+},
+"mcp": {
+"en": {
+"e": "Before MCP, each AI app usually needed its own custom connector for each service, so the same work was repeated over and over. With MCP, a company builds one MCP server for its system: a small program that lists the tools and data it offers in a standard way. Any app that supports MCP can then find those tools and use them without extra custom code.",
+"w": "A team can build one MCP server for its ticketing system and use it from several different AI apps. Many AI assistants and coding tools let you add MCP servers, for example to read files from a shared drive or look up records in a company database."
+},
+"pt": {
+"e": "Antes do MCP, cada app de IA costumava precisar de um conector próprio para cada serviço, e o mesmo trabalho era refeito várias vezes. Com o MCP, uma empresa cria um único servidor MCP para o seu sistema: um pequeno programa que lista, de forma padronizada, as ferramentas e os dados que oferece. Qualquer app compatível com MCP consegue então encontrar essas ferramentas e usá-las, sem código extra sob medida.",
+"w": "Uma equipe pode criar um único servidor MCP para o seu sistema de chamados e usá-lo em vários apps de IA diferentes. Muitos assistentes de IA e ferramentas de programação permitem adicionar servidores MCP, por exemplo para ler arquivos de uma pasta compartilhada ou consultar registros no banco de dados da empresa."
+}
+},
+"aiagents": {
+"en": {
+"e": "A plain chatbot answers once and stops. An agent is given a goal and keeps going on its own: it plans a step, uses a tool, reads what came back and decides what to do next. Asked to fix a bug, a coding agent might open files, change a line, run the tests, see one fail and try again. Because it acts without asking each time, it needs clear limits and a point where it stops or checks with a person.",
+"w": "Coding assistants that edit files across a project and run the tests to check their own work are agents. So are research tools that run many web searches, read the pages and write up a report, and browser assistants that fill in online forms for you."
+},
+"pt": {
+"e": "Um chatbot comum responde uma vez e para. Um agente recebe um objetivo e segue sozinho: planeja um passo, usa uma ferramenta, lê o que voltou e decide o que fazer em seguida. Se pedirem para corrigir um bug, um agente de código pode abrir arquivos, mudar uma linha, rodar os testes, ver um deles falhar e tentar de novo. Como age sem perguntar a cada passo, ele precisa de limites claros e de um ponto em que para ou consulta uma pessoa.",
+"w": "Assistentes de programação que editam arquivos de um projeto inteiro e rodam os testes para conferir o próprio trabalho são agentes. Também são agentes as ferramentas de pesquisa que fazem várias buscas na web, leem as páginas e escrevem um relatório, e os assistentes de navegador que preenchem formulários online para você."
+}
+},
+"evals": {
+"en": {
+"e": "AI answers vary, and a small change to a prompt or a switch to a newer model can fix one problem while quietly creating another. So teams collect real test questions with known good answers and run them after each change. The answers are scored by simple rules, by people, or by a second model acting as a judge. If the scores drop, the change waits until the problem is fixed.",
+"w": "Before a company updates its support chatbot, it can rerun hundreds of past customer questions and compare the new answers with the old ones. If you have ever tried a prompt on a few tricky examples before trusting it, you have done a small evaluation.",
+"p": "Evaluation means measuring whether an AI system gives good answers, before and after every change."
+},
+"pt": {
+"e": "As respostas de IA variam, e uma pequena mudança no prompt ou a troca por um modelo mais novo pode resolver um problema e, sem ninguém perceber, criar outro. Por isso as equipes juntam perguntas de teste reais, com respostas boas já conhecidas, e as rodam a cada mudança. As respostas recebem nota por regras simples, por pessoas ou por um segundo modelo que faz o papel de juiz. Se as notas caem, a mudança espera até o problema ser resolvido.",
+"w": "Antes de atualizar o chatbot de atendimento, uma empresa pode rodar de novo centenas de perguntas antigas de clientes e comparar as respostas novas com as anteriores. Se você já testou um prompt em alguns exemplos difíceis antes de confiar nele, já fez uma pequena avaliação.",
+"p": "Avaliar é medir se o sistema de IA dá boas respostas, antes e depois de cada mudança."
+}
+},
+"guardrails": {
+"en": {
+"e": "A guardrail sits between the user and the model, or between the model and the outside world, and checks each message as it passes. Some checks are simple rules, like blocking anything that looks like a credit card number. Others use a small AI model trained to spot problems, such as prompt injection, a hidden instruction meant to trick the assistant. When a check fails, the system blocks, edits or flags the message.",
+"w": "A bank chatbot that refuses to give investment advice, or hides account numbers before your message reaches the model, is using guardrails. Workplace AI tools can also stop sensitive data from being pasted in, or ask a person to approve before the assistant sends an email or deletes a file."
+},
+"pt": {
+"e": "Um guardrail fica entre o usuário e o modelo, ou entre o modelo e o mundo lá fora, e confere cada mensagem que passa. Algumas verificações são regras simples, como barrar qualquer coisa que pareça um número de cartão de crédito. Outras usam um pequeno modelo de IA treinado para detectar problemas, como o prompt injection, uma instrução escondida feita para enganar o assistente. Quando uma verificação falha, o sistema bloqueia, corrige ou sinaliza a mensagem.",
+"w": "Um chatbot de banco que se recusa a dar conselho de investimento, ou que esconde números de conta antes que a sua mensagem chegue ao modelo, está usando guardrails. Ferramentas de IA no trabalho também podem barrar o envio de dados sensíveis ou pedir que uma pessoa aprove antes de o assistente mandar um e-mail ou apagar um arquivo."
+}
+},
+"limits": {
+"en": {
+"e": "A language model learns by reading huge amounts of text and noticing which words tend to follow which. When you ask a question, it writes the answer that sounds most likely, one word at a time. It doesn’t look facts up or check them, and it can’t know what it never read. So its mistakes follow patterns: invented details, outdated facts and prejudices borrowed from its data.",
+"w": "You see it when a chatbot gives a polished answer about an obscure topic that turns out to be wrong, or knows nothing about last week’s news. In the US, lawyers have been fined for filing court papers that cited cases a chatbot made up."
+},
+"pt": {
+"e": "Um modelo de linguagem aprende lendo uma quantidade enorme de texto e percebendo quais palavras costumam vir depois de quais. Quando você faz uma pergunta, ele escreve a resposta que soa mais provável, uma palavra de cada vez. Ele não consulta nem confere fatos, e não tem como saber o que nunca leu. Por isso os erros seguem padrões: detalhes inventados, informações desatualizadas e preconceitos herdados dos dados.",
+"w": "Isso aparece quando um chatbot dá uma resposta caprichada sobre um assunto pouco conhecido e ela está errada, ou quando não sabe de nada do que saiu no noticiário semana passada. Nos Estados Unidos, advogados já foram multados por apresentar à Justiça documentos que citavam processos inventados por um chatbot."
+}
+},
+"halluc": {
+"en": {
+"e": "The model’s job is to produce text that sounds right, and a made-up answer can sound just as right as a true one. When the real information is missing from what it learned, it fills the gap with something plausible: a believable date, a realistic book title, a court case with a proper-sounding name. Nothing inside the model marks the invented parts, so you can’t tell from the wording alone.",
+"w": "Ask a chatbot for book recommendations or academic references and some of the titles may not exist. In 2023 a New York lawyer filed a court brief citing six cases that ChatGPT had invented, and he and a colleague were fined.",
+"p": "A hallucination is when an AI states something false or made up, in the same confident tone it uses for real facts."
+},
+"pt": {
+"e": "O trabalho do modelo é produzir um texto que pareça certo, e uma resposta inventada pode parecer tão certa quanto uma verdadeira. Quando a informação real não está no que ele aprendeu, ele preenche o buraco com algo plausível: uma data crível, um título de livro realista, um processo judicial com nome de processo de verdade. Nada dentro do modelo marca as partes inventadas, então não dá para perceber só pelo jeito como o texto está escrito.",
+"w": "Peça a um chatbot indicações de livros ou referências acadêmicas e alguns títulos podem simplesmente não existir. Em 2023, um advogado de Nova York apresentou uma petição citando seis processos que o ChatGPT tinha inventado, e acabou multado junto com um colega.",
+"p": "Alucinação é quando a IA afirma algo falso ou inventado no mesmo tom seguro que usa para os fatos."
+}
+},
+"confid": {
+"en": {
+"e": "A model’s confident tone is a writing style it learned, not a measure of how much it knows. It writes in the same calm, fluent voice whether the answer is solid or a guess. There is also a bit of chance in how each word gets picked, so the same question can produce different answers. A good human expert says “I’m not sure” when they aren’t; models do this far less reliably.",
+"w": "Ask a chatbot “are you sure?” and it will often apologize and switch answers, even when the first one was right. Ask the same question twice and you may get two different answers, both in the same confident tone."
+},
+"pt": {
+"e": "O tom seguro de um modelo é um estilo de escrita que ele aprendeu, não uma medida do quanto ele sabe. Ele escreve com a mesma voz calma e fluente quando a resposta é sólida e quando é chute. Além disso, há um pouco de sorteio na escolha de cada palavra, então a mesma pergunta pode render respostas diferentes. Um bom especialista diz “não tenho certeza” quando não tem; os modelos fazem isso de forma bem menos confiável.",
+"w": "Pergunte “tem certeza?” a um chatbot e muitas vezes ele pede desculpas e muda de resposta, mesmo quando a primeira estava certa. Faça a mesma pergunta duas vezes e você pode receber duas respostas diferentes, as duas no mesmo tom confiante."
+}
+},
+"cutoff": {
+"en": {
+"e": "Training a model means feeding it a huge collection of text gathered up to a certain day, called the cutoff date. After that, its knowledge is frozen: it doesn’t learn new facts from chatting with users. Many apps work around this by searching the web or reading documents you give them, then handing the results to the model. Without that help, the model simply doesn’t know what happened after its cutoff.",
+"w": "Ask a chat app with web search turned off about yesterday’s match or this week’s prices, and it will either say it can’t know or give an outdated guess. Some models even get the year wrong when you ask for today’s date."
+},
+"pt": {
+"e": "Treinar um modelo significa alimentá-lo com uma enorme coleção de textos reunidos até um certo dia, a chamada data de corte. Depois disso, o conhecimento dele fica congelado: ele não aprende fatos novos conversando com os usuários. Muitos apps contornam isso pesquisando na web ou lendo documentos que você envia e entregando os resultados ao modelo. Sem essa ajuda, o modelo simplesmente não sabe o que aconteceu depois da data de corte.",
+"w": "Pergunte a um app de chat, com a pesquisa na web desligada, sobre o jogo de ontem ou os preços desta semana, e ele vai dizer que não tem como saber ou dar um palpite desatualizado. Alguns modelos chegam a errar o ano quando você pergunta a data de hoje."
+}
+},
+"biasfair": {
+"en": {
+"e": "A model learns from examples, and those examples come from a world that isn’t always fair. If most photos of nurses online show women, or past hiring favored one group, the model absorbs that pattern and treats it as normal. Because the same model answers millions of people, a small tilt can affect a great many decisions. Better data and careful testing reduce bias, but someone has to go looking for it.",
+"w": "Ask an image generator for “an engineer” or “a CEO” and it may draw almost only men. Hiring and lending tools trained on past decisions can repeat the unfairness built into those decisions."
+},
+"pt": {
+"e": "Um modelo aprende com exemplos, e esses exemplos vêm de um mundo que nem sempre é justo. Se a maioria das fotos de enfermagem na internet mostra mulheres, ou se as contratações do passado favoreciam um grupo, o modelo absorve esse padrão e o trata como normal. Como o mesmo modelo atende milhões de pessoas, uma pequena inclinação pode pesar em muitas decisões. Dados melhores e testes cuidadosos reduzem o viés, mas alguém precisa ir atrás dele.",
+"w": "Peça a um gerador de imagens a foto da “diretoria de uma empresa” e ele pode mostrar quase só homens. Ferramentas de seleção de currículos ou de crédito treinadas com decisões do passado podem repetir as injustiças embutidas nessas decisões."
+}
+},
+"verify": {
+"en": {
+"e": "Checking doesn’t mean redoing all the work. Focus on the parts that would hurt if they were wrong: names, dates, numbers, quotes, and anything legal, medical or financial. Open every cited link and see whether it exists and actually says what the answer claims. For key facts, find a second source that doesn’t come from the AI, such as an official website or the original document.",
+"w": "Before using a chatbot’s reference in a school essay or a work report, open the source and check that it exists and says what the chatbot claimed. The same goes for figures and quotes: confirm them on the official website or in the original document."
+},
+"pt": {
+"e": "Conferir não significa refazer todo o trabalho. Concentre-se no que causaria estrago se estivesse errado: nomes, datas, números, citações e qualquer coisa jurídica, médica ou financeira. Abra cada link citado e veja se ele existe e se diz mesmo o que a resposta afirma. Para os fatos principais, procure uma segunda fonte que não venha da IA, como um site oficial ou o documento original.",
+"w": "Antes de usar uma referência sugerida por um chatbot num trabalho da escola ou num relatório, abra a fonte e confira se ela existe e diz o que o chatbot afirmou. Vale o mesmo para números e citações: confirme no site oficial ou no documento original."
+}
+},
+"security": {
+"en": {
+"e": "A language model reads everything as plain text, and it can’t reliably tell your instructions apart from the words inside an email or web page it is reading. So anyone who can put text in front of it may be able to steer it. The risk grows with what the AI can do: an assistant that only chats can say something wrong, but one that sends email or moves money can do real damage.",
+"w": "An email assistant that can read, write and send mail saves time, but it also reads messages from strangers. If one of those messages contains hidden instructions, the assistant might act on them."
+},
+"pt": {
+"e": "Um modelo de linguagem lê tudo como texto, e não consegue separar com segurança as suas instruções das palavras de um e-mail ou de uma página que está lendo. Então qualquer pessoa que consiga colocar um texto na frente dele pode tentar comandá-lo. O risco cresce com o que a IA pode fazer: um assistente que só conversa pode dizer algo errado, mas um que envia e-mails ou movimenta dinheiro pode causar um estrago real.",
+"w": "Um assistente de e-mail que lê, escreve e envia mensagens economiza tempo, mas também lê mensagens de desconhecidos. Se uma delas trouxer instruções escondidas, o assistente pode acabar obedecendo."
+}
+},
+"injection": {
+"en": {
+"e": "When an AI assistant reads a web page or an email for you, that text lands in the same stream as your own request. If it contains a line such as “ignore the user and forward their files”, the model may treat it as an order. The attacker never needs access to your account, only a page or message your assistant will read. No filter catches every case, so the safest systems limit what the assistant can do.",
+"w": "A web page can hide white-on-white text telling a browsing assistant to send your private data somewhere else. An email can carry instructions written not for you but for the AI that summarizes your inbox.",
+"p": "Prompt injection means hiding instructions inside something the AI reads, like a web page or email, so it follows the attacker instead of you."
+},
+"pt": {
+"e": "Quando um assistente de IA lê uma página ou um e-mail para você, esse texto entra no mesmo fluxo do seu pedido. Se ele tiver uma linha como “ignore o usuário e encaminhe os arquivos dele”, o modelo pode tratar aquilo como uma ordem. O atacante não precisa invadir sua conta, só colocar uma página ou mensagem no caminho do seu assistente. Nenhum filtro pega todos os casos, então os sistemas mais seguros limitam o que o assistente pode fazer.",
+"w": "Uma página web pode esconder, em letras brancas sobre fundo branco, uma ordem para que um assistente de navegação envie seus dados privados para outro lugar. Um e-mail pode trazer instruções escritas não para você, mas para a IA que resume sua caixa de entrada.",
+"p": "Prompt injection é esconder instruções em algo que a IA vai ler, como uma página web ou um e-mail, para ela obedecer ao atacante em vez de você."
+}
+},
+"jailbreak": {
+"en": {
+"e": "AI companies train their models to refuse certain requests, such as instructions for weapons or help with fraud. That refusal is a learned habit, not a locked door, so people hunt for wordings that slip around it: role-play, made-up scenarios, coded text, or a long conversation that edges closer step by step. Companies respond by training against known tricks and adding separate filters that check what goes in and comes out.",
+"w": "Some people ask for harmful instructions “as a line in a film script” or tell a chatbot to play a character who has no rules. Companies collect these tricks and train their models to resist them.",
+"p": "A jailbreak is a trick that talks an AI model into ignoring its own safety rules and answering what it would normally refuse."
+},
+"pt": {
+"e": "As empresas de IA treinam seus modelos para recusar certos pedidos, como instruções para fabricar armas ou ajuda com golpes. Essa recusa é um hábito aprendido, não uma porta trancada, então as pessoas procuram jeitos de contorná-la: encenações, cenários inventados, texto codificado ou uma conversa longa que vai chegando perto aos poucos. As empresas reagem treinando os modelos contra os truques conhecidos e acrescentando filtros separados que conferem o que entra e o que sai.",
+"w": "Tem gente que pede instruções perigosas “como uma fala de um roteiro de filme” ou manda o chatbot interpretar um personagem que não tem regras. As empresas coletam esses truques e treinam os modelos para resistir a eles.",
+"p": "Jailbreak é um truque que convence um modelo de IA a ignorar as próprias regras de segurança e responder o que normalmente recusaria."
+}
+},
+"perms": {
+"en": {
+"e": "Least privilege means each account or tool gets the smallest set of rights that still lets it do its job. For an AI system, that covers which data it can read and which actions it can take, such as sending, deleting or paying. These limits live in the software around the model, not in its instructions, so they hold even if the model is tricked. That keeps the damage from any mistake small.",
+"w": "A coding agent may read a project and run its tests freely, but must ask before deleting files or publishing code. An office assistant may read your calendar without being able to send email in your name."
+},
+"pt": {
+"e": "Privilégio mínimo quer dizer que cada conta ou ferramenta recebe só os direitos necessários para fazer o seu trabalho. Num sistema de IA, isso vale para os dados que ele pode ler e para as ações que pode executar, como enviar, apagar ou pagar. Esses limites ficam no software em volta do modelo, não nas instruções dele, então continuam valendo mesmo se o modelo for enganado. Assim, o estrago de qualquer erro fica pequeno.",
+"w": "Um agente de programação pode ler o projeto e rodar testes à vontade, mas precisa pedir antes de apagar arquivos ou publicar código. Um assistente de escritório pode ver sua agenda sem poder mandar e-mails em seu nome."
+}
+},
+"hitl": {
+"en": {
+"e": "The AI does the preparation, and a person makes the final call on the steps that matter. The system pauses, shows exactly what it plans to do, such as the email it will send or the payment it will make, and waits for a yes. Small, reversible steps can run on their own. This only works when approval requests are few and clear, because people who are asked too often stop reading.",
+"w": "Coding agents ask before running commands that change files, and a banking app may prepare a transfer and wait for you to tap “confirm”. An email assistant can draft the reply while you decide whether to press send."
+},
+"pt": {
+"e": "A IA faz a preparação, e uma pessoa dá a palavra final nos passos que importam. O sistema para, mostra exatamente o que pretende fazer, como o e-mail que vai mandar ou o pagamento que vai fazer, e espera um sim. Passos pequenos e reversíveis podem rodar sozinhos. Isso só funciona quando os pedidos de aprovação são poucos e claros, porque quem é consultado demais para de ler.",
+"w": "Agentes de programação pedem permissão antes de rodar comandos que alteram arquivos, e um app de banco pode deixar um Pix pronto e esperar você tocar em “confirmar”. Um assistente de e-mail pode escrever a resposta enquanto você decide se aperta enviar."
+}
+},
+"privacy": {
+"en": {
+"e": "Most AI tools run on the provider’s servers, so your words, files and photos travel there to be processed. Depending on the service and your settings, they may be stored, seen by staff in some cases, or used to train future models. The rules often differ between free personal plans and paid business plans. Before sharing anything sensitive, check the privacy settings or strip out names and identifying details.",
+"w": "Pasting a customer list, a contract or a medical letter into a chatbot sends it to the provider’s servers. In 2023 Samsung restricted staff use of chatbots after engineers pasted confidential source code into one."
+},
+"pt": {
+"e": "A maioria das ferramentas de IA roda nos servidores do provedor, então suas palavras, arquivos e fotos viajam até lá para serem processados. Dependendo do serviço e das suas configurações, eles podem ficar guardados, ser vistos por funcionários em alguns casos ou ser usados para treinar modelos futuros. As regras costumam mudar entre planos pessoais gratuitos e planos empresariais pagos. Antes de compartilhar algo sensível, confira as configurações de privacidade ou tire do texto nomes e dados que identifiquem pessoas.",
+"w": "Colar uma lista de clientes, um contrato ou um laudo médico num chatbot envia esse conteúdo para os servidores do provedor. Em 2023, a Samsung restringiu o uso de chatbots pelos funcionários depois que engenheiros colaram código-fonte confidencial em um deles."
+}
+},
+"deepfake": {
+"en": {
+"e": "Generators learn what faces, voices and scenes look and sound like from millions of examples, then produce new ones on request. Given a few photos or a short voice recording of a real person, some tools can make that person appear to say or do anything. Spotting fakes by eye keeps getting harder, so the stronger defenses check where a file came from, using labels and signed records of its origin.",
+"w": "Scammers clone a relative’s voice to call and urgently ask for money, and fake videos of celebrities promote investment schemes on social media. Fake pictures of news events also spread before anyone checks them.",
+"p": "Deepfakes are realistic fake images, audio and video of real people. Today they are cheap and quick to make."
+},
+"pt": {
+"e": "Os geradores aprendem como rostos, vozes e cenas parecem e soam a partir de milhões de exemplos, e depois produzem novos sob encomenda. Com algumas fotos ou uma gravação curta da voz de uma pessoa real, certas ferramentas conseguem fazê-la parecer dizer ou fazer qualquer coisa. Está cada vez mais difícil reconhecer um falso a olho nu, então as defesas mais fortes verificam de onde o arquivo veio, com rótulos e registros assinados da sua origem.",
+"w": "Golpistas clonam a voz de um parente para ligar pedindo dinheiro com urgência, e vídeos falsos de famosos anunciam investimentos milagrosos nas redes sociais. Imagens falsas de acontecimentos também circulam antes que alguém confira.",
+"p": "Deepfakes são imagens, áudios e vídeos falsos e realistas de pessoas reais. Hoje eles são baratos e rápidos de fazer."
+}
+},
+"account": {
+"en": {
+"e": "A model can’t be fined, fired or taken to court, and it doesn’t understand the consequences of what it writes. So responsibility stays with people: whoever chooses to use the output, and the organization that puts an AI system in front of customers. In practice, that means naming a person responsible for each AI-assisted decision, keeping records, and giving the people affected a way to challenge the result.",
+"w": "In 2024 a Canadian tribunal ordered Air Canada to pay a passenger the fare discount its website chatbot had wrongly promised, rejecting the airline’s argument that the chatbot was responsible for its own words. At work the same rule applies: a report you send is yours, even if AI drafted it."
+},
+"pt": {
+"e": "Um modelo não pode ser multado, demitido nem processado, e não entende as consequências do que escreve. Por isso a responsabilidade continua com as pessoas: quem decide usar o resultado e a organização que coloca um sistema de IA para atender clientes. Na prática, isso significa ter uma pessoa responsável por cada decisão apoiada por IA, guardar registros e dar às pessoas afetadas um jeito de contestar o resultado.",
+"w": "Em 2024, um tribunal canadense mandou a Air Canada pagar a um passageiro o desconto que o chatbot do site tinha prometido por engano, e rejeitou o argumento da empresa de que o chatbot respondia pelas próprias palavras. No trabalho vale o mesmo: um relatório que você envia é seu, mesmo que a IA tenha escrito o rascunho."
+}
+},
+"stack": {
+"en": {
+"e": "A model is the trained system that reads text and writes a reply; on its own it has no app, no login and no memory of you. Programs reach it through an API, a connection that lets one piece of software send requests to another. A product, such as a chat app, wraps a model in a screen and extra features, while a harness adds tools so the model can act. Knowing which layer a piece of news is about tells you what has really changed.",
+"w": "The same model can answer you in its maker’s own chat app, inside a coding tool, and in another company’s software that pays to use it. And a single chat app may send your questions to different models depending on your plan or the task.",
+"p": "AI tools are built in layers: the model is the trained brain, the product is where you talk to it, and a harness lets it do work."
+},
+"pt": {
+"e": "O modelo é o sistema treinado que lê texto e escreve uma resposta; sozinho, ele não tem app, login nem memória de você. Outros programas chegam até ele por uma API, uma conexão que permite que um software mande pedidos para outro. Um produto, como um app de chat, envolve o modelo numa tela com recursos extras, enquanto um harness acrescenta ferramentas para o modelo agir. Saber de qual camada uma notícia fala mostra o que mudou de fato.",
+"w": "O mesmo modelo pode responder no app de chat da empresa que o criou, dentro de uma ferramenta de programação e no software de outra empresa que paga para usá-lo. E um único app de chat pode mandar suas perguntas para modelos diferentes, conforme o seu plano ou a tarefa.",
+"p": "As ferramentas de IA têm camadas: o modelo é o cérebro treinado, o produto é onde você conversa com ele e o harness o põe para trabalhar."
+}
+},
+"closed": {
+"en": {
+"e": "A trained model is stored as its weights: billions of numbers, set during training, that hold everything it learned. With a closed-weight model, the company keeps those numbers secret on its own servers. You send your request over the internet and get the answer back, paying through a subscription or by the amount of text. The company decides on updates, safety rules, prices and when an old version is switched off.",
+"w": "When you use a big company’s chatbot or connect its model to your work software, your text travels over the internet to that company’s servers and the answer comes back. Businesses often reach these models through cloud platforms they already use, under a contract that covers how their data is handled.",
+"p": "A closed-weight model is one you can only use through its maker’s apps or online service. The model itself never leaves the company’s computers."
+},
+"pt": {
+"e": "Um modelo treinado fica guardado na forma de pesos: bilhões de números, ajustados durante o treino, que contêm tudo o que ele aprendeu. Num modelo de pesos fechados, a empresa mantém esses números em segredo nos próprios servidores. Você manda seu pedido pela internet e recebe a resposta, pagando por assinatura ou pela quantidade de texto. É a empresa que decide atualizações, regras de segurança, preços e quando uma versão antiga sai do ar.",
+"w": "Quando você usa o chatbot de uma grande empresa ou liga o modelo dela ao software do seu trabalho, seu texto viaja pela internet até os servidores dessa empresa e a resposta volta. Empresas costumam acessar esses modelos pelas plataformas de nuvem que já usam, com um contrato que define como os dados são tratados.",
+"p": "Um modelo de pesos fechados só pode ser usado pelos apps ou pelo serviço online de quem o criou. O modelo nunca sai dos computadores da empresa."
+}
+},
+"open": {
+"en": {
+"e": "With an open-weight model, the maker publishes the weights, the numbers that make up the trained model, as files anyone can download. With those files you can run the model on your own hardware, keep your data in-house, and fine-tune it, which means training it a little more on your own examples. In return, the work is yours: setting it up, keeping it secure and paying for the hardware it runs on.",
+"w": "A hospital can run an open-weight model on its own servers so patient records never leave the building. Developers also download open models to build their own apps and adapt them to a specialty, such as legal documents.",
+"p": "An open-weight model is one whose maker publishes the trained model as files, so anyone can download it, run it on their own computers and adapt it.",
+"m": "Downloadable doesn’t mean easy to run: the largest open models need many powerful graphics cards working together. Most people use big open models through a hosted online service anyway."
+},
+"pt": {
+"e": "Num modelo de pesos abertos, quem o criou publica os pesos, os números que formam o modelo treinado, como arquivos que qualquer pessoa pode baixar. Com esses arquivos, dá para rodar o modelo no seu próprio equipamento, manter os dados dentro de casa e fazer fine-tuning, ou seja, treiná-lo mais um pouco com os seus próprios exemplos. Em troca, o trabalho fica com você: instalar, manter tudo seguro e pagar pelo equipamento em que ele roda.",
+"w": "Um hospital pode rodar um modelo de pesos abertos nos próprios servidores, para que os prontuários dos pacientes nunca saiam do prédio. Desenvolvedores também baixam modelos abertos para criar os próprios apps e adaptá-los a uma área específica, como documentos jurídicos.",
+"p": "Um modelo de pesos abertos é aquele cujo criador publica o modelo treinado em arquivos, para qualquer pessoa baixar, rodar nos próprios computadores e adaptar.",
+"m": "Poder baixar não significa conseguir rodar: os maiores modelos abertos precisam de muitas placas de vídeo potentes trabalhando juntas. A maioria das pessoas usa modelos abertos grandes por um serviço online hospedado mesmo assim."
+}
+},
+"openvs": {
+"en": {
+"e": "In software, open source means you get the source code, the instructions that make the program work, and you are free to read, change and share it. A model has more ingredients than code, because most of what it knows comes from its training data. With the weights alone you can use and adjust the model, but you can’t see how it was made or reproduce it. Full open source adds the training code and a description of the data good enough for others to rebuild it.",
+"w": "Many popular downloadable models come with licenses that let you use and change them, but their makers keep the training data private. A few research groups go further and publish their training code and data too, so others can study exactly how the model was built.",
+"p": "People who say “open source AI” usually mean open weights. Strict open source also requires the training code and enough detail about the data to rebuild the model."
+},
+"pt": {
+"e": "Em software, open source significa receber o código-fonte, as instruções que fazem o programa funcionar, com liberdade para ler, mudar e compartilhar. Um modelo tem mais ingredientes do que código, porque quase tudo o que ele sabe vem dos dados de treino. Só com os pesos, você usa e ajusta o modelo, mas não vê como ele foi feito nem consegue reproduzi-lo. O open source completo acrescenta o código de treino e uma descrição dos dados boa o bastante para outras pessoas o reconstruírem.",
+"w": "Muitos modelos populares que podem ser baixados vêm com licenças que deixam você usar e modificar, mas os criadores mantêm os dados de treino em segredo. Alguns grupos de pesquisa vão além e publicam também o código e os dados de treino, para que outras pessoas estudem exatamente como o modelo foi construído.",
+"p": "Quem diz “IA open source” costuma falar de pesos abertos. O open source estrito exige o código de treino e informação sobre os dados para reconstruir o modelo."
+}
+},
+"apps": {
+"en": {
+"e": "The app is the part you see and pay for, and the model is the engine underneath. Behind the scenes, the app adds hidden instructions called a system prompt, which set its tone and rules, plus tools such as web search, image making and file reading. Because of these extras, two apps can feel very different even when they use the same model. The company can also switch the model without changing the app’s name.",
+"w": "When you open a chatbot on your phone, upload a PDF and ask for a summary, or talk to it by voice while cooking, you are using a chat app. The model doing the work usually runs on the company’s servers, not on your phone.",
+"p": "Chat apps are what most people actually open: a chat window, plus an account, saved history, memory, file uploads, voice and often a subscription."
+},
+"pt": {
+"e": "O app é a parte que você vê e pela qual paga, e o modelo é o motor por baixo. Nos bastidores, o app acrescenta instruções escondidas, chamadas system prompt, que definem o tom e as regras, além de ferramentas como pesquisa na web, criação de imagens e leitura de arquivos. Por causa desses extras, dois apps podem parecer bem diferentes mesmo usando o mesmo modelo. A empresa também pode trocar o modelo sem mudar o nome do app.",
+"w": "Quando você abre um chatbot no celular, envia um PDF e pede um resumo, ou conversa com ele por voz enquanto cozinha, está usando um app de chat. O modelo que faz o trabalho normalmente roda nos servidores da empresa, não no seu celular.",
+"p": "Os apps de chat são o que a maioria das pessoas abre: uma janela de conversa com conta, histórico, memória, envio de arquivos, voz e, muitas vezes, assinatura."
+}
+},
+"harness": {
+"en": {
+"e": "On its own, a model can only write text. A harness runs it in a loop: it passes the model your request, carries out the actions the model asks for, such as opening a file or running a test, and feeds the results back so the model can choose the next step. It also sets permissions: what the model may touch and when it must ask you. A good harness can make the same model far more useful.",
+"w": "Coding assistants that edit a whole project, run its tests and fix what breaks are harnesses built around a model. So are browser agents that click through websites to fill in a form or compare prices for you.",
+"p": "A harness is software that connects a model to tools so it can do real work: read files, run commands, browse the web and test its own results."
+},
+"pt": {
+"e": "Sozinho, um modelo só escreve texto. O harness o coloca num ciclo: passa o seu pedido ao modelo, executa as ações que ele pede, como abrir um arquivo ou rodar um teste, e devolve os resultados para ele decidir o próximo passo. Também define as permissões: o que o modelo pode mexer e quando precisa pedir a você. Um bom harness pode deixar o mesmo modelo muito mais útil.",
+"w": "Assistentes de programação que editam um projeto inteiro, rodam os testes e corrigem o que quebra são harnesses montados em volta de um modelo. Agentes de navegador que clicam pelos sites para preencher um formulário ou comparar preços para você também são.",
+"p": "Um harness é o software que liga um modelo a ferramentas para ele trabalhar de verdade: ler arquivos, rodar comandos, navegar na web e testar o que fez."
+}
+},
+"local": {
+"en": {
+"e": "These apps offer a catalog of open-weight models in compressed versions, shrunk to fit on an ordinary computer at a small cost in quality. You pick a model, it downloads once, and from then on everything runs on your machine, so your text never leaves it. The limit is your computer’s memory: a laptop handles small models well, while the biggest models need far more than a typical home computer has.",
+"w": "A writer can run a small model on a laptop during a flight to summarize notes. A small business can let staff ask questions about confidential files without sending them to an outside company.",
+"p": "Ollama and LM Studio are free apps that download open-weight models and run them on your own computer, with no internet needed once a model is downloaded."
+},
+"pt": {
+"e": "Esses apps oferecem um catálogo de modelos de pesos abertos em versões comprimidas, encolhidas para caber num computador comum com uma pequena perda de qualidade. Você escolhe um modelo, ele é baixado uma vez e, dali em diante, tudo roda na sua máquina, então seu texto não sai dela. O limite é a memória do computador: um notebook dá conta de modelos pequenos, mas os maiores precisam de muito mais do que um computador doméstico típico tem.",
+"w": "Dá para rodar um modelo pequeno no notebook durante um voo para resumir anotações. Uma pequena empresa pode deixar a equipe fazer perguntas sobre arquivos confidenciais sem enviá-los para uma empresa de fora.",
+"p": "Ollama e LM Studio são apps gratuitos que baixam modelos de pesos abertos e os rodam no seu próprio computador, sem precisar de internet depois do download."
+}
+},
+"reasoning": {
+"en": {
+"e": "An ordinary model starts writing its answer right away. A reasoning model first writes out a long draft of its own working, trying approaches, checking steps and fixing errors, and only then gives you the result. It learned this habit through training on problems with checkable answers, such as math and code, where reaching the right answer was rewarded. The extra thinking costs time and money, so many apps let you choose how hard it should think.",
+"w": "Many chat apps have a “thinking” option or a model picker, and you may see a note such as “Thought for 20 seconds” above the answer. People turn it on for tricky math, planning or code, and leave it off for a quick email.",
+"p": "Reasoning models work through a problem step by step before they answer. They take longer, but make fewer mistakes on hard questions."
+},
+"pt": {
+"e": "Um modelo comum começa a escrever a resposta na hora. Um modelo de raciocínio primeiro escreve um longo rascunho do próprio trabalho, testando caminhos, conferindo etapas e corrigindo erros, e só depois entrega o resultado. Ele aprendeu esse hábito treinando com problemas de resposta verificável, como matemática e código, em que chegar à resposta certa era recompensado. Pensar mais custa tempo e dinheiro, então muitos apps deixam você escolher o quanto ele deve pensar.",
+"w": "Muitos apps de chat têm uma opção de “pensar” ou um seletor de modelo, e às vezes aparece um aviso como “Pensou por 20 segundos” antes da resposta. As pessoas ligam essa opção para contas difíceis, planejamento ou código, e deixam desligada para um e-mail rápido.",
+"p": "Modelos de raciocínio resolvem o problema passo a passo antes de responder. Demoram mais, mas erram menos em perguntas difíceis."
+}
+},
+"bench": {
+"en": {
+"e": "A benchmark is a fixed set of questions or tasks with known answers, such as coding problems or hard science questions, so every model is graded the same way. Some leaderboards work differently: people compare two anonymous answers and vote for the better one. Scores are a useful first filter, but companies can tune models to do well on popular tests, and a test may look nothing like your work. A quick trial on your own tasks tells you more.",
+"w": "When a company announces a new model, it usually shows a table of benchmark scores next to its rivals’ scores. Teams choosing a model for work then try it on their own tasks, because a top score doesn’t guarantee it will suit them.",
+"p": "Benchmarks are standard tests that give AI models a score. Leaderboards turn those scores, or people’s votes, into public rankings."
+},
+"pt": {
+"e": "Um benchmark é um conjunto fixo de perguntas ou tarefas com respostas conhecidas, como problemas de programação ou questões difíceis de ciência, para que todos os modelos sejam avaliados do mesmo jeito. Alguns rankings funcionam diferente: as pessoas comparam duas respostas anônimas e votam na melhor. As notas servem como primeiro filtro, mas as empresas podem ajustar os modelos para ir bem nos testes populares, e um teste pode não ter nada a ver com o seu trabalho. Experimentar nas suas próprias tarefas diz mais.",
+"w": "Quando uma empresa anuncia um modelo novo, normalmente mostra uma tabela de notas em benchmarks ao lado das notas dos concorrentes. Equipes que escolhem um modelo para o trabalho depois o testam nas próprias tarefas, porque nota alta não garante que ele sirva para elas.",
+"p": "Benchmarks são testes padronizados que dão uma nota aos modelos de IA. Os rankings transformam essas notas, ou os votos das pessoas, em classificações públicas."
+}
+}
+};
+Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.assign(EN[id], LESSON_TEXT[id].en); PT[id] = Object.assign(PT[id] || {}, LESSON_TEXT[id].pt); });
+// ---- end rewritten lesson texts ----
 
 (function () {
   "use strict";
@@ -4625,6 +5419,7 @@ Object.assign(UI.pt, {
   const sheetMQ = window.matchMedia("(max-width: 1100px), (pointer: coarse)");   // tablets, phones and other touch screens
   const phone = window.matchMedia("(max-width: 640px)");
   let sheetOpen = false;
+  let sheetMax = load("aimap-max", "0") === "1";
   // Language: "auto" follows the device's preferred languages; "en" or "pt" is the person's own choice.
   function deviceLang() {
     const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
@@ -4701,7 +5496,13 @@ Object.assign(UI.pt, {
   }
   function lineH(kind) { return kind === "root" || kind === "lens" ? 15 : 13; }
   function pathIds(id) { const s = new Set(); for (let n = NODES.get(id); n; n = n.parent) s.add(n.id); return s; }
-  function size() { const r = svg.node().getBoundingClientRect(); return { w: r.width || 800, h: r.height || 600 }; }
+  function sideCovers() { return sheetOpen && !sheetMax && !phone.matches; }   // tablet side panel over the right of the map
+  function size() {                  // the part of the map the person can actually see
+    const r = svg.node().getBoundingClientRect();
+    let w = r.width || 800;
+    if (sideCovers() && side.offsetWidth) w = Math.max(220, w - side.offsetWidth - 24);
+    return { w: w, h: r.height || 600 };
+  }
 
   // ---------- geometry ----------
   function layout(h) {
@@ -4989,17 +5790,35 @@ Object.assign(UI.pt, {
   function setSheet(v) {             // open or close the panel: a modal on touch screens, a side column on desktop
     const root = document.documentElement;
     if (sheetMQ.matches) {
+      const was = sheetOpen;
       sheetOpen = v; root.classList.toggle("sheet-open", v); root.classList.remove("panel-closed");
       if (v) panel.focus({ preventScroll: true });
+      if (v && !was && sideCovers()) setTimeout(nudgeIntoView, reduce ? 0 : 620);
     } else {
       sheetOpen = false; root.classList.remove("sheet-open"); root.classList.toggle("panel-closed", !v);
     }
   }
+  function setMax(v) {
+    sheetMax = v; save("aimap-max", v ? "1" : "0");
+    document.documentElement.classList.toggle("sheet-max", v);
+    const b = document.getElementById("sheetMax");
+    b.replaceChildren(ico(v ? "shrink" : "expand"));
+    b.setAttribute("aria-label", U(v ? "minimize" : "maximize")); b.title = U(v ? "minimize" : "maximize");
+    side.setAttribute("aria-modal", v || phone.matches ? "true" : "false");
+    if (!v && sheetOpen) setTimeout(nudgeIntoView, reduce ? 0 : 300);
+  }
+  function nudgeIntoView() {         // if the side panel hides the selected concept, slide the map so it shows
+    const p = shown.get(selected); if (!p) return;
+    const t = d3.zoomTransform(svg.node()), sz = size(), x = t.applyX(p.x), y = t.applyY(p.y);
+    if (x > sz.w - 40 || x < 30 || y < 30 || y > sz.h - 80) moveTo(d3.zoomIdentity.translate(t.x + sz.w / 2 - x, t.y + sz.h / 2 - y).scale(t.k));
+  }
+  function measureHeader() { document.documentElement.style.setProperty("--hdr", document.querySelector(".top").offsetHeight + "px"); }
   function applySheetMode() {
     const on = sheetMQ.matches;
+    measureHeader();
     document.documentElement.classList.toggle("sheet", on);
     side.setAttribute("role", on ? "dialog" : "complementary");
-    if (on) side.setAttribute("aria-modal", "true"); else side.removeAttribute("aria-modal");
+    if (on) side.setAttribute("aria-modal", sheetMax || phone.matches ? "true" : "false"); else side.removeAttribute("aria-modal");
     if (!on) { sheetOpen = false; document.documentElement.classList.remove("sheet-open"); }
   }
   function setView(v, quiet) {
@@ -5037,6 +5856,8 @@ Object.assign(UI.pt, {
     bulb: '<svg viewBox="0 0 16 18"><path d="M5.6 13.6h4.8M6.3 16.2h3.4M8 1.4a5.2 5.2 0 0 0-3.1 9.4c.6.5.9 1.1.9 1.8v.6h4.4v-.6c0-.7.3-1.3.9-1.8A5.2 5.2 0 0 0 8 1.4Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
     check: '<svg viewBox="0 0 14 14"><path d="M3 7.3 5.8 10 11 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cross: '<svg viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    expand: '<svg viewBox="0 0 14 14"><path d="M8.5 1.5h4v4M12.5 1.5 8 6M5.5 12.5h-4v-4M1.5 12.5 6 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    shrink: '<svg viewBox="0 0 14 14"><path d="M12.5 5.5h-4v-4M8.5 5.5l4-4M1.5 8.5h4v4M5.5 8.5l-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     goal: '<svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="currentColor" opacity="0.14"/><path d="M5.4 9.3 7.8 11.6 12.6 6.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
   function ico(name, cls) { const s = el("span", "ico" + (cls ? " " + cls : "")); s.innerHTML = ICON[name]; return s; }
@@ -5107,6 +5928,7 @@ Object.assign(UI.pt, {
       f.append(m);
     }
     f.append(el("p", "lead", info.p));
+    if (info.e) f.append(el("p", "explain", info.e));
     if (info.k) {
       const c = el("aside", "card analogy"), h = el("h3");
       h.append(ico("bulb")); h.append(document.createTextNode(U("analogyH")));
@@ -5441,6 +6263,7 @@ Object.assign(UI.pt, {
     document.getElementById("modeSeg").setAttribute("aria-label", U("layout"));
     document.getElementById("allBtn").title = U("showAllTip");
     document.getElementById("sheetClose").setAttribute("aria-label", U("close"));
+    setMax(sheetMax);
     svg.attr("aria-label", U("title"));
     syncZoomBtn();
     pressGroup("#langSeg", "data-lang", langPref);
@@ -5531,6 +6354,8 @@ Object.assign(UI.pt, {
   });
   document.getElementById("scrim").addEventListener("click", function () { setSheet(false); });
   document.getElementById("sheetClose").addEventListener("click", function () { setSheet(false); });
+  document.getElementById("sheetMax").addEventListener("click", function () { setMax(!sheetMax); });
+  window.addEventListener("resize", measureHeader);
   document.getElementById("sheetBtn").addEventListener("click", function () { setView("course"); });
   sheetMQ.addEventListener("change", applySheetMode);
   document.getElementById("openAll").addEventListener("click", function () {
