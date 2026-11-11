@@ -1,0 +1,6 @@
+// Cloudflare Workers static site: deploy.sh builds dist/ and uploads it.
+{
+  "name": "ai-map",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist" }
+}

@@ -14,7 +14,7 @@ Then open <http://localhost:8791/The%20AI%20map.html>.
 
 ## Publish it
 
-The site is hosted on Cloudflare Pages. The deploy copies the page to `dist/index.html` with the share image and uploads that folder:
+The site is hosted on Cloudflare as a Worker that serves static files (settings in `wrangler.jsonc`). The deploy copies the page to `dist/index.html` with the share image and uploads that folder:
 
 ```bash
 ./deploy.sh
