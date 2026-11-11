@@ -370,7 +370,8 @@ html.sheet .details { padding: 24px 28px 30px; }
       <button type="button" data-level="full" data-i="lvlFull" aria-pressed="false">Detailed</button>
     </div>
     <div class="seg" role="group" id="langSeg">
-      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="auto" data-i="thAuto" aria-pressed="true">Auto</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
       <button type="button" data-lang="pt" aria-pressed="false">PT-BR</button>
     </div>
     <div class="seg" role="group" id="themeSeg">
@@ -4508,8 +4509,18 @@ Object.assign(UI.pt, {
   const sheetMQ = window.matchMedia("(max-width: 1100px), (pointer: coarse)");   // tablets, phones and other touch screens
   const phone = window.matchMedia("(max-width: 640px)");
   let sheetOpen = false;
-  let lang = load("aimap-lang", "");
-  if (lang !== "en" && lang !== "pt") lang = (navigator.language || "").toLowerCase().indexOf("pt") === 0 ? "pt" : "en";
+  // Language: "auto" follows the device's preferred languages; "en" or "pt" is the person's own choice.
+  function deviceLang() {
+    const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    for (let i = 0; i < list.length; i++) {
+      const l = String(list[i]).toLowerCase();
+      if (l.indexOf("pt") === 0) return "pt";
+      if (l.indexOf("en") === 0) return "en";
+    }
+    return "en";
+  }
+  let langPref = load("aimap-lang", "auto"); if (langPref !== "en" && langPref !== "pt") langPref = "auto";
+  let lang = langPref === "auto" ? deviceLang() : langPref;
   let level = load("aimap-level", "simple") === "full" ? "full" : "simple";
   let theme = load("aimap-theme", "auto"); if (theme !== "light" && theme !== "dark") theme = "auto";
   const prog = loadJSON("aimap-progress", {}); if (!prog.seen) prog.seen = {}; if (!prog.quiz) prog.quiz = {};
@@ -4540,7 +4551,7 @@ Object.assign(UI.pt, {
   const gX = viewport.append("g");
   const gNodes = viewport.append("g");
   const gXLab = viewport.append("g");
-  const zoom = d3.zoom().scaleExtent([0.2, 2.5]).on("zoom", function (e) {
+  const zoom = d3.zoom().scaleExtent([0.2, 3]).on("zoom", function (e) {
     viewport.attr("transform", e.transform);
     svg.classed("far", e.transform.k < 0.6);     // far away: hide the small labels so the overview stays readable
     svg.classed("tiny", e.transform.k < 0.3);
@@ -4808,7 +4819,7 @@ Object.assign(UI.pt, {
   }
   function zoomTo(id) {             // the selected concept, big and in the middle (its label sits just below the dot)
     const p = shown.get(id); if (!p) return;
-    const sz = size(), k = 2;
+    const sz = size(), k = 2.5;
     moveTo(d3.zoomIdentity.translate(sz.w / 2 - k * p.x, (sz.h - 50) / 2 - k * (p.y + 12)).scale(k));
   }
   function syncZoomBtn() {
@@ -5264,7 +5275,7 @@ Object.assign(UI.pt, {
     document.getElementById("sheetClose").setAttribute("aria-label", U("close"));
     svg.attr("aria-label", U("title"));
     syncZoomBtn();
-    pressGroup("#langSeg", "data-lang", lang);
+    pressGroup("#langSeg", "data-lang", langPref);
     renderPanel();
     if (q.value.trim()) { qItems = search(q.value); drawResults(); }
   }
@@ -5280,8 +5291,14 @@ Object.assign(UI.pt, {
   }
 
   // ---------- controls ----------
+  function setLang(pref) {
+    langPref = pref; save("aimap-lang", pref);
+    lang = pref === "auto" ? deviceLang() : pref;
+    applyLang(); render(null);
+  }
+  window.addEventListener("languagechange", function () { if (langPref === "auto" && deviceLang() !== lang) setLang("auto"); });
   document.querySelectorAll("#langSeg button").forEach(function (b) {
-    b.addEventListener("click", function () { lang = b.getAttribute("data-lang"); save("aimap-lang", lang); applyLang(); render(null); });
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
   });
   document.querySelectorAll("#levelSeg button").forEach(function (b) {
     b.addEventListener("click", function () { setLevel(b.getAttribute("data-level")); });
