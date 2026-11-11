@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- The site has its own light and dark themes. This tells Android browsers (Chrome, Samsung Internet)
+     not to apply their automatic dark mode on top, which recolors the label outlines on the map. -->
+<meta name="color-scheme" content="light dark">
 <title>The AI map</title>
 <meta name="description" content="A free, interactive mini-course on how AI works. Ten short modules, a map of 200+ connected concepts, plain explanations and quizzes. In English and Portuguese.">
 <meta property="og:type" content="website">
@@ -29,7 +32,10 @@
 (function () {
   var d = document.documentElement;
   if (window.matchMedia("(max-width: 1100px), (pointer: coarse)").matches) d.classList.add("sheet");
-  try { var t = localStorage.getItem("aimap-theme"); if (t === "light" || t === "dark") d.setAttribute("data-theme", t); } catch (e) { /* storage unavailable */ }
+  try {
+    var t = localStorage.getItem("aimap-theme");
+    if (t === "light" || t === "dark") { d.setAttribute("data-theme", t); document.querySelector('meta[name="color-scheme"]').setAttribute("content", t); }
+  } catch (e) { /* storage unavailable */ }
 })();
 </script>
 <style>
@@ -7630,6 +7636,7 @@ Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.ass
   function applyTheme() {
     if (theme === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", theme);
+    document.querySelector('meta[name="color-scheme"]').setAttribute("content", theme === "auto" ? "light dark" : theme);
     pressGroup("#themeSeg", "data-theme-set", theme);
   }
 
