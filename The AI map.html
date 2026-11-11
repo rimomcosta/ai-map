@@ -32,6 +32,10 @@
 (function () {
   var d = document.documentElement;
   if (window.matchMedia("(max-width: 1100px), (pointer: coarse)").matches) d.classList.add("sheet");
+  // Built-in viewers of Android apps (the Google app, other WebViews) can force their own dark mode,
+  // which repaints the outline around map labels. Mark them so those outlines can be left out.
+  var ua = navigator.userAgent || "";
+  if (/Android/i.test(ua) && (/; wv\)/.test(ua) || /\bGSA\//.test(ua))) d.classList.add("inapp");
   try {
     var t = localStorage.getItem("aimap-theme");
     if (t === "light" || t === "dark") { d.setAttribute("data-theme", t); document.querySelector('meta[name="color-scheme"]').setAttribute("content", t); }
@@ -341,6 +345,7 @@ html.panel-closed:not(.sheet) .side { display: none; }
 .mk { fill: var(--muted); } .mk.hot { fill: var(--accent); }
 #graph.far .k-leaf:not(.selected) .label, #graph.far .k-example:not(.selected) .label, #graph.far .xlabel:not(.hot) { opacity: 0; }
 #graph .label, #graph .xlabel { transition: opacity 0.2s; }
+html.inapp #graph .label, html.inapp #graph .xlabel { stroke: none; stroke-width: 0; }
 #graph.everything .xlabel:not(.hot) { opacity: 0; }
 #graph.everything .xlink:not(.hot) { opacity: 0.22; }
 #graph .label.out { text-anchor: start; dominant-baseline: central; font-size: 11px; stroke-width: 3px; }
