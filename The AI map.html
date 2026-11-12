@@ -113,7 +113,7 @@ button { font: inherit; color: inherit; }
 .seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: var(--thumb); }
 
 /* ---------- header ---------- */
-.top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 260px) minmax(0, 1fr); align-items: center; gap: 10px 14px; padding: 14px 22px 10px; }
+.top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 440px) minmax(0, 1fr); align-items: center; gap: 10px 14px; padding: 14px 22px 10px; }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .mark { width: 26px; height: 26px; flex: none; color: var(--accent); }
 h1 { font-weight: 500; font-size: 1.12rem; line-height: 1.1; letter-spacing: -0.01em; margin: 0; white-space: nowrap; }
@@ -426,15 +426,14 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
 @keyframes sidein { from { opacity: 0; transform: translateX(24px); } }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
 @media (max-width: 1100px) {
-  .top { grid-template-columns: auto minmax(120px, 1fr) auto; padding-left: 16px; padding-right: 16px; }
-  .search { width: 100%; max-width: 340px; justify-self: center; }
-  .prefs { gap: 6px; }
-  html.sheet .top .seg button { padding: 6px 10px; }
+  .top { grid-template-columns: auto minmax(0, 1fr) auto; padding-left: 16px; padding-right: 16px; }
+  .top::after { content: ""; width: 26px; }
+  .search { width: 100%; max-width: 420px; justify-self: center; }
 }
 @media (max-width: 700px) {
-  .top { grid-template-columns: minmax(0, 1fr); }
-  .search { width: 100%; max-width: none; }
-  .sc-prefs { justify-self: stretch; }
+  .top { grid-template-columns: auto minmax(0, 1fr); }
+  .top::after { display: none; }
+  .search { max-width: none; }
 }
 @media (max-width: 640px) {
   .mapbar { left: 10px; right: 10px; gap: 6px; }
@@ -470,23 +469,6 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
       </div>
     </div>
   </div>
-  <div class="prefs">
-    <div class="seg" role="group" id="levelSeg">
-      <button type="button" data-level="simple" data-i="lvlSimple" aria-pressed="true">Simple</button>
-      <button type="button" data-level="full" data-i="lvlFull" aria-pressed="false">Detailed</button>
-    </div>
-    <div class="seg" role="group" id="langSeg">
-      <button type="button" data-lang="auto" data-i="thAuto" aria-pressed="true">Auto</button>
-      <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      <button type="button" data-lang="pt" aria-pressed="false">PT-BR</button>
-    </div>
-    <div class="seg" role="group" id="themeSeg">
-      <button type="button" data-theme-set="auto" data-i="thAuto" aria-pressed="true">Auto</button>
-      <button type="button" data-theme-set="light" data-i="thLight" aria-pressed="false">Light</button>
-      <button type="button" data-theme-set="dark" data-i="thDark" aria-pressed="false">Dark</button>
-    </div>
-    <a class="btn primary" id="supportBtn" target="_blank" rel="noopener noreferrer" hidden><span aria-hidden="true">&#9825;</span> <span data-i="support">Support this project</span></a>
-  </div>
 </header>
 <main class="stage">
   <section class="canvas" id="canvas">
@@ -515,6 +497,25 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
         <button type="button" class="btn" id="openAll" data-i="openAll">Expand branch</button>
         <button type="button" class="btn" id="closeAll" data-i="closeAll">Collapse all</button>
         <button type="button" class="btn" id="focusBtn" data-i="focus" aria-pressed="false">Focus</button>
+        <span class="div" aria-hidden="true"></span>
+      <div class="seg" role="group" id="levelSeg">
+      <button type="button" data-level="simple" data-i="lvlSimple" aria-pressed="true">Simple</button>
+      <button type="button" data-level="full" data-i="lvlFull" aria-pressed="false">Detailed</button>
+      </div>
+      <div class="seg" role="group" id="langSeg">
+      <span class="seglabel" data-i="lang">Language</span>
+      <button type="button" data-lang="auto" data-i="thAuto" aria-pressed="true">Auto</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="pt" aria-pressed="false">PT-BR</button>
+      </div>
+      <div class="seg" role="group" id="themeSeg">
+      <span class="seglabel" data-i="themeShort">Theme</span>
+      <button type="button" data-theme-set="auto" data-i="thAuto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-set="light" data-i="thLight" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" data-i="thDark" aria-pressed="false">Dark</button>
+      </div>
+      <a class="btn primary" id="supportBtn" target="_blank" rel="noopener noreferrer" hidden><span aria-hidden="true">&#9825;</span> <span data-i="support">Support this project</span></a>
+
       </div>
       <button type="button" class="btn primary" id="sheetBtn" data-i="tabCourse">Course</button>
     </div>
@@ -4535,7 +4536,7 @@ Object.assign(UI.en, {
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", coachText:"New here? Type “ChatGPT” and see where it fits in the world of AI.", coachTry:"Show me", coachSkip:"Not now", coach2Text:"You can change the visualization style here: a tree, or a radial map with everything around the center.", coach2Ok:"Got it", maximize:"Make bigger", restoreSide:"Back to the side", minimize:"Minimize", showPanel:"Show the panel", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", themeShort:"Theme", coachText:"New here? Type “ChatGPT” and see where it fits in the world of AI.", coachTry:"Show me", coachSkip:"Not now", coach2Text:"You can change the visualization style here: a tree, or a radial map with everything around the center.", coach2Ok:"Got it", maximize:"Make bigger", restoreSide:"Back to the side", minimize:"Minimize", showPanel:"Show the panel", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
   welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No math or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
@@ -4560,7 +4561,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", coachText:"Primeira vez aqui? Digite “ChatGPT” e veja onde ele se encaixa no mundo da IA.", coachTry:"Mostrar", coachSkip:"Agora não", coach2Text:"Você pode mudar o estilo de visualização aqui: árvore, ou um mapa radial com tudo em volta do centro.", coach2Ok:"Entendi", maximize:"Ampliar", restoreSide:"Voltar para a lateral", minimize:"Minimizar", showPanel:"Mostrar o painel", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", themeShort:"Tema", coachText:"Primeira vez aqui? Digite “ChatGPT” e veja onde ele se encaixa no mundo da IA.", coachTry:"Mostrar", coachSkip:"Agora não", coach2Text:"Você pode mudar o estilo de visualização aqui: árvore, ou um mapa radial com tudo em volta do centro.", coach2Ok:"Entendi", maximize:"Ampliar", restoreSide:"Voltar para a lateral", minimize:"Minimizar", showPanel:"Mostrar o painel", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -8851,7 +8852,6 @@ XLINKS.push(
     update();
   }
   scrollHints(document.getElementById("tools"));
-  scrollHints(document.querySelector(".prefs"), "sc-prefs");
 
   let lastW = 0, rz = null;
   new ResizeObserver(function () {          // keep the map framed when its width changes (window resize, panel shown or hidden)
