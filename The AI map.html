@@ -138,6 +138,24 @@ h1 { font-weight: 500; font-size: 1.12rem; line-height: 1.1; letter-spacing: -0.
 .search { position: relative; width: 100%; min-width: 0; }
 .search input { width: 100%; font: inherit; font-size: 0.88rem; color: var(--ink); background: var(--fill); border: 0; border-radius: 999px; padding: 8px 15px; -webkit-appearance: none; appearance: none; }
 .search input::placeholder { color: var(--muted); }
+/* first-visit hint under the search box */
+.coach {
+  position: absolute; z-index: 45; top: calc(100% + 14px); left: 50%; width: min(300px, 86vw); transform: translateX(-50%);
+  padding: 14px 16px 12px; border-radius: 16px; background: var(--accent); color: var(--on-accent);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22); animation: coachin 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.coach::before { content: ""; position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px; background: var(--accent); transform: rotate(45deg); border-radius: 3px 0 0 0; }
+.coach p { margin: 0 0 12px; font-size: 0.95rem; line-height: 1.45; }
+.coach-actions { display: flex; gap: 6px; align-items: center; }
+.coach .btn.primary { background: var(--on-accent); color: var(--accent); }
+.coach .btn.primary:hover { filter: none; opacity: 0.92; }
+.coach .btn.quiet { color: var(--on-accent); opacity: 0.85; }
+.coach .btn.quiet:hover { color: var(--on-accent); opacity: 1; }
+.coach.coach-up { position: fixed; top: auto; left: 0; transform: none; animation-name: coachup; }
+.coach.coach-up::before { top: auto; bottom: -7px; left: var(--ax, 50%); border-radius: 0 0 3px 0; }
+@keyframes coachup { from { opacity: 0; transform: translateY(8px); } }
+@keyframes coachin { from { opacity: 0; transform: translate(-50%, 8px); } }
+@media (prefers-reduced-motion: reduce) { .coach { animation: none; } }
 .qres {
   position: absolute; z-index: 50; top: calc(100% + 8px); left: 0; right: 0; min-width: 270px;
   background: var(--panel); border-radius: 14px; padding: 6px; max-height: 360px; overflow: auto; box-shadow: var(--shadow);
@@ -444,6 +462,13 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
   <div class="search">
     <input id="q" type="search" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="qres">
     <div id="qres" class="qres" role="listbox" hidden></div>
+    <div class="coach" id="coach" role="dialog" aria-labelledby="coachText" hidden>
+      <p id="coachText"></p>
+      <div class="coach-actions">
+        <button type="button" class="btn primary" id="coachTry"></button>
+        <button type="button" class="btn quiet" id="coachSkip"></button>
+      </div>
+    </div>
   </div>
   <div class="prefs">
     <div class="seg" role="group" id="levelSeg">
@@ -495,6 +520,10 @@ html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
     </div>
   </section>
   <div class="scrim" id="scrim"></div>
+  <div class="coach coach-up" id="coach2" role="dialog" aria-labelledby="coach2Text" hidden>
+    <p id="coach2Text"></p>
+    <div class="coach-actions"><button type="button" class="btn primary" id="coach2Ok"></button></div>
+  </div>
   <aside class="side" id="side">
     <div class="sidehead">
       <div class="tabs" role="tablist" id="tabs">
@@ -4506,7 +4535,7 @@ Object.assign(UI.en, {
   hint:"Select a circle to open it. Drag to move, scroll or pinch to zoom.",
   layout:"Layout",
   moreDetail:"Show the technical details", lessDetail:"Simple mode hides the technical layer.",
-  close:"Close", mapTools:"Map tools", maximize:"Make bigger", restoreSide:"Back to the side", minimize:"Minimize", showPanel:"Show the panel", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
+  close:"Close", mapTools:"Map tools", coachText:"New here? Type “ChatGPT” and see where it fits in the world of AI.", coachTry:"Show me", coachSkip:"Not now", coach2Text:"You can change the visualization style here: a tree, or a radial map with everything around the center.", coach2Ok:"Got it", maximize:"Make bigger", restoreSide:"Back to the side", minimize:"Minimize", showPanel:"Show the panel", searchShort:"Search", zoomIn:"Zoom in", zoomInTip:"Zoom in on “{name}”", showAll:"Show everything", showAllTip:"Open every branch in the radial view with all connections. Press again to go back to your view.", copyLink:"Copy link", copied:"Link copied", source:"Source", reading:"Further reading", checked:"Last checked",
   welcomeTitle:"Understand AI, one idea at a time",
   welcomeLead:"A free mini-course for curious people, from teenagers to professionals. No math or coding needed.",
   welcomeHow:["Ten short modules, about ten minutes each.","Every idea comes with a plain explanation, an everyday comparison and a real example.","A three-question quiz closes each module."],
@@ -4531,7 +4560,7 @@ Object.assign(UI.pt, {
   hint:"Selecione um círculo para abri-lo. Arraste para mover, role ou use dois dedos para dar zoom.",
   layout:"Layout",
   moreDetail:"Mostrar os detalhes técnicos", lessDetail:"O modo simples esconde a camada técnica.",
-  close:"Fechar", mapTools:"Ferramentas do mapa", maximize:"Ampliar", restoreSide:"Voltar para a lateral", minimize:"Minimizar", showPanel:"Mostrar o painel", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
+  close:"Fechar", mapTools:"Ferramentas do mapa", coachText:"Primeira vez aqui? Digite “ChatGPT” e veja onde ele se encaixa no mundo da IA.", coachTry:"Mostrar", coachSkip:"Agora não", coach2Text:"Você pode mudar o estilo de visualização aqui: árvore, ou um mapa radial com tudo em volta do centro.", coach2Ok:"Entendi", maximize:"Ampliar", restoreSide:"Voltar para a lateral", minimize:"Minimizar", showPanel:"Mostrar o painel", searchShort:"Buscar", zoomIn:"Aproximar", zoomInTip:"Aproximar em “{name}”", showAll:"Ver tudo", showAllTip:"Abre todos os ramos na visão radial, com todas as conexões. Toque de novo para voltar à sua visão.", copyLink:"Copiar link", copied:"Link copiado", source:"Fonte", reading:"Leitura complementar", checked:"Última verificação",
   welcomeTitle:"Entenda a IA, uma ideia por vez",
   welcomeLead:"Um minicurso gratuito para gente curiosa, de adolescentes a profissionais. Não precisa saber matemática nem programação.",
   welcomeHow:["Dez módulos curtos, com cerca de dez minutos cada.","Cada ideia vem com uma explicação simples, uma comparação do dia a dia e um exemplo real.","Um quiz de três perguntas fecha cada módulo."],
@@ -7617,6 +7646,97 @@ PT.openjev = { l:"Projetos OpenJev",
  h:"Surgiram poucas semanas depois do lançamento do Jev, em setembro de 2026, quando desenvolvedores tentaram reproduzir o comportamento dele de forma aberta.",
  n:"Muda rápido e é irregular. Qualidade, velocidade e licença variam muito entre projetos, e poucos foram comparados com o Jev de forma independente." };
 
+// ---- connections added after a full audit (November 2026) ----
+XLINKS.push(
+ ["vibe", "harness", "uses"],
+ ["halluc", "vibe", "affects"],
+ ["harness", "toolcall", "uses"],
+ ["harness", "mcp", "uses"],
+ ["harness", "perms", "uses"],
+ ["harness", "hitl", "uses"],
+ ["harness", "skills", "uses"],
+ ["harness", "ctxeng", "uses"],
+ ["skills", "ctxeng", "exampleof"],
+ ["skills", "prompting", "buildson"],
+ ["ctxeng", "rag", "uses"],
+ ["ctxeng", "memstate", "uses"],
+ ["ctxeng", "aiagents", "usedfor"],
+ ["aiagents", "memstate", "uses"],
+ ["aiagents", "reasoning", "uses"],
+ ["routing", "reasoning", "uses"],
+ ["reasoning", "llm", "buildson"],
+ ["toolcall", "prompting", "buildson"],
+ ["toolcall", "cutoff", "guards"],
+ ["vectordb", "memstate", "usedfor"],
+ ["injection", "mcp", "targets"],
+ ["injection", "privacy", "affects"],
+ ["jailbreak", "rlhf", "targets"],
+ ["jailbreak", "prompting", "uses"],
+ ["verify", "confid", "guards"],
+ ["verify", "deepfake", "guards"],
+ ["deepfake", "ae", "uses"],
+ ["evals", "shift", "guards"],
+ ["evals", "biasfair", "guards"],
+ ["cutoff", "shift", "exampleof"],
+ ["datasplit", "leakage", "guards"],
+ ["overfit", "bench", "affects"],
+ ["pretrain", "cutoff", "causes"],
+ ["pretrain", "chips", "runson"],
+ ["pretrain", "backprop", "uses"],
+ ["llm", "pretrain", "trained"],
+ ["llm", "instruct", "trained"],
+ ["instruct", "sup", "exampleof"],
+ ["finetune", "overfit", "causes"],
+ ["finetune", "rag", "alt"],
+ ["peft", "open", "workson"],
+ ["distill", "compress", "partof"],
+ ["sup", "reg", "usedfor"],
+ ["rl", "control", "usedfor"],
+ ["rlalgos", "games", "usedfor"],
+ ["ae", "unsup", "trained"],
+ ["sym", "ml", "alt"],
+ ["games", "search", "uses"],
+ ["agents", "search", "uses"],
+ ["trees", "mstruct", "workson"],
+ ["trees", "cls", "usedfor"],
+ ["perceptron", "cls", "usedfor"],
+ ["ffn", "mlp", "exampleof"],
+ ["alexnet", "chips", "runson"],
+ ["cnn", "mimage", "workson"],
+ ["cnn", "det", "usedfor"],
+ ["cnn", "vt", "alt"],
+ ["vt", "mimage", "workson"],
+ ["dit", "fm", "backbone"],
+ ["ditimg", "imgex", "shares"],
+ ["lstm", "forecast", "usedfor"],
+ ["ssm", "trans", "alt"],
+ ["tok", "mtext", "workson"],
+ ["attn", "ctx", "affects"],
+ ["ctx", "memory", "affects"],
+ ["size", "memory", "affects"],
+ ["memory", "local", "affects"],
+ ["confid", "logits", "explains"],
+ ["enc", "cls", "usedfor"],
+ ["enc", "rerank", "usedfor"],
+ ["textcode", "ar", "generates"],
+ ["images", "diff", "generates"],
+ ["images", "fm", "generates"],
+ ["av", "diff", "generates"],
+ ["sd", "open", "exampleof"],
+ ["llm", "textcode", "usedfor"],
+ ["mllm", "llm", "buildson"],
+ ["mllm", "vt", "uses"],
+ ["vla", "vlm", "buildson"],
+ ["apps", "mllm", "uses"],
+ ["apps", "memstate", "uses"],
+ ["closed", "open", "alt"],
+ ["local", "open", "uses"],
+ ["local", "slm", "uses"],
+ ["hosts", "open", "uses"],
+ ["hosts", "chips", "runson"],
+ ["openrouter", "inference", "exampleof"]
+);
+
 (function () {
   "use strict";
 
@@ -8519,7 +8639,53 @@ PT.openjev = { l:"Projetos OpenJev",
     else if (e.key === "Escape") { q.value = ""; qItems = []; drawResults(); }
   });
   q.addEventListener("blur", function () { setTimeout(function () { qres.hidden = true; q.setAttribute("aria-expanded", "false"); }, 150); });
-  q.addEventListener("focus", function () { if (q.value.trim()) drawResults(); });
+  q.addEventListener("focus", function () { hideCoach(); if (q.value.trim()) drawResults(); });
+
+  // ---------- first visit: one hint that points at the search box ----------
+  const coach = document.getElementById("coach");
+  function hideCoach() { if (!coach.hidden) { coach.hidden = true; save("aimap-coach", "1"); queueCoach2(); } }
+  // second hint: points at the Tree / Radial switch once the first one is gone
+  const coach2 = document.getElementById("coach2"), modeSegEl = document.getElementById("modeSeg");
+  let coach2Timer = null;
+  function placeCoach2() {
+    if (coach2.hidden) return;
+    const r = modeSegEl.getBoundingClientRect(), w = coach2.offsetWidth, cx = r.left + r.width / 2;
+    const left = Math.max(10, Math.min(window.innerWidth - w - 10, cx - w / 2));
+    coach2.style.left = left + "px";
+    coach2.style.bottom = (window.innerHeight - r.top + 14) + "px";
+    coach2.style.setProperty("--ax", Math.max(18, Math.min(w - 18, cx - left)) + "px");
+  }
+  function hideCoach2() { if (!coach2.hidden) { coach2.hidden = true; save("aimap-coach2", "1"); } clearTimeout(coach2Timer); }
+  function queueCoach2() {
+    if (load("aimap-coach2", "") === "1") return;
+    clearTimeout(coach2Timer);
+    coach2Timer = setTimeout(function tryShow() {
+      // wait while the search results or a phone bottom sheet cover the screen
+      if (!qres.hidden || (sheetOpen && phone.matches)) { coach2Timer = setTimeout(tryShow, 700); return; }
+      modeSegEl.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      coach2.hidden = false; placeCoach2();
+    }, 900);
+  }
+  document.getElementById("coach2Ok").addEventListener("click", hideCoach2);
+  modeSegEl.addEventListener("click", hideCoach2);
+  window.addEventListener("resize", placeCoach2);
+  document.getElementById("tools").addEventListener("scroll", placeCoach2, { passive: true });
+  function syncCoach() {
+    document.getElementById("coachText").textContent = U("coachText");
+    document.getElementById("coachTry").textContent = U("coachTry");
+    document.getElementById("coachSkip").textContent = U("coachSkip");
+    document.getElementById("coach2Text").textContent = U("coach2Text");
+    document.getElementById("coach2Ok").textContent = U("coach2Ok");
+  }
+  document.getElementById("coachTry").addEventListener("click", function () {
+    hideCoach();
+    q.value = "ChatGPT"; qItems = search(q.value); qActive = 0;
+    q.focus(); drawResults();
+  });
+  document.getElementById("coachSkip").addEventListener("click", hideCoach);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { hideCoach(); hideCoach2(); } });
+  if (load("aimap-coach", "") !== "1") setTimeout(function () { if (load("aimap-coach", "") !== "1" && !q.value) coach.hidden = false; }, 1200);
+  else queueCoach2();
 
   // ---------- language, level, theme ----------
   function pressGroup(sel, attr, val) { document.querySelectorAll(sel + " button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute(attr) === val ? "true" : "false"); }); }
@@ -8528,6 +8694,7 @@ PT.openjev = { l:"Projetos OpenJev",
     document.title = U("title");
     document.querySelectorAll("[data-i]").forEach(function (e) { e.textContent = U(e.getAttribute("data-i")); });
     q.placeholder = q.clientWidth && q.clientWidth < 220 ? U("searchShort") : U("search"); q.setAttribute("aria-label", U("search"));
+    syncCoach();
     document.getElementById("langSeg").setAttribute("aria-label", U("lang"));
     document.getElementById("levelSeg").setAttribute("aria-label", U("level"));
     document.getElementById("themeSeg").setAttribute("aria-label", U("theme"));
