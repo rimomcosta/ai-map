@@ -1214,30 +1214,54 @@ ai
    account
  eco
   stack
+  makers
+   c_openai
+    ogpt
+    ogptoss
+    chatgpt
+    odots
+    codex
+    oaiapi
+   c_anthropic
+    oclaude
+    claudeapp
+    claudecode
+    antapi
+   c_google
+    ogemini
+    ogemma
+    geminiapp
+    antigravity
+    gapi
+   c_meta
+    omuse
+    metaai
+   c_microsoft
+    omai
+    copilot
+    ghcopilot
+   c_xai
+    ogrok
+    grokapp
+   c_mistral
+    omistral
+    lechat
+   c_deepseek
+    odeepseek
+    deepseekapp
+   c_alibaba
+    oqwen
+   c_moonshot
+    okimi
+   c_zai
+    oglm
+   c_typesafe
+    ojev
   closed
-   ogpt
-   oclaude
-   ogemini
-   ogrok
-   ojev
   open
    openvs
-   odeepseek
-   oqwen
-   okimi
-   oglm
-   omistral
-   ousopen
   apps
-   chatgpt
-   geminiapp
-   claudeapp
-   lechat
-   deepseekapp
   harness
-   claudecode
-   codex
-   antigravity
    t3code
   access
    openrouter
@@ -7737,6 +7761,633 @@ XLINKS.push(
  ["hosts", "chips", "runson"],
  ["openrouter", "inference", "exampleof"]
 );
+
+// ---- Models & products by company (November 2026) ----
+delete EN.ousopen; delete PT.ousopen; delete TYPE.ousopen; EX.delete("ousopen"); delete REFS.ousopen;
+for (let i = XLINKS.length - 1; i >= 0; i--) if (XLINKS[i][0] === "ousopen" || XLINKS[i][1] === "ousopen") XLINKS.splice(i, 1);
+CHECKED.ids = CHECKED.ids.filter(function (x) { return x !== "ousopen"; });
+Object.assign(UI.en.type, { company:"Company" }); Object.assign(UI.pt.type, { company:"Empresa" });
+Object.assign(TYPE, {"makers": "concept", "c_openai": "company", "c_anthropic": "company", "c_google": "company", "c_meta": "company", "c_microsoft": "company", "c_xai": "company", "c_mistral": "company", "c_deepseek": "company", "c_alibaba": "company", "c_moonshot": "company", "c_zai": "company", "c_typesafe": "company", "ogptoss": "model", "ogemma": "model", "omuse": "model", "omai": "model", "odots": "product", "metaai": "product", "copilot": "product", "grokapp": "product", "oaiapi": "platform", "antapi": "platform", "gapi": "platform", "ghcopilot": "harness"});
+["ogptoss", "ogemma", "omuse", "omai", "odots", "oaiapi", "antapi", "gapi", "metaai", "copilot", "ghcopilot", "grokapp"].forEach(function (id) { EX.add(id); });
+Object.assign(REFS, {"c_openai": "https://developers.openai.com/api/docs/models", "c_anthropic": "https://platform.claude.com/docs/en/about-claude/models/overview", "c_google": "https://deepmind.google/models/", "c_meta": "https://dev.meta.ai", "c_microsoft": "https://microsoft.ai/models/", "c_xai": "https://docs.x.ai/overview", "c_mistral": "https://docs.mistral.ai/getting-started/models", "c_deepseek": "https://platform.deepseek.com", "c_alibaba": "https://huggingface.co/Qwen", "c_moonshot": "https://platform.kimi.ai/docs/models.md", "c_zai": "https://docs.z.ai/guides/overview/overview", "c_typesafe": "https://docs.typesafe.ai/", "ogptoss": "https://openai.com/open-models/", "ogemma": "https://deepmind.google/models/gemma/gemma-4/", "omuse": "https://dev.meta.ai", "omai": "https://microsoft.ai/models/", "odots": "https://openai.com/index/introducing-dots/", "oaiapi": "https://developers.openai.com/api/docs", "antapi": "https://platform.claude.com", "gapi": "https://aistudio.google.com", "metaai": "https://ai.meta.com/meta-ai/assistant/", "copilot": "https://copilot.microsoft.com", "ghcopilot": "https://github.com/features/copilot", "grokapp": "https://grok.com"});
+CHECKED.ids.push.apply(CHECKED.ids, ["c_openai", "c_anthropic", "c_google", "c_meta", "c_microsoft", "c_xai", "c_mistral", "c_deepseek", "c_alibaba", "c_moonshot", "c_zai", "c_typesafe", "ogptoss", "ogemma", "omuse", "omai", "odots", "oaiapi", "antapi", "gapi", "metaai", "copilot", "ghcopilot", "grokapp"]);
+const ECO2_EN = {
+"c_openai": {
+"l": "OpenAI",
+"p": "The US company behind ChatGPT and the GPT models, offering chat apps, a coding agent, always-on agents and a developer API.",
+"e": "OpenAI makes two kinds of things: model families and products that use them. Its closed GPT family (GPT-6 and GPT-6.1) powers ChatGPT, the Codex coding agent and dots, its always-on agents, and is sold to developers through the API. Next to it sit GPT Image for pictures and GPT-Live and GPT Realtime for voice. Separately, OpenAI publishes the open-weight gpt-oss models that anyone can download.",
+"k": "Like a carmaker that sells finished cars (ChatGPT, Codex, dots), sells engines to other builders (the API) and also publishes the plans for a simpler engine (gpt-oss).",
+"w": "In ChatGPT on the web, desktop and phone, in Codex inside code editors and terminals, and in many other companies’ apps that call the OpenAI API behind the scenes.",
+"t": "Developers reach OpenAI models through the API platform (developers.openai.com), which lists the GPT-6 family (GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra, GPT-6 Luna), specialized models such as GPT-6-Cyber and GPT-Rosalind, GPT-Image-2.6, and the voice models GPT-Live-1 and GPT-Realtime-2.1. The platform also offers an Agents API in public beta and ChatKit for chat interfaces. These models are closed: weights, size and architecture are not published. The exception is gpt-oss (gpt-oss-120b and gpt-oss-20b, Apache 2.0), whose weights can be downloaded; no newer open-weight release has been found. OpenAI’s own products share the same models: ChatGPT, Codex and dots all run on GPT.",
+"n": "As of November 2026, one of the leading AI companies, with ChatGPT and Codex now combined in one experience. In 2026 it discontinued the Sora app and the ChatGPT Atlas browser.",
+"h": "ChatGPT launched on November 30, 2022; GPT-5 followed in August 2025 and the GPT-6 family in 2026.",
+"m": "OpenAI is the company, ChatGPT is its app and GPT is its model family: three different things.",
+"s": "core"
+},
+"c_anthropic": {
+"l": "Anthropic",
+"p": "The US company behind the Claude models and the Claude apps, best known for coding and long agentic work.",
+"e": "Anthropic has one model family, Claude, and builds every product on it. The Claude apps cover chat, Cowork for agentic knowledge work, Claude Design and the proactive agent Claude Duet; Claude Code is its coding agent; Claude in Chrome and Claude Tag bring Claude into the browser and Slack. Developers use the same models through the Claude Platform. Unlike most rivals, Anthropic publishes no open-weight models.",
+"k": "Like a chef who cooks a single cuisine but serves it in a restaurant, a food truck and a catering business.",
+"w": "In the Claude apps on the web, desktop and phone, in Claude Code in terminals and IDEs, and in tools such as Cursor and the major cloud platforms that offer Claude.",
+"t": "Developers use the Claude Platform (platform.claude.com): the Claude API, the Console and Managed Agents. The same models are also sold through Amazon Bedrock, Google Cloud and Microsoft Foundry. The current lineup is Claude Fable 5.2, Claude Opus 5.5, Claude Sonnet 5.5 and Claude Haiku 5.5, with Claude Mythos 5.2 in limited availability. All are closed: architecture and weights are not published, and Anthropic has no open-weight models. The Claude apps, Claude Code and Claude Duet all run on these models, and Claude Duet is designed around Claude Opus 5.5. Developers can build on Claude Code’s agent loop with the Claude Agent SDK.",
+"n": "As of November 2026, a frontier lab whose models are especially strong at agentic coding, with Claude Duet in research preview since October 2026.",
+"h": "Claude 1 arrived in 2023, followed by the Claude 3 family (2024), Claude 4 (2025) and the 5.x generation in 2026.",
+"m": "“Claude” names both the model family and the app; Claude Code is a separate product that uses the same models.",
+"s": "core"
+},
+"c_google": {
+"l": "Google",
+"p": "Google makes the Gemini models and builds them into Search, the Gemini app and many other products, and also publishes the open-weight Gemma family.",
+"e": "Google has one of the widest lineups of any AI company. Its closed models include Gemini for text and reasoning, Nano Banana for images, Gemini Omni and Veo for video, Lyria for music and Genie as a world model. Gemma is its open-weight family. Products sit on top: the Gemini app, AI Mode in Search, Gemini Notebook, Flow for video and Google Antigravity for coding.",
+"k": "Like a department store with its own brand in every aisle, from clothing to electronics, all made in the same factory.",
+"w": "In AI Mode in Google Search, in the Gemini app on the web, Android and iPhone, and in apps that other companies build with the Gemini API.",
+"t": "Developers use the Gemini API and Google AI Studio, which also offers Managed Agents; companies use Gemini Enterprise Agent Platform on Google Cloud, formerly Vertex AI. Current closed models: Gemini 4 Carbon (flagship), Gemini 4 Argon and Gemini 3.8 Flash; Nano Banana 2.1 for images; Gemini Omni 1.2 Flash for video; Lyria 3.5 for music; and Genie 4. Veo is listed without a version, and Imagen 4 is shut down. Weights and architecture of these models are not published. Gemma 4, under Apache 2.0, is the open-weight exception. For coding, Antigravity CLI is replacing Gemini CLI, and the Jules agent is shutting down.",
+"n": "As of November 2026, one of the top AI companies, with Gemini 4 Carbon generally available as its strongest model. Jules has been read-only since November 11, 2026 and shuts down on December 31.",
+"h": "Bard launched in 2023 and was renamed Gemini in February 2024; NotebookLM became Gemini Notebook on July 16, 2026.",
+"m": "Gemini is both the app and the closed model family, while Gemma is a separate, open-weight family.",
+"s": "core"
+},
+"c_meta": {
+"l": "Meta",
+"p": "The company behind Facebook, Instagram and WhatsApp, which builds the Muse models and the Meta AI assistant used across its apps.",
+"e": "Meta’s current models are the Muse family; Llama, its earlier open family, is now legacy. Some Muse models are closed, such as Muse Wonder and Muse Spark 1.3, and some have open weights, such as Muse Spark Open and Muse Glimmer. Products run on them: the Meta AI assistant inside Meta’s apps and AI glasses, the Muse personal agent app, Vibes for AI video and Muse Code for programming.",
+"k": "Like a mall owner that also runs the information desk: the shops are its social apps, and Meta AI is the helper inside all of them.",
+"w": "In a WhatsApp chat, in Instagram, Facebook, Messenger and Threads, on Meta’s AI glasses, and in the separate Muse app in the US.",
+"t": "Developers use the Meta Model API at dev.meta.ai, an OpenAI-SDK-compatible API with a Playground; it used to be the Llama API, and llama.com now redirects there. Closed Muse models include Muse Wonder and Muse Wonder Full (frontier), Muse Spark 1.3, Muse Ember and Muse Image. Open-weight releases are Muse Spark Open (816 billion total and 42 billion active parameters, under the Muse Model License) and Muse Glimmer (30 billion parameters, Apache 2.0). Meta AI and the Muse app run on Muse Spark. Muse Code is a multi-agent coding CLI. Meta also publishes SAM 3.1 for image segmentation.",
+"n": "As of November 2026, Meta’s AI runs on Muse models, and no new Llama model appears on its developer site. The Muse app launched in the US on September 8, 2026.",
+"m": "Muse is both a model family and a separate agent app, and neither is the same thing as the Meta AI assistant.",
+"s": "wide"
+},
+"c_microsoft": {
+"l": "Microsoft",
+"p": "The company behind Windows and Office, which builds the Copilot assistants, its own MAI and Phi models, and the Foundry platform on Azure.",
+"e": "Microsoft’s products are explicitly multi-model. Microsoft Copilot and GitHub Copilot use a mix of Microsoft’s own MAI models and models from partners, through what Microsoft calls the Copilot harness. MAI covers reasoning, code, images, voice, transcription and security, and is closed; the small Phi models are its open-weight line. Developers and companies use Microsoft Foundry on Azure, a catalog that hosts MAI and many third-party models.",
+"k": "Like a supermarket that sells its own house brand next to famous brands and picks whichever fits each shopping list.",
+"w": "In the Copilot app, in GitHub Copilot inside VS Code, and on Azure, where companies pick models from the Foundry catalog.",
+"t": "Microsoft Foundry (ai.azure.com) is the Azure model catalog and agent platform; it also hosts the Copilot harness and MAI models, and offers partner models such as Claude. Current MAI models: MAI Thinking 1, MAI Code 1.1 Flash, MAI Image 2.6 (2.7 announced), MAI Voice 2, MAI Transcribe 2 and MAI Cyber 1.1 Flash. They are closed. The open-weight line is the Phi-4 family under the MIT license; no Phi-5 has been found. GitHub Copilot uses MAI Code plus third-party models, and Microsoft Copilot works across MAI and partner models. GitHub Models was retired on July 30, 2026.",
+"n": "As of November 2026, Microsoft builds its own models but keeps its products open to partner models. Autopilot, an agent in the Copilot app, is in private preview.",
+"m": "“Copilot” names several products: Microsoft Copilot is the general assistant, while GitHub Copilot is for programmers.",
+"s": "wide"
+},
+"c_xai": {
+"l": "xAI",
+"p": "Elon Musk’s AI company, maker of the Grok models and the Grok app, now owned by SpaceX and branded SpaceXSI on its website.",
+"e": "xAI has one main model family, Grok, plus Grok Imagine models for images and video. Its products run on them: the Grok app, also built into X; Grok Imagine for generating pictures and clips; Grok Bot, always-on agent teammates; and Grok Build, an open-source coding agent. Developers use the xAI API. The current models are closed; only the older Grok-1 and Grok 2 have published weights.",
+"k": "Like a team that now belongs to a bigger sports club: it keeps its own name on the field, but the club’s badge is on the stadium.",
+"w": "Asking Grok questions inside X, creating images in the Grok app, or calling Grok models through the xAI API.",
+"t": "The xAI API (docs.x.ai) serves Grok 4.7, the flagship, and Grok Build 0.1 for coding, plus grok-imagine-image-2.0 and grok-imagine-video-1.5. These are closed; Grok-1 (Apache 2.0) and Grok 2 (Grok 2 Community License) weights are on Hugging Face, and no newer open weights have been found. Grok Build, the open-source coding agent, has a terminal interface, a headless mode and ACP support, and runs on Grok 4.7. Grok Bot 1.0, released in late October 2026, runs agents on a persistent cloud computer. SpaceX acquired xAI on February 2, 2026; x.ai now brands the company “SpaceXSI”, while the API and SDKs still say xAI.",
+"n": "As of November 2026, xAI operates inside SpaceX under the SpaceXSI brand and keeps a fast release cadence for Grok models.",
+"h": "Grok-1 arrived in 2023 and its weights were opened in 2024, followed by Grok 3 (February 2025) and Grok 4 (July 2025).",
+"m": "xAI and SpaceXSI name the AI company, Grok names its models and app, and X is the separate social network where Grok is built in.",
+"s": "wide"
+},
+"c_mistral": {
+"l": "Mistral AI",
+"p": "Europe’s best-known AI lab, based in Paris, which releases many of its models with open weights and offers the Mistral Vibe assistant.",
+"e": "Mistral mixes open and closed models. Mistral Large 4, Mistral Small 4 and the small Ministral 3 models have open weights, while Codestral for code, the Voxtral Transcribe and TTS speech models and Mistral OCR are offered through its platform. Its consumer product, Mistral Vibe (formerly Le Chat), is a chat and work agent with a Code mode for programming. Developers and companies build on Mistral Studio.",
+"k": "Like a European carmaker competing with American and Chinese giants by handing out the blueprints along with many of its cars.",
+"w": "European companies and public bodies that want data kept in the EU, either hosting Mistral models themselves or using Mistral’s own services.",
+"t": "Mistral Studio (console.mistral.ai, formerly La Plateforme) is the platform to build, govern and refine agents and apps, with Forge for custom models. Open-weight models: Mistral Large 4 “Le Chonk” (v26.10, Mistral Ecosystem Open Weight License), Mistral Small 4 and Ministral 3 in 14B, 8B and 3B (Apache 2.0), and Voxtral Small. Closed models include Codestral 25.08, Voxtral Transcribe 3, Voxtral TTS 3 and OCR 4.1. Magistral, Devstral, Pixtral and Mistral Medium are deprecated, with Medium 3.5 replaced by Large 4. Mistral Vibe ran Mistral Medium 3.5 as of May 2026; which model it uses since Large 4 has not been stated.",
+"n": "As of November 2026, Europe’s leading open-weight option, with Large 4 as its flagship. Le Chat was renamed Mistral Vibe on May 28, 2026.",
+"h": "Founded in 2023 by former Google DeepMind and Meta researchers; Mixtral 8x7B (December 2023) popularized open Mixture-of-Experts models.",
+"m": "Mistral Vibe is the product once called Le Chat, not a new app.",
+"s": "wide"
+},
+"c_deepseek": {
+"l": "DeepSeek",
+"p": "A Chinese AI lab known for strong, low-cost open-weight models; DeepSeek is also the name of its free chat app.",
+"e": "DeepSeek focuses on a single open-weight family. The current V4 generation has a large Pro model and a faster Flash line that is updated more often. The same models run in the DeepSeek chat app on web and mobile and in DeepSeek’s pay-per-token API, and anyone can download the weights and host them elsewhere. Unlike most large labs, it has no coding agent of its own.",
+"k": "Like a bakery that sells bread at its counter, delivers it wholesale and also posts the full recipe online.",
+"w": "Students using the free DeepSeek app, and companies running V4 on their own GPUs or calling it through DeepSeek’s API or gateways such as OpenRouter.",
+"t": "The DeepSeek API platform (platform.deepseek.com) is OpenAI-compatible and serves deepseek-flash and deepseek-v4-pro; the old deepseek-chat and deepseek-reasoner IDs were retired on July 24, 2026. Weights for DeepSeek-V4-Pro and DeepSeek-V4.1-Flash (updated as -1017 in October 2026) are on DeepSeek’s official Hugging Face page. V4 Pro is a Mixture-of-Experts model with about 1.6 trillion total and 49 billion active parameters, a one-million-token context and MIT-licensed weights. The chat app runs the V4 generation, but which exact model it uses has not been officially confirmed.",
+"n": "As of November 2026, among the strongest open models, within months of the closed frontier.",
+"h": "DeepSeek-V3 (December 2024) and R1 (January 2025) showed frontier-level reasoning at a fraction of the usual cost; V4 was previewed in April 2026 and became generally available in August.",
+"m": "The app and the model are different things: the free app sends your data to DeepSeek’s servers, while the open weights can run on your own hardware.",
+"s": "wide"
+},
+"c_alibaba": {
+"l": "Alibaba (Qwen)",
+"p": "The Chinese tech giant whose Qwen team makes the Qwen models, one of the most downloaded open-weight families, plus the Qwen Chat app.",
+"e": "Qwen spans tiny to giant models, most of them open-weight. The same family is offered as API tiers named Max, Plus and Flash, and it powers Qwen Chat, a free assistant with image and video, voice and deep research, and Qwen Code, an open-source coding agent. Developers reach the models through Alibaba Cloud Model Studio, which also hosts third-party models, or download the weights from Hugging Face.",
+"k": "Like a clothing brand that makes every size from baby clothes to XXL and posts most of its sewing patterns online.",
+"w": "Startups fine-tuning small Qwen models for their own tasks, and people using Qwen Chat or Qwen Code; the giant models are mostly used through hosted services.",
+"t": "Open-weight models on the official Qwen Hugging Face page include Qwen3.8 (a 2.4-trillion-parameter model with 95 billion active, Flash-Next 180B and 27B), Qwen3.6 and Qwen-Image 2.1 Turbo. API model names include Qwen3.8-Max, qwen3.7-plus and qwen3.8-flash, served through Alibaba Cloud Model Studio. A qwen4-max-preview appeared on November 11, 2026 on QwenCloud, a hosted platform whose ownership is not stated, as a limited preview until November 25; no official Qwen4 announcement has been found. Qwen Code works in the terminal, IDEs, a desktop app and the web.",
+"n": "As of November 2026, a core open family, widely used as a base for fine-tuning; Qwen3.8-Max was the first Max-tier Qwen released with open weights.",
+"h": "First released in 2023, Qwen became one of the most downloaded open families on Hugging Face.",
+"m": "Alibaba is the company, Qwen is the model family, and Qwen Chat is the app that uses the models.",
+"s": "wide"
+},
+"c_moonshot": {
+"l": "Moonshot AI",
+"p": "A Chinese AI lab that makes the Kimi models and the Kimi assistant, known for very large models with published weights.",
+"e": "Moonshot builds all its products on its Kimi models. The Kimi app handles chat, agent tasks, deep research, slides and documents, with Kimi Work for work tasks; Kimi Code is a coding agent with an open-source CLI. Developers use the Kimi API Platform. The weights of current Kimi models are published on Hugging Face, but under Moonshot’s own Kimi licenses rather than a standard open-source license.",
+"k": "Like an author who lets the public read and copy a book, but with a custom list of conditions printed on the first page.",
+"w": "At kimi.com, in Kimi Code in the terminal or VS Code, and through Moonshot’s API and third-party hosts.",
+"t": "The Kimi API Platform (platform.kimi.ai, formerly platform.moonshot.ai) offers Chat Completions, Responses and Anthropic-compatible Messages APIs, matching request formats developers already use with other providers. Current models are Kimi K3.1 Pro, with a Highspeed variant, and Kimi K3. Their weights are on Hugging Face under Kimi licenses, which are custom rather than standard open-source. Kimi, Kimi Work and Kimi Code all run on K3.1 Pro. Kimi Code comes as an open-source CLI, a VS Code extension and a desktop app. Kimi K3 is a 2.8-trillion-parameter Mixture-of-Experts model whose full weights were released on July 27, 2026.",
+"n": "As of November 2026, Kimi K3.1 Pro is the model behind all of Moonshot’s products.",
+"h": "Kimi K2 (July 2025) began Moonshot’s open-weight releases; K2.5 followed in January 2026 and K3 in July 2026.",
+"m": "Published weights here do not mean a standard open-source license: the Kimi licenses add their own conditions.",
+"s": "wide"
+},
+"c_zai": {
+"l": "Zhipu AI / Z.ai",
+"p": "A Chinese AI lab that sells its GLM models internationally under the Z.ai brand, popular with developers for coding.",
+"e": "Zhipu’s products all run on its GLM family. Z.ai Chat is its chatbot and agent, the Z.ai API Platform serves the models to developers, and the GLM Coding Plan is a subscription for using GLM inside other companies’ coding agents, such as Claude Code, Cline and OpenCode, rather than an agent of its own. The flagship, GLM-5.3, has its weights published on Hugging Face.",
+"k": "Like an engine maker that builds no cars of its own but sells an engine subscription that fits into other brands’ cars.",
+"w": "Developers plugging GLM into their coding agents through the GLM Coding Plan, and people chatting at chat.z.ai.",
+"t": "The Z.ai API Platform serves GLM-5.3 (flagship), GLM-5.3-Flash and GLM-5.3-FlashX, plus GLM-Image. GLM-5.3 weights are on Hugging Face (zai-org/GLM-5.3) with the license field marked “other”; whether the FlashX variants are open has not been confirmed. Z.ai Chat runs GLM-5.3-Flash, and the GLM Coding Plan uses the GLM-5.3 family. The previous version, GLM-5.2, was a 744-billion-parameter Mixture-of-Experts model with about 40 billion active parameters and a one-million-token context, released with open weights in June 2026.",
+"n": "As of November 2026, one of the top makers of open models, with GLM-5.3 as its current flagship.",
+"m": "Zhipu AI and Z.ai are the same company: Z.ai is the brand it uses outside China.",
+"s": "wide"
+},
+"c_typesafe": {
+"l": "TypeSafe AI",
+"p": "A San Francisco startup, founded in 2024, that makes Jev, a decision model that picks answers from fixed options instead of writing text.",
+"e": "TypeSafe AI is far smaller than the big labs and focuses on a single product. Jev is a decision model: you send it a situation and questions with allowed answers, and it returns one of those answers with probabilities your code can use to decide whether to act or ask a person. It is offered to developers as a hosted service, not as a chat app or downloadable weights.",
+"k": "Like a referee who only signals from a fixed set of calls, never gives speeches, and always shows how sure the call is.",
+"w": "Developers calling Jev from their own code to screen, route or check things, for example to stop an AI agent’s risky action before it runs.",
+"t": "TypeSafe offers Jev as a proprietary, hosted model that developers call from their own code, with documentation at docs.typesafe.ai. A request carries a state, such as text, JSON or an image, plus questions whose answer options are fixed in advance, so the output is always one of the allowed options with probabilities attached. TypeSafe has not published Jev’s architecture, weights or a technical paper. Unlike the big labs, it offers no family of general chat models and no consumer app; Jev is its one product. Access opened as limited early access on September 15, 2026.",
+"n": "As of November 2026, Jev is in early access, and most published speed and cost figures come from the company itself.",
+"h": "Founded in 2024 in San Francisco, TypeSafe AI opened early access to Jev on September 15, 2026.",
+"m": "Jev is not a chatbot: it does not write free text, it chooses among answers you define.",
+"s": "emerg"
+},
+"ogptoss": {
+"l": "gpt-oss (OpenAI)",
+"p": "OpenAI’s open-weight models: text models anyone can download, run on their own hardware and adapt under a permissive license.",
+"e": "gpt-oss sits apart from OpenAI’s main lineup. The GPT-6 family that runs ChatGPT, Codex and dots is closed and only reachable through OpenAI, while gpt-oss weights are public under Apache 2.0. It comes in a larger and a smaller size, plus a variant called gpt-oss-safeguard. It is a separate family from 2025, not a scaled-down GPT-6, and has not been updated since.",
+"k": "Like a big restaurant chain that keeps its signature dishes secret but publishes a home-cooking book with simpler recipes.",
+"w": "Running a private assistant offline on a laptop with Ollama, or companies hosting the model on their own servers.",
+"t": "Current releases: gpt-oss-120b and gpt-oss-20b, published in August 2025 under Apache 2.0, plus gpt-oss-safeguard. The weights can be downloaded and run locally or on any cloud, and the models are designed to run on a single GPU or even a laptop. No newer open-weight release from OpenAI has been found as of November 2026. OpenAI’s other models, the GPT-6 family, GPT Image and the voice models, are closed: they are only available through OpenAI’s products and API, and their weights and architecture are not published.",
+"n": "As of November 2026, still OpenAI’s only open-weight family, with no new release since August 2025.",
+"h": "Released in August 2025 in 20B and 120B sizes.",
+"m": "gpt-oss is not a smaller version of GPT-6: it is a separate, older family with public weights.",
+"s": "wide"
+},
+"ogemma": {
+"l": "Gemma (Google)",
+"p": "Google’s family of open-weight models: small and medium sizes you can download and run on your own hardware.",
+"e": "Gemma is the open counterpart to Google’s closed Gemini models. Gemini runs Google’s products and is only available through Google’s services, while Gemma’s weights are published under Apache 2.0, so anyone can run, fine-tune and ship them. Gemma 4 comes in several sizes, including a Mixture-of-Experts model, so developers can match the model to their hardware.",
+"k": "Like a carmaker that races its top car itself but sells a smaller engine anyone can put in their own build.",
+"w": "Developers running a local assistant on a laptop with Ollama, or fine-tuning a small Gemma model for a specific task.",
+"t": "The current generation is Gemma 4, released in April 2026 under Apache 2.0 in five versions: E2B, E4B, 12B Unified, 26B A4B (a Mixture-of-Experts model with about 4 billion active parameters) and 31B. The weights can be downloaded and are designed to run on a single GPU or even a laptop. Gemini, by contrast, keeps its weights and architecture private and is offered through the Gemini app, the Gemini API and Google AI Studio, and Gemini Enterprise Agent Platform.",
+"n": "As of November 2026, a popular choice for local and on-device AI.",
+"m": "Gemma is not Gemini: same company, but Gemma is the small open family and Gemini the large closed one.",
+"s": "wide"
+},
+"omuse": {
+"l": "Muse models (Meta)",
+"p": "Meta’s current model family, which powers Meta AI and the Muse app; some versions are closed and some have open weights.",
+"e": "Muse is the family Meta now builds on. Muse Wonder sits at the frontier, Muse Spark is the model behind Meta AI and the Muse app, and the lineup also includes Muse Ember and Muse Image for pictures. Two releases have open weights: the large Muse Spark Open and the smaller Muse Glimmer. Llama, Meta’s earlier open family, is now legacy.",
+"k": "Like a carmaker that retired a famous old model name and launched a new line, some cars sold only fully built and some as kits.",
+"w": "Every time someone uses Meta AI in WhatsApp or Instagram, and through the Meta Model API for developers.",
+"t": "Closed Muse models, available through the Meta Model API (dev.meta.ai): Muse Wonder and Muse Wonder Full (frontier), Muse Spark 1.3, Muse Ember and Muse Image. Open-weight models: Muse Spark Open, with 816 billion total and 42 billion active parameters under the custom Muse Model License, and Muse Glimmer, with 30 billion parameters under Apache 2.0. Meta AI and the Muse app run on Muse Spark. Llama is legacy only: no new Llama appears on Meta’s developer site, llama.com redirects to dev.meta.ai, and the Llama API is now the Meta Model API.",
+"n": "As of November 2026, Muse is Meta’s active model line and Llama is kept only as legacy.",
+"m": "Muse is both the model family and the name of a separate agent app; Llama is Meta’s older family, not its current one.",
+"s": "wide"
+},
+"omai": {
+"l": "MAI and Phi (Microsoft)",
+"p": "Microsoft’s own models: the closed MAI family for reasoning, code, images and voice, and the small open-weight Phi models.",
+"e": "MAI is Microsoft’s in-house closed lineup: a reasoning model, a coding model, image, voice and transcription models, and a security model. MAI runs alongside partner models in Microsoft Copilot and GitHub Copilot and is offered in Microsoft Foundry. Phi is a separate line of small models with open weights under the MIT license, which anyone can download and run.",
+"k": "Like a store’s house brand sold on the same shelf as famous brands, plus a free sample anyone can take home.",
+"w": "Inside GitHub Copilot, which uses MAI Code alongside other models, and in the Foundry catalog on Azure.",
+"t": "Current MAI models: MAI Thinking 1, MAI Code 1.1 Flash, MAI Image 2.6 (with 2.7 announced), MAI Voice 2, MAI Transcribe 2 and MAI Cyber 1.1 Flash. They are closed and offered through Microsoft Foundry and Microsoft’s products; weights and architecture are not published. Microsoft Copilot works across MAI and partner models through the Copilot harness, and GitHub Copilot uses MAI Code alongside third-party models. The open-weight line is the Phi-4 family under the MIT license; no Phi-5 has been found.",
+"n": "As of November 2026, MAI covers most kinds of input and output, while Phi has not moved past Phi-4.",
+"m": "MAI and Phi both come from Microsoft, but MAI is closed and Phi has open weights.",
+"s": "wide"
+},
+"odots": {
+"l": "dots (OpenAI)",
+"p": "OpenAI’s always-on personal agents: each dot has its own cloud computer and stays available to work on tasks between your conversations.",
+"e": "A dot is not a chat you open and close but an agent that keeps running. It works on its own computer in the cloud rather than on your device. You reach your dots where you already talk: inside ChatGPT, or in Slack or Microsoft Teams. Like ChatGPT and Codex, dots run on OpenAI’s GPT models.",
+"k": "Like an assistant with their own desk and computer whom you can message from the office chat at any time.",
+"w": "In ChatGPT or as a teammate in Slack and Microsoft Teams, for subscribers on OpenAI’s Pro and Business Premium plans.",
+"t": "dots run on OpenAI’s GPT models: GPT-6 Astra, with GPT-6.1 Terra added on November 3, 2026. Each dot has its own cloud computer, so the agent works in its own environment instead of on the user’s machine and stays available between conversations. Users reach their dots through ChatGPT, Slack or Teams. OpenAI launched dots at DevDay on September 29, 2026 for the Pro and Business Premium plans, with a rollout to Enterprise and Edu in November 2026. dots are software agents, not a hardware device.",
+"n": "As of November 2026, available on Pro and Business Premium plans and rolling out to Enterprise and Edu.",
+"h": "Launched at OpenAI DevDay on September 29, 2026.",
+"m": "dots are software agents running in the cloud, not a physical gadget.",
+"s": "emerg"
+},
+"oaiapi": {
+"l": "OpenAI API platform",
+"p": "OpenAI’s service for developers: it lets other companies’ apps send requests to OpenAI models, plus tools for building agents and voice apps.",
+"e": "The API is how OpenAI’s models reach products other than OpenAI’s own. Developers pick a model, from the GPT-6 family to image and voice models, and call it from their code. On top of plain model calls, the platform adds an Agents API for building agents, ChatKit for chat interfaces and realtime voice through GPT-Live. ChatGPT and Codex are OpenAI’s own apps; the API serves everyone else.",
+"k": "Like a power company: ChatGPT is the house it built for itself, and the API is the grid connection anyone can buy.",
+"w": "In support bots, writing tools and coding assistants from other companies that run on OpenAI models behind the scenes.",
+"t": "Documentation lives at developers.openai.com. The model catalog lists GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra and GPT-6 Luna, the specialized GPT-6-Cyber and GPT-Rosalind, GPT-Image-2.6, and the voice models GPT-Live-1 and GPT-Realtime-2.1; o-series models are no longer listed. Developers call models by ID, such as gpt-6.1-sol. The Agents API is in public beta, ChatKit helps build chat interfaces, and the Realtime and GPT-Live models handle live voice. All of these models are closed; the open-weight gpt-oss models are downloaded separately. The Sora video API was discontinued on September 24, 2026.",
+"n": "As of November 2026, the API serves the GPT-6 family, with the Agents API still in public beta.",
+"m": "The API and ChatGPT share the same model family, but they are separate products.",
+"s": "wide"
+},
+"antapi": {
+"l": "Claude Platform",
+"p": "Anthropic’s offering for developers, with the Claude API, the Console and Managed Agents, for building Claude into other products.",
+"e": "The Claude Platform is how Claude reaches products beyond Anthropic’s own apps. Developers call Claude models from their code through the API, work in the Console and can run hosted agents with Managed Agents. The same models are also sold through Amazon Bedrock, Google Cloud and Microsoft Foundry, so companies can use Claude inside a cloud they already have.",
+"k": "Like a famous kitchen that also supplies its sauces to other restaurants, either directly or through big food distributors.",
+"w": "Inside tools such as Cursor and in company apps that run on Claude through the API or a cloud provider.",
+"t": "The platform lives at platform.claude.com and offers the Claude API, the Console and Managed Agents. Current models are Claude Fable 5.2, Claude Opus 5.5, Claude Sonnet 5.5 and Claude Haiku 5.5, with Claude Mythos 5.2 in limited availability. Opus targets complex work, Sonnet is the balanced option and Haiku the fast, low-cost one. The same models are available through Amazon Bedrock, Google Cloud and Microsoft Foundry. Developers can also build on Claude Code’s agent loop with the Claude Agent SDK. All Claude models are closed, with no published weights.",
+"n": "As of November 2026, the platform serves the Claude 5.x generation, directly and through three major clouds.",
+"m": "Claude Platform is the name Anthropic uses for its developer offering, which includes what people call the Claude API.",
+"s": "wide"
+},
+"gapi": {
+"l": "Gemini API & Google AI Studio",
+"p": "Google’s developer tools for its models: the Gemini API to call them from code and Google AI Studio, a web studio to try them.",
+"e": "Developers start in Google AI Studio, where they try Gemini, Nano Banana and other models, then call the same models from their code through the Gemini API. AI Studio also offers Managed Agents. For businesses, Google has a separate enterprise side on Google Cloud: Gemini Enterprise Agent Platform, formerly Vertex AI, its enterprise AI and agent platform.",
+"k": "Like a test kitchen next to a wholesale counter: you try the recipes in the studio, then order in bulk through the API.",
+"w": "In apps that use Gemini for chat, image generation or analysis, and in company systems built on Google Cloud.",
+"t": "AI Studio (aistudio.google.com) and the Gemini API give access to Gemini 4 Carbon, Gemini 4 Argon and Gemini 3.8 Flash, Nano Banana 2.1 for images and Lyria 3.5 for music; Imagen 4 is marked as shut down, with image generation now handled by Nano Banana. Developers call models by ID, such as gemini-4-carbon. Managed Agents is offered there too. The enterprise counterpart is Gemini Enterprise Agent Platform on Google Cloud, renamed from Vertex AI at Cloud Next on April 22, 2026. These Gemini models are closed; Gemma is Google’s open-weight family.",
+"n": "As of November 2026, Gemini 4 Carbon is open to paying developers here, as Google’s strongest model.",
+"m": "Gemini Enterprise Agent Platform is the new name of Vertex AI, not a separate product.",
+"s": "wide"
+},
+"metaai": {
+"l": "Meta AI",
+"p": "Meta’s AI assistant, available as its own app and built into WhatsApp, Instagram, Facebook, Messenger, Threads and Meta’s AI glasses.",
+"e": "Meta AI is the assistant many people meet without installing anything, because it lives inside apps they already use. It runs on Meta’s Muse models, specifically Muse Spark. It is a different product from Muse, Meta’s separate personal agent app, and from Vibes, Meta’s app for creating and sharing AI videos.",
+"k": "Like a concierge who works at the front desk of every building a company owns.",
+"w": "In a WhatsApp chat, inside Instagram, Facebook or Messenger, in the standalone Meta AI app, or through Meta’s AI glasses.",
+"t": "Meta AI runs on Muse Spark, part of the Muse family that is now Meta’s active model line, with Llama kept only as legacy. It is offered as a standalone assistant app and inside WhatsApp, Instagram, Facebook, Messenger and Threads, as well as on Meta’s AI glasses. Developers who want the underlying models use the Meta Model API at dev.meta.ai, which is compatible with the OpenAI SDK and serves the Muse models.",
+"n": "As of November 2026, Meta AI runs on Muse Spark across Meta’s apps and glasses.",
+"m": "Meta AI is the assistant; Muse is both the model family behind it and a separate agent app.",
+"s": "wide"
+},
+"copilot": {
+"l": "Microsoft Copilot",
+"p": "Microsoft’s AI assistant app, with tabs for everyday chat, work tasks, building apps and an autonomous agent.",
+"e": "Microsoft Copilot brings several modes into one app: Home and Chat for everyday questions, Cowork for work tasks, Code for building apps, and Autopilot, an agent in private preview. It is explicitly multi-model: through the Copilot harness it works across Microsoft’s own MAI models and models from partners. It is a different product from GitHub Copilot, which is for programmers.",
+"k": "Like a reception desk that passes each request to whichever specialist, in-house or outside, suits it best.",
+"w": "In the Copilot app and at copilot.microsoft.com, for questions, work tasks and, in the Frontier program, building small apps.",
+"t": "The app combines Home, Chat, Cowork, Code and Autopilot. Code, also called Copilot Code, lets users build apps and is part of Microsoft’s Frontier program; Autopilot is an agent in private preview. Behind the app, the Copilot harness works across MAI models and partner models, so Microsoft does not tie the app to a single model. The harness itself is also hosted in Microsoft Foundry on Azure, alongside the MAI models. Current MAI models include MAI Thinking 1, MAI Image 2.6 and MAI Voice 2.",
+"n": "As of November 2026, Microsoft’s main consumer assistant, with Autopilot still in private preview.",
+"m": "Microsoft Copilot and GitHub Copilot share a name but are different products for different users.",
+"s": "wide"
+},
+"ghcopilot": {
+"l": "GitHub Copilot",
+"p": "Microsoft’s coding assistant from GitHub, which helps write and change code and works as an agent in editors, the terminal and a desktop app.",
+"e": "GitHub Copilot helps programmers write and change code, from suggestions to agent tasks. It works in VS Code, in the terminal through a CLI, and in a GitHub Copilot desktop app now in preview. Like Microsoft’s other products it is multi-model: it uses Microsoft’s MAI Code alongside models from other companies.",
+"k": "Like a pair-programming partner who consults a different expert depending on the job.",
+"w": "In VS Code while writing code, in the terminal with the Copilot CLI, and in GitHub’s desktop app preview.",
+"t": "GitHub Copilot runs in VS Code, as a CLI and as a desktop app in preview. It uses Microsoft’s MAI Code models, the current one being MAI Code 1.1 Flash, together with third-party models. GitHub Models was retired on July 30, 2026. GitHub Copilot is separate from Copilot Code, the Code tab in the Microsoft Copilot app for building apps. Its first version ran on OpenAI’s 2021 Codex model, a name OpenAI later reused for its current coding agent.",
+"n": "As of November 2026, the GitHub Copilot desktop app is still in preview.",
+"h": "The first GitHub Copilot ran on OpenAI’s 2021 Codex model.",
+"m": "GitHub Copilot is for programmers and is separate from Microsoft Copilot, the general assistant.",
+"s": "wide"
+},
+"grokapp": {
+"l": "Grok (app)",
+"p": "xAI’s chatbot on the web, iPhone, Android and inside X, with voice, real-time search and image and video generation.",
+"e": "The Grok app is xAI’s consumer chatbot. It answers questions with real-time search, talks by voice, and creates images and video through Grok Imagine, which also exists as a separate generator. It is available on its own and built into X. Grok Bot, xAI’s always-on agent teammates, and Grok Build, its coding agent, are separate products running on Grok models.",
+"k": "Like a radio host who reads the news live and can also sketch whatever they are describing.",
+"w": "At grok.com, in the Grok apps for iPhone and Android, and inside X, where it answers questions.",
+"t": "The app runs on xAI’s Grok models; which specific model each user gets is not stated in the sources used here, while Grok 4.7 is the current API flagship. Image and video generation use Grok Imagine models, listed in the API as grok-imagine-image-2.0 and grok-imagine-video-1.5. These models are closed; only the older Grok-1 and Grok 2 have published weights. Developers who want the same models use the xAI API rather than the app. xAI is now owned by SpaceX and brands itself SpaceXSI on x.ai.",
+"n": "As of November 2026, xAI’s main consumer product, alongside the newer Grok Bot agents released in late October 2026.",
+"m": "Grok is the name of both the app and the model family; xAI is the company.",
+"s": "wide"
+},
+"makers": {
+"l": "Who makes what",
+"s": "core",
+"p": "The companies behind the AI names in the news, each with the models it trains and the products people use.",
+"e": "Most AI companies make two kinds of things. Model families are the trained engines, such as GPT or Claude. Products are what people open: chat apps, agents, coding tools and developer platforms. One model family usually powers several products, so here each company shows both side by side, and the arrows show which product runs on which models.",
+"k": "Like car makers: each builds engines and sells several cars, and the same engine often goes into more than one car.",
+"w": "When a headline announces a new model, an app update or a coding agent, this branch shows which company it belongs to and how it relates to the rest of that company’s lineup.",
+"t": "Each company entry lists its model families, split into closed weights (used only through the company’s apps and API) and open weights (downloadable under a license), and its products: consumer apps, agents, coding harnesses and developer platforms. Cross-links connect products to the model families they use, models to the closed or open category, apps and harnesses to their general concepts, and developer platforms to model inference and APIs. Version names inside each page carry a “last checked” date because they change every few months.",
+"n": "As of November 2026 the largest Western labs (OpenAI, Anthropic, Google, Meta, Microsoft, xAI) mostly sell closed models, while many Chinese labs and Mistral publish open weights."
+}
+};
+const ECO2_PT = {
+"c_openai": {
+"l": "OpenAI",
+"p": "A empresa americana por trás do ChatGPT e dos modelos GPT, com apps de chat, um agente de programação, agentes sempre ativos e uma API para desenvolvedores.",
+"e": "A OpenAI faz dois tipos de coisa: famílias de modelos e produtos que usam esses modelos. A família fechada GPT (GPT-6 e GPT-6.1) move o ChatGPT, o agente de programação Codex e os dots, seus agentes sempre ativos, e é vendida a desenvolvedores pela API. Ao lado ficam o GPT Image, para imagens, e o GPT-Live e o GPT Realtime, para voz. À parte, a OpenAI publica os modelos de pesos abertos gpt-oss, que qualquer pessoa pode baixar.",
+"k": "Como uma montadora que vende carros prontos (ChatGPT, Codex, dots), vende motores para outras fabricantes (a API) e ainda publica o projeto de um motor mais simples (gpt-oss).",
+"w": "No ChatGPT na web, no computador e no celular, no Codex dentro de editores de código e terminais, e em apps de muitas outras empresas que chamam a API da OpenAI nos bastidores.",
+"t": "Desenvolvedores acessam os modelos pela plataforma de API (developers.openai.com), que lista a família GPT-6 (GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra, GPT-6 Luna), modelos especializados como o GPT-6-Cyber e o GPT-Rosalind, o GPT-Image-2.6 e os modelos de voz GPT-Live-1 e GPT-Realtime-2.1. A plataforma também oferece uma Agents API em beta público e o ChatKit para interfaces de chat. Esses modelos são fechados: pesos, tamanho e arquitetura não são publicados. A exceção é o gpt-oss (gpt-oss-120b e gpt-oss-20b, Apache 2.0), cujos pesos podem ser baixados; não foi encontrado lançamento aberto mais recente. Os produtos da própria OpenAI usam os mesmos modelos: ChatGPT, Codex e dots rodam em GPT.",
+"n": "Em novembro de 2026, uma das principais empresas de IA, com ChatGPT e Codex agora reunidos numa só experiência. Em 2026 ela encerrou o app Sora e o navegador ChatGPT Atlas.",
+"h": "O ChatGPT foi lançado em 30 de novembro de 2022; o GPT-5 veio em agosto de 2025 e a família GPT-6 em 2026.",
+"m": "OpenAI é a empresa, ChatGPT é o app e GPT é a família de modelos: três coisas diferentes."
+},
+"c_anthropic": {
+"l": "Anthropic",
+"p": "A empresa americana por trás dos modelos Claude e dos apps Claude, conhecida principalmente por programação e tarefas longas com agentes.",
+"e": "A Anthropic tem uma única família de modelos, o Claude, e constrói todos os produtos sobre ela. Os apps Claude reúnem chat, o Cowork para trabalho intelectual com agentes, o Claude Design e o agente proativo Claude Duet; o Claude Code é seu agente de programação; o Claude in Chrome e o Claude Tag levam o Claude ao navegador e ao Slack. Desenvolvedores usam os mesmos modelos pela Claude Platform. Ao contrário da maioria dos concorrentes, a Anthropic não publica modelos de pesos abertos.",
+"k": "Como um chef que cozinha uma única culinária, mas serve no restaurante, num food truck e num serviço de bufê.",
+"w": "Nos apps Claude na web, no computador e no celular, no Claude Code em terminais e IDEs, e em ferramentas como o Cursor e nas grandes plataformas de nuvem que oferecem o Claude.",
+"t": "Desenvolvedores usam a Claude Platform (platform.claude.com): a Claude API, o Console e os Managed Agents. Os mesmos modelos também são vendidos pela Amazon Bedrock, pelo Google Cloud e pelo Microsoft Foundry. A linha atual é Claude Fable 5.2, Claude Opus 5.5, Claude Sonnet 5.5 e Claude Haiku 5.5, com o Claude Mythos 5.2 em disponibilidade limitada. Todos são fechados: arquitetura e pesos não são publicados, e a Anthropic não tem modelos de pesos abertos. Os apps Claude, o Claude Code e o Claude Duet rodam nesses modelos, e o Claude Duet foi pensado em torno do Claude Opus 5.5. Desenvolvedores podem construir sobre o ciclo de agente do Claude Code com o Claude Agent SDK.",
+"n": "Em novembro de 2026, um laboratório de fronteira com modelos especialmente fortes em programação com agentes, com o Claude Duet em prévia de pesquisa desde outubro de 2026.",
+"h": "O Claude 1 chegou em 2023, seguido pela família Claude 3 (2024), pelo Claude 4 (2025) e pela geração 5.x em 2026.",
+"m": "“Claude” é tanto a família de modelos quanto o app; o Claude Code é um produto separado que usa os mesmos modelos."
+},
+"c_google": {
+"l": "Google",
+"p": "O Google faz os modelos Gemini e os coloca na Busca, no app Gemini e em muitos outros produtos, além de publicar a família de pesos abertos Gemma.",
+"e": "O Google tem uma das linhas mais amplas entre as empresas de IA. Seus modelos fechados incluem o Gemini para texto e raciocínio, o Nano Banana para imagens, o Gemini Omni e o Veo para vídeo, o Lyria para música e o Genie como modelo de mundo. O Gemma é sua família de pesos abertos. Por cima vêm os produtos: o app Gemini, o Modo IA na Busca, o Gemini Notebook, o Flow para vídeo e o Google Antigravity para programação.",
+"k": "Como uma loja de departamentos com marca própria em cada corredor, de roupas a eletrônicos, tudo feito na mesma fábrica.",
+"w": "No Modo IA da Busca do Google, no app Gemini na web, no Android e no iPhone, e em apps que outras empresas constroem com a Gemini API.",
+"t": "Desenvolvedores usam a Gemini API e o Google AI Studio, que também oferece Managed Agents; empresas usam o Gemini Enterprise Agent Platform no Google Cloud, antigo Vertex AI. Modelos fechados atuais: Gemini 4 Carbon (o principal), Gemini 4 Argon e Gemini 3.8 Flash; Nano Banana 2.1 para imagens; Gemini Omni 1.2 Flash para vídeo; Lyria 3.5 para música; e Genie 4. O Veo aparece sem versão, e o Imagen 4 foi desativado. Pesos e arquitetura desses modelos não são publicados. O Gemma 4, sob Apache 2.0, é a exceção de pesos abertos. Em programação, o Antigravity CLI está substituindo o Gemini CLI, e o agente Jules está sendo encerrado.",
+"n": "Em novembro de 2026, uma das principais empresas de IA, com o Gemini 4 Carbon disponível para todos como seu modelo mais forte. O Jules está somente leitura desde 11 de novembro de 2026 e será encerrado em 31 de dezembro.",
+"h": "O Bard foi lançado em 2023 e renomeado Gemini em fevereiro de 2024; o NotebookLM virou Gemini Notebook em 16 de julho de 2026.",
+"m": "Gemini é tanto o app quanto a família de modelos fechados; o Gemma é uma família separada, de pesos abertos."
+},
+"c_meta": {
+"l": "Meta",
+"p": "A empresa por trás do Facebook, do Instagram e do WhatsApp, que desenvolve os modelos Muse e o assistente Meta AI presente nos seus apps.",
+"e": "Os modelos atuais da Meta são da família Muse; o Llama, sua família aberta anterior, agora é legado. Alguns modelos Muse são fechados, como o Muse Wonder e o Muse Spark 1.3, e outros têm pesos abertos, como o Muse Spark Open e o Muse Glimmer. Os produtos rodam neles: o assistente Meta AI dentro dos apps da Meta e dos óculos com IA, o app de agente pessoal Muse, o Vibes para vídeos com IA e o Muse Code para programação.",
+"k": "Como o dono de um shopping que também cuida do balcão de informações: as lojas são suas redes sociais, e a Meta AI é o atendente presente em todas.",
+"w": "Numa conversa do WhatsApp, no Instagram, no Facebook, no Messenger e no Threads, nos óculos com IA da Meta e no app Muse, disponível nos EUA.",
+"t": "Desenvolvedores usam a Meta Model API em dev.meta.ai, compatível com o SDK da OpenAI e com um Playground; ela era a Llama API, e o llama.com agora redireciona para lá. Os modelos Muse fechados incluem Muse Wonder e Muse Wonder Full (fronteira), Muse Spark 1.3, Muse Ember e Muse Image. Os lançamentos de pesos abertos são o Muse Spark Open (816 bilhões de parâmetros no total e 42 bilhões ativos, sob a Muse Model License) e o Muse Glimmer (30 bilhões de parâmetros, Apache 2.0). A Meta AI e o app Muse rodam no Muse Spark. O Muse Code é uma CLI de programação com vários agentes. A Meta também publica o SAM 3.1, para segmentação de imagens.",
+"n": "Em novembro de 2026, a IA da Meta roda em modelos Muse, e nenhum Llama novo aparece no seu site para desenvolvedores. O app Muse foi lançado nos EUA em 8 de setembro de 2026.",
+"m": "Muse é ao mesmo tempo uma família de modelos e um app de agente separado, e nenhum dos dois é o assistente Meta AI."
+},
+"c_microsoft": {
+"l": "Microsoft",
+"p": "A empresa por trás do Windows e do Office, que desenvolve os assistentes Copilot, seus próprios modelos MAI e Phi e a plataforma Foundry no Azure.",
+"e": "Os produtos da Microsoft são declaradamente multimodelo. O Microsoft Copilot e o GitHub Copilot usam uma mistura dos modelos MAI, da própria Microsoft, com modelos de parceiros, por meio do que a Microsoft chama de Copilot harness. A linha MAI cobre raciocínio, código, imagens, voz, transcrição e segurança, e é fechada; os pequenos modelos Phi são sua linha de pesos abertos. Desenvolvedores e empresas usam o Microsoft Foundry no Azure, um catálogo que hospeda os MAI e muitos modelos de terceiros.",
+"k": "Como um supermercado que vende sua marca própria ao lado de marcas famosas e escolhe a que serve para cada lista de compras.",
+"w": "No app Copilot, no GitHub Copilot dentro do VS Code e no Azure, onde empresas escolhem modelos no catálogo do Foundry.",
+"t": "O Microsoft Foundry (ai.azure.com) é o catálogo de modelos e a plataforma de agentes do Azure; ele também hospeda o Copilot harness e os modelos MAI, e oferece modelos de parceiros como o Claude. Modelos MAI atuais: MAI Thinking 1, MAI Code 1.1 Flash, MAI Image 2.6 (2.7 anunciado), MAI Voice 2, MAI Transcribe 2 e MAI Cyber 1.1 Flash. Eles são fechados. A linha de pesos abertos é a família Phi-4, sob licença MIT; não foi encontrado nenhum Phi-5. O GitHub Copilot usa o MAI Code e modelos de terceiros, e o Microsoft Copilot trabalha com modelos MAI e de parceiros. O GitHub Models foi desativado em 30 de julho de 2026.",
+"n": "Em novembro de 2026, a Microsoft faz seus próprios modelos, mas mantém seus produtos abertos a modelos de parceiros. O Autopilot, agente do app Copilot, está em prévia privada.",
+"m": "“Copilot” é o nome de vários produtos: o Microsoft Copilot é o assistente geral, e o GitHub Copilot é para programadores."
+},
+"c_xai": {
+"l": "xAI",
+"p": "A empresa de IA de Elon Musk, criadora dos modelos Grok e do app Grok, agora pertencente à SpaceX e chamada de SpaceXSI no seu site.",
+"e": "A xAI tem uma família principal de modelos, o Grok, mais os modelos Grok Imagine para imagens e vídeo. Seus produtos rodam neles: o app Grok, também integrado ao X; o Grok Imagine, para gerar imagens e clipes; o Grok Bot, colegas de equipe em forma de agentes sempre ativos; e o Grok Build, um agente de programação de código aberto. Desenvolvedores usam a xAI API. Os modelos atuais são fechados; só os antigos Grok-1 e Grok 2 têm pesos publicados.",
+"k": "Como um time que agora pertence a um clube maior: continua com seu nome em campo, mas o escudo do clube está no estádio.",
+"w": "Fazendo perguntas ao Grok dentro do X, criando imagens no app Grok ou chamando os modelos Grok pela xAI API.",
+"t": "A xAI API (docs.x.ai) oferece o Grok 4.7, o principal, e o Grok Build 0.1 para programação, além de grok-imagine-image-2.0 e grok-imagine-video-1.5. Eles são fechados; os pesos do Grok-1 (Apache 2.0) e do Grok 2 (Grok 2 Community License) estão no Hugging Face, e não foram encontrados pesos abertos mais recentes. O Grok Build, agente de programação de código aberto, tem interface de terminal, modo headless e suporte a ACP, e roda no Grok 4.7. O Grok Bot 1.0, lançado no fim de outubro, roda agentes num computador persistente na nuvem. A SpaceX comprou a xAI em 2 de fevereiro de 2026; o x.ai agora chama a empresa de “SpaceXSI”, enquanto a API e os SDKs continuam dizendo xAI.",
+"n": "Em novembro de 2026, a xAI opera dentro da SpaceX com a marca SpaceXSI e mantém um ritmo rápido de lançamentos de modelos Grok.",
+"h": "O Grok-1 chegou em 2023 e teve os pesos abertos em 2024, seguido pelo Grok 3 (fevereiro de 2025) e pelo Grok 4 (julho de 2025).",
+"m": "xAI e SpaceXSI são nomes da empresa de IA, Grok é o nome dos modelos e do app, e o X é a rede social separada onde o Grok está integrado."
+},
+"c_mistral": {
+"l": "Mistral AI",
+"p": "O laboratório de IA mais conhecido da Europa, sediado em Paris, que lança muitos dos seus modelos com pesos abertos e oferece o assistente Mistral Vibe.",
+"e": "A Mistral mistura modelos abertos e fechados. O Mistral Large 4, o Mistral Small 4 e os pequenos Ministral 3 têm pesos abertos, enquanto o Codestral para código, os modelos de voz Voxtral Transcribe e TTS e o Mistral OCR são oferecidos pela sua plataforma. Seu produto para o público, o Mistral Vibe (antigo Le Chat), é um agente de chat e trabalho com um modo Code para programação. Desenvolvedores e empresas constroem sobre o Mistral Studio.",
+"k": "Como uma montadora europeia que enfrenta gigantes americanas e chinesas entregando as plantas junto com muitos dos seus carros.",
+"w": "Empresas e órgãos públicos europeus que querem os dados na União Europeia, hospedando os modelos da Mistral por conta própria ou usando os serviços da própria Mistral.",
+"t": "O Mistral Studio (console.mistral.ai, antiga La Plateforme) é a plataforma para criar, governar e refinar agentes e apps, com o Forge para modelos personalizados. Modelos de pesos abertos: Mistral Large 4 “Le Chonk” (v26.10, Mistral Ecosystem Open Weight License), Mistral Small 4 e Ministral 3 em 14B, 8B e 3B (Apache 2.0), e Voxtral Small. Os fechados incluem Codestral 25.08, Voxtral Transcribe 3, Voxtral TTS 3 e OCR 4.1. Magistral, Devstral, Pixtral e Mistral Medium estão descontinuados, com o Medium 3.5 substituído pelo Large 4. O Mistral Vibe usava o Mistral Medium 3.5 em maio de 2026; qual modelo ele usa desde o Large 4 não foi informado.",
+"n": "Em novembro de 2026, a principal opção europeia de pesos abertos, com o Large 4 como modelo principal. O Le Chat foi renomeado Mistral Vibe em 28 de maio de 2026.",
+"h": "Fundada em 2023 por ex-pesquisadores do Google DeepMind e da Meta; o Mixtral 8x7B (dezembro de 2023) popularizou os modelos abertos Mixture-of-Experts.",
+"m": "O Mistral Vibe é o produto que se chamava Le Chat, não um app novo."
+},
+"c_deepseek": {
+"l": "DeepSeek",
+"p": "Um laboratório chinês de IA conhecido por modelos de pesos abertos fortes e baratos; DeepSeek também é o nome do seu app de chat gratuito.",
+"e": "A DeepSeek se concentra numa única família de pesos abertos. A geração atual, V4, tem um modelo Pro grande e uma linha Flash mais rápida, atualizada com mais frequência. Os mesmos modelos rodam no app de chat DeepSeek, na web e no celular, e na API da DeepSeek, cobrada por token, e qualquer pessoa pode baixar os pesos e hospedá-los em outro lugar. Ao contrário da maioria dos grandes laboratórios, ela não tem agente de programação próprio.",
+"k": "Como uma padaria que vende pão no balcão, entrega no atacado e ainda publica a receita completa na internet.",
+"w": "Estudantes usando o app gratuito da DeepSeek, e empresas rodando o V4 nas próprias GPUs ou chamando o modelo pela API da DeepSeek ou por intermediários como o OpenRouter.",
+"t": "A plataforma de API da DeepSeek (platform.deepseek.com) é compatível com a da OpenAI e oferece deepseek-flash e deepseek-v4-pro; os IDs antigos deepseek-chat e deepseek-reasoner foram aposentados em 24 de julho de 2026. Os pesos do DeepSeek-V4-Pro e do DeepSeek-V4.1-Flash (atualizado como -1017 em outubro de 2026) estão na página oficial da DeepSeek no Hugging Face. O V4 Pro é um modelo Mixture-of-Experts com cerca de 1,6 trilhão de parâmetros no total e 49 bilhões ativos, contexto de um milhão de tokens e pesos sob licença MIT. O app de chat roda a geração V4, mas qual modelo exato ele usa não foi confirmado oficialmente.",
+"n": "Em novembro de 2026, entre os modelos abertos mais fortes, a poucos meses da fronteira fechada.",
+"h": "O DeepSeek-V3 (dezembro de 2024) e o R1 (janeiro de 2025) mostraram raciocínio de nível de fronteira por uma fração do custo habitual; o V4 teve prévia em abril de 2026 e ficou disponível para todos em agosto.",
+"m": "O app e o modelo são coisas diferentes: o app gratuito envia seus dados para os servidores da DeepSeek, enquanto os pesos abertos podem rodar no seu próprio hardware."
+},
+"c_alibaba": {
+"l": "Alibaba (Qwen)",
+"p": "A gigante chinesa de tecnologia cuja equipe Qwen faz os modelos Qwen, uma das famílias de pesos abertos mais baixadas, além do app Qwen Chat.",
+"e": "O Qwen vai de modelos minúsculos a gigantes, a maioria de pesos abertos. A mesma família é oferecida na API em níveis chamados Max, Plus e Flash, e move o Qwen Chat, um assistente gratuito com imagem e vídeo, voz e pesquisa aprofundada, e o Qwen Code, um agente de programação de código aberto. Desenvolvedores acessam os modelos pelo Alibaba Cloud Model Studio, que também hospeda modelos de terceiros, ou baixam os pesos no Hugging Face.",
+"k": "Como uma marca de roupas que faz todos os tamanhos, do bebê ao GG, e publica a maioria dos seus moldes na internet.",
+"w": "Startups fazendo fine-tuning de modelos Qwen pequenos para tarefas próprias, e pessoas usando o Qwen Chat ou o Qwen Code; os modelos gigantes são usados mais por serviços hospedados.",
+"t": "Os modelos de pesos abertos na página oficial do Qwen no Hugging Face incluem o Qwen3.8 (um modelo de 2,4 trilhões de parâmetros com 95 bilhões ativos, Flash-Next 180B e 27B), o Qwen3.6 e o Qwen-Image 2.1 Turbo. Na API, os nomes incluem Qwen3.8-Max, qwen3.7-plus e qwen3.8-flash, servidos pelo Alibaba Cloud Model Studio. Um qwen4-max-preview apareceu em 11 de novembro de 2026 no QwenCloud, plataforma hospedada cujo dono não é informado, como prévia limitada até 25 de novembro; nenhum anúncio oficial do Qwen4 foi encontrado. O Qwen Code funciona no terminal, em IDEs, num app para computador e na web.",
+"n": "Em novembro de 2026, uma família aberta central, muito usada como base para fine-tuning; o Qwen3.8-Max foi o primeiro Qwen de nível Max lançado com pesos abertos.",
+"h": "Lançado pela primeira vez em 2023, o Qwen virou uma das famílias abertas mais baixadas do Hugging Face.",
+"m": "Alibaba é a empresa, Qwen é a família de modelos e Qwen Chat é o app que usa esses modelos."
+},
+"c_moonshot": {
+"l": "Moonshot AI",
+"p": "Um laboratório chinês de IA que faz os modelos Kimi e o assistente Kimi, conhecido por modelos muito grandes com pesos publicados.",
+"e": "A Moonshot constrói todos os seus produtos sobre os modelos Kimi. O app Kimi cuida de chat, tarefas com agentes, pesquisa aprofundada, apresentações e documentos, com o Kimi Work para tarefas de trabalho; o Kimi Code é um agente de programação com uma CLI de código aberto. Desenvolvedores usam a Kimi API Platform. Os pesos dos modelos Kimi atuais são publicados no Hugging Face, mas sob licenças Kimi próprias da Moonshot, e não sob uma licença de código aberto padrão.",
+"k": "Como um autor que deixa o público ler e copiar seu livro, mas com uma lista própria de condições impressa na primeira página.",
+"w": "No kimi.com, no Kimi Code no terminal ou no VS Code, e pela API da Moonshot e por provedores terceiros.",
+"t": "A Kimi API Platform (platform.kimi.ai, antiga platform.moonshot.ai) oferece as APIs Chat Completions, Responses e Messages compatível com a da Anthropic, seguindo formatos de requisição que desenvolvedores já usam com outros provedores. Os modelos atuais são o Kimi K3.1 Pro, com uma variante Highspeed, e o Kimi K3. Os pesos estão no Hugging Face sob licenças Kimi, que são próprias e não de código aberto padrão. Kimi, Kimi Work e Kimi Code rodam no K3.1 Pro. O Kimi Code vem como CLI de código aberto, extensão para VS Code e app para computador. O Kimi K3 é um modelo Mixture-of-Experts de 2,8 trilhões de parâmetros, com pesos completos liberados em 27 de julho de 2026.",
+"n": "Em novembro de 2026, o Kimi K3.1 Pro é o modelo por trás de todos os produtos da Moonshot.",
+"h": "O Kimi K2 (julho de 2025) iniciou os lançamentos de pesos abertos da Moonshot; o K2.5 veio em janeiro de 2026 e o K3 em julho de 2026.",
+"m": "Pesos publicados aqui não significam licença de código aberto padrão: as licenças Kimi trazem condições próprias."
+},
+"c_zai": {
+"l": "Zhipu AI / Z.ai",
+"p": "Um laboratório chinês de IA que vende seus modelos GLM fora da China com a marca Z.ai, popular entre desenvolvedores para programação.",
+"e": "Todos os produtos da Zhipu rodam na família GLM. O Z.ai Chat é seu chatbot e agente, a Z.ai API Platform entrega os modelos a desenvolvedores, e o GLM Coding Plan é uma assinatura para usar o GLM dentro de agentes de programação de outras empresas, como Claude Code, Cline e OpenCode, e não um agente próprio. O modelo principal, GLM-5.3, tem os pesos publicados no Hugging Face.",
+"k": "Como uma fábrica de motores que não monta carros, mas vende uma assinatura de motor que serve em carros de outras marcas.",
+"w": "Desenvolvedores encaixando o GLM nos seus agentes de programação pelo GLM Coding Plan, e pessoas conversando no chat.z.ai.",
+"t": "A Z.ai API Platform oferece o GLM-5.3 (principal), o GLM-5.3-Flash e o GLM-5.3-FlashX, além do GLM-Image. Os pesos do GLM-5.3 estão no Hugging Face (zai-org/GLM-5.3), com o campo de licença marcado como “other”; se as variantes FlashX são abertas não foi confirmado. O Z.ai Chat roda o GLM-5.3-Flash, e o GLM Coding Plan usa a família GLM-5.3. A versão anterior, GLM-5.2, era um modelo Mixture-of-Experts de 744 bilhões de parâmetros, com cerca de 40 bilhões ativos e contexto de um milhão de tokens, lançado com pesos abertos em junho de 2026.",
+"n": "Em novembro de 2026, um dos principais criadores de modelos abertos, com o GLM-5.3 como modelo principal atual.",
+"m": "Zhipu AI e Z.ai são a mesma empresa: Z.ai é a marca usada fora da China."
+},
+"c_typesafe": {
+"l": "TypeSafe AI",
+"p": "Uma startup de San Francisco, fundada em 2024, que faz o Jev, um modelo de decisão que escolhe respostas entre opções fixas em vez de escrever texto.",
+"e": "A TypeSafe AI é bem menor que os grandes laboratórios e se concentra num único produto. O Jev é um modelo de decisão: você envia uma situação e perguntas com respostas permitidas, e ele devolve uma dessas respostas com probabilidades que o seu código usa para decidir se age sozinho ou chama uma pessoa. Ele é oferecido a desenvolvedores como serviço hospedado, não como app de chat nem como pesos para baixar.",
+"k": "Como um árbitro que só usa um conjunto fixo de sinais, nunca faz discursos e sempre mostra o quanto tem certeza da marcação.",
+"w": "Desenvolvedores chamando o Jev a partir do próprio código para filtrar, encaminhar ou verificar coisas, por exemplo para barrar uma ação arriscada de um agente de IA antes que ela aconteça.",
+"t": "A TypeSafe oferece o Jev como modelo proprietário e hospedado, que desenvolvedores chamam a partir do próprio código, com documentação em docs.typesafe.ai. Uma requisição traz um estado, como texto, JSON ou uma imagem, mais perguntas cujas opções de resposta são definidas de antemão, então a saída é sempre uma das opções permitidas, com probabilidades. A TypeSafe não publicou a arquitetura, os pesos nem um artigo técnico do Jev. Ao contrário dos grandes laboratórios, ela não oferece uma família de modelos de chat gerais nem app para o público; o Jev é seu único produto. O acesso abriu como acesso antecipado limitado em 15 de setembro de 2026.",
+"n": "Em novembro de 2026, o Jev está em acesso antecipado, e a maior parte dos números de velocidade e custo publicados vem da própria empresa.",
+"h": "Fundada em 2024 em San Francisco, a TypeSafe AI abriu o acesso antecipado ao Jev em 15 de setembro de 2026.",
+"m": "O Jev não é um chatbot: ele não escreve texto livre, escolhe entre respostas que você define."
+},
+"ogptoss": {
+"l": "gpt-oss (OpenAI)",
+"p": "Os modelos de pesos abertos da OpenAI: modelos de texto que qualquer pessoa pode baixar, rodar no próprio hardware e adaptar sob uma licença permissiva.",
+"e": "O gpt-oss fica à parte da linha principal da OpenAI. A família GPT-6, que move o ChatGPT, o Codex e os dots, é fechada e só pode ser usada pela OpenAI, enquanto os pesos do gpt-oss são públicos, sob Apache 2.0. Ele vem num tamanho maior e num menor, além de uma variante chamada gpt-oss-safeguard. É uma família separada, de 2025, não um GPT-6 reduzido, e não foi atualizada desde então.",
+"k": "Como uma grande rede de restaurantes que guarda em segredo seus pratos famosos, mas publica um livro de receitas caseiras mais simples.",
+"w": "Rodando um assistente privado e offline num notebook com o Ollama, ou empresas hospedando o modelo nos próprios servidores.",
+"t": "Lançamentos atuais: gpt-oss-120b e gpt-oss-20b, publicados em agosto de 2025 sob Apache 2.0, mais o gpt-oss-safeguard. Os pesos podem ser baixados e rodados localmente ou em qualquer nuvem, e os modelos foram pensados para rodar numa única GPU ou até num notebook. Nenhum lançamento aberto mais recente da OpenAI foi encontrado até novembro de 2026. Os outros modelos da OpenAI, a família GPT-6, o GPT Image e os modelos de voz, são fechados: só estão disponíveis pelos produtos e pela API da OpenAI, e seus pesos e arquitetura não são publicados.",
+"n": "Em novembro de 2026, continua sendo a única família de pesos abertos da OpenAI, sem lançamento novo desde agosto de 2025.",
+"h": "Lançado em agosto de 2025 nos tamanhos 20B e 120B.",
+"m": "O gpt-oss não é uma versão menor do GPT-6: é uma família separada e mais antiga, com pesos públicos."
+},
+"ogemma": {
+"l": "Gemma (Google)",
+"p": "A família de modelos de pesos abertos do Google: tamanhos pequenos e médios que você pode baixar e rodar no próprio hardware.",
+"e": "O Gemma é a contraparte aberta dos modelos fechados Gemini, do Google. O Gemini move os produtos do Google e só está disponível pelos serviços da empresa, enquanto os pesos do Gemma são publicados sob Apache 2.0, e qualquer pessoa pode rodá-los, ajustá-los com fine-tuning e distribuí-los. O Gemma 4 vem em vários tamanhos, incluindo um modelo Mixture-of-Experts, para que desenvolvedores escolham o modelo que cabe no seu hardware.",
+"k": "Como uma montadora que corre com seu carro principal, mas vende um motor menor que qualquer um pode instalar no próprio projeto.",
+"w": "Desenvolvedores rodando um assistente local num notebook com o Ollama, ou fazendo fine-tuning de um Gemma pequeno para uma tarefa específica.",
+"t": "A geração atual é o Gemma 4, lançado em abril de 2026 sob Apache 2.0, em cinco versões: E2B, E4B, 12B Unified, 26B A4B (um modelo Mixture-of-Experts com cerca de 4 bilhões de parâmetros ativos) e 31B. Os pesos podem ser baixados e foram pensados para rodar numa única GPU ou até num notebook. O Gemini, por outro lado, mantém pesos e arquitetura fechados e é oferecido pelo app Gemini, pela Gemini API e pelo Google AI Studio, e pelo Gemini Enterprise Agent Platform.",
+"n": "Em novembro de 2026, uma escolha popular para IA local e no próprio dispositivo.",
+"m": "Gemma não é Gemini: mesma empresa, mas o Gemma é a família pequena e aberta, e o Gemini a grande e fechada."
+},
+"omuse": {
+"l": "Modelos Muse (Meta)",
+"p": "A família de modelos atual da Meta, que move a Meta AI e o app Muse; algumas versões são fechadas e outras têm pesos abertos.",
+"e": "O Muse é a família sobre a qual a Meta constrói hoje. O Muse Wonder fica na fronteira, o Muse Spark é o modelo por trás da Meta AI e do app Muse, e a linha também inclui o Muse Ember e o Muse Image, para imagens. Dois lançamentos têm pesos abertos: o grande Muse Spark Open e o menor Muse Glimmer. O Llama, família aberta anterior da Meta, agora é legado.",
+"k": "Como uma montadora que aposentou o nome de um modelo famoso e lançou uma linha nova, com alguns carros vendidos prontos e outros em kit.",
+"w": "Toda vez que alguém usa a Meta AI no WhatsApp ou no Instagram, e pela Meta Model API, para desenvolvedores.",
+"t": "Modelos Muse fechados, disponíveis pela Meta Model API (dev.meta.ai): Muse Wonder e Muse Wonder Full (fronteira), Muse Spark 1.3, Muse Ember e Muse Image. Modelos de pesos abertos: Muse Spark Open, com 816 bilhões de parâmetros no total e 42 bilhões ativos, sob a licença própria Muse Model License, e Muse Glimmer, com 30 bilhões de parâmetros, sob Apache 2.0. A Meta AI e o app Muse rodam no Muse Spark. O Llama ficou só como legado: nenhum Llama novo aparece no site para desenvolvedores da Meta, o llama.com redireciona para dev.meta.ai e a Llama API agora é a Meta Model API.",
+"n": "Em novembro de 2026, o Muse é a linha de modelos ativa da Meta, e o Llama é mantido só como legado.",
+"m": "Muse é tanto a família de modelos quanto o nome de um app de agente separado; o Llama é a família antiga da Meta, não a atual."
+},
+"omai": {
+"l": "MAI e Phi (Microsoft)",
+"p": "Os modelos próprios da Microsoft: a família fechada MAI, para raciocínio, código, imagens e voz, e os pequenos modelos Phi, de pesos abertos.",
+"e": "O MAI é a linha fechada feita pela própria Microsoft: um modelo de raciocínio, um de programação, modelos de imagem, voz e transcrição, e um modelo de segurança. Os MAI rodam ao lado de modelos de parceiros no Microsoft Copilot e no GitHub Copilot e são oferecidos no Microsoft Foundry. O Phi é uma linha separada de modelos pequenos com pesos abertos sob licença MIT, que qualquer pessoa pode baixar e rodar.",
+"k": "Como a marca própria de uma loja, vendida na mesma prateleira das marcas famosas, mais uma amostra grátis que qualquer um pode levar para casa.",
+"w": "Dentro do GitHub Copilot, que usa o MAI Code ao lado de outros modelos, e no catálogo do Foundry no Azure.",
+"t": "Modelos MAI atuais: MAI Thinking 1, MAI Code 1.1 Flash, MAI Image 2.6 (com o 2.7 anunciado), MAI Voice 2, MAI Transcribe 2 e MAI Cyber 1.1 Flash. Eles são fechados e oferecidos pelo Microsoft Foundry e pelos produtos da Microsoft; pesos e arquitetura não são publicados. O Microsoft Copilot trabalha com modelos MAI e de parceiros por meio do Copilot harness, e o GitHub Copilot usa o MAI Code ao lado de modelos de terceiros. A linha de pesos abertos é a família Phi-4, sob licença MIT; nenhum Phi-5 foi encontrado.",
+"n": "Em novembro de 2026, o MAI cobre a maioria dos tipos de entrada e saída, enquanto o Phi não passou do Phi-4.",
+"m": "MAI e Phi são da Microsoft, mas o MAI é fechado e o Phi tem pesos abertos."
+},
+"odots": {
+"l": "dots (OpenAI)",
+"p": "Os agentes pessoais sempre ativos da OpenAI: cada dot tem seu próprio computador na nuvem e continua disponível para trabalhar entre uma conversa e outra.",
+"e": "Um dot não é um chat que você abre e fecha, e sim um agente que continua rodando. Ele trabalha no seu próprio computador na nuvem, não no seu aparelho. Você fala com seus dots onde já conversa: dentro do ChatGPT, no Slack ou no Microsoft Teams. Assim como o ChatGPT e o Codex, os dots rodam nos modelos GPT da OpenAI.",
+"k": "Como um assistente com mesa e computador próprios, para quem você pode mandar mensagem pelo chat do escritório a qualquer hora.",
+"w": "No ChatGPT ou como colega de equipe no Slack e no Microsoft Teams, para assinantes dos planos Pro e Business Premium da OpenAI.",
+"t": "Os dots rodam nos modelos GPT da OpenAI: GPT-6 Astra, com o GPT-6.1 Terra adicionado em 3 de novembro de 2026. Cada dot tem seu próprio computador na nuvem, então o agente trabalha num ambiente próprio, e não na máquina do usuário, e continua disponível entre as conversas. Os usuários falam com seus dots pelo ChatGPT, pelo Slack ou pelo Teams. A OpenAI lançou os dots no DevDay, em 29 de setembro de 2026, para os planos Pro e Business Premium, com liberação para Enterprise e Edu em novembro de 2026. Os dots são agentes de software, não um aparelho.",
+"n": "Em novembro de 2026, disponível nos planos Pro e Business Premium e sendo liberado para Enterprise e Edu.",
+"h": "Lançado no DevDay da OpenAI em 29 de setembro de 2026.",
+"m": "Os dots são agentes de software que rodam na nuvem, não um aparelho físico."
+},
+"oaiapi": {
+"l": "API da OpenAI",
+"p": "O serviço da OpenAI para desenvolvedores: permite que apps de outras empresas enviem pedidos aos modelos da OpenAI, com ferramentas para criar agentes e apps de voz.",
+"e": "A API é o caminho pelo qual os modelos da OpenAI chegam a produtos que não são da própria OpenAI. Desenvolvedores escolhem um modelo, da família GPT-6 aos modelos de imagem e voz, e o chamam no seu código. Além das chamadas simples, a plataforma oferece uma Agents API para criar agentes, o ChatKit para interfaces de chat e voz em tempo real com o GPT-Live. ChatGPT e Codex são os apps da própria OpenAI; a API atende todo o resto.",
+"k": "Como uma companhia de energia: o ChatGPT é a casa que ela construiu para si, e a API é a ligação à rede que qualquer um pode contratar.",
+"w": "Em robôs de atendimento, ferramentas de escrita e assistentes de programação de outras empresas que rodam em modelos da OpenAI nos bastidores.",
+"t": "A documentação fica em developers.openai.com. O catálogo lista GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra e GPT-6 Luna, os especializados GPT-6-Cyber e GPT-Rosalind, o GPT-Image-2.6 e os modelos de voz GPT-Live-1 e GPT-Realtime-2.1; os modelos da série o não aparecem mais. Desenvolvedores chamam os modelos por ID, como gpt-6.1-sol. A Agents API está em beta público, o ChatKit ajuda a montar interfaces de chat, e os modelos Realtime e GPT-Live cuidam da voz ao vivo. Todos esses modelos são fechados; os modelos de pesos abertos gpt-oss são baixados à parte. A API de vídeo do Sora foi encerrada em 24 de setembro de 2026.",
+"n": "Em novembro de 2026, a API serve a família GPT-6, com a Agents API ainda em beta público.",
+"m": "A API e o ChatGPT usam a mesma família de modelos, mas são produtos separados."
+},
+"antapi": {
+"l": "Claude Platform",
+"p": "A oferta da Anthropic para desenvolvedores, com a Claude API, o Console e os Managed Agents, para colocar o Claude dentro de outros produtos.",
+"e": "A Claude Platform é o caminho pelo qual o Claude chega a produtos além dos apps da própria Anthropic. Desenvolvedores chamam os modelos Claude no seu código pela API, trabalham no Console e podem rodar agentes hospedados com os Managed Agents. Os mesmos modelos também são vendidos pela Amazon Bedrock, pelo Google Cloud e pelo Microsoft Foundry, então empresas podem usar o Claude dentro de uma nuvem que já têm.",
+"k": "Como uma cozinha famosa que também fornece seus molhos para outros restaurantes, direto ou por grandes distribuidores.",
+"w": "Dentro de ferramentas como o Cursor e em apps de empresas que rodam no Claude pela API ou por um provedor de nuvem.",
+"t": "A plataforma fica em platform.claude.com e oferece a Claude API, o Console e os Managed Agents. Os modelos atuais são Claude Fable 5.2, Claude Opus 5.5, Claude Sonnet 5.5 e Claude Haiku 5.5, com o Claude Mythos 5.2 em disponibilidade limitada. O Opus é voltado a trabalhos complexos, o Sonnet é a opção equilibrada e o Haiku a rápida e barata. Os mesmos modelos estão na Amazon Bedrock, no Google Cloud e no Microsoft Foundry. Desenvolvedores também podem construir sobre o ciclo de agente do Claude Code com o Claude Agent SDK. Todos os modelos Claude são fechados, sem pesos publicados.",
+"n": "Em novembro de 2026, a plataforma serve a geração Claude 5.x, diretamente e por três grandes nuvens.",
+"m": "Claude Platform é o nome que a Anthropic usa para sua oferta para desenvolvedores, que inclui o que muita gente chama de Claude API."
+},
+"gapi": {
+"l": "Gemini API e Google AI Studio",
+"p": "As ferramentas do Google para desenvolvedores: a Gemini API, para chamar os modelos pelo código, e o Google AI Studio, um estúdio na web para testá-los.",
+"e": "Desenvolvedores começam no Google AI Studio, onde testam o Gemini, o Nano Banana e outros modelos, e depois chamam os mesmos modelos no código pela Gemini API. O AI Studio também oferece Managed Agents. Para empresas, o Google tem um lado corporativo separado no Google Cloud: o Gemini Enterprise Agent Platform, antigo Vertex AI, sua plataforma corporativa de IA e agentes.",
+"k": "Como uma cozinha de testes ao lado de um balcão de atacado: você prova as receitas no estúdio e depois compra em grande quantidade pela API.",
+"w": "Em apps que usam o Gemini para chat, geração de imagens ou análise, e em sistemas de empresas construídos no Google Cloud.",
+"t": "O AI Studio (aistudio.google.com) e a Gemini API dão acesso ao Gemini 4 Carbon, ao Gemini 4 Argon e ao Gemini 3.8 Flash, ao Nano Banana 2.1 para imagens e ao Lyria 3.5 para música; o Imagen 4 aparece como desativado, e a geração de imagens agora fica com o Nano Banana. Desenvolvedores chamam os modelos por ID, como gemini-4-carbon. Os Managed Agents também estão lá. A contraparte corporativa é o Gemini Enterprise Agent Platform no Google Cloud, renomeado a partir do Vertex AI no Cloud Next, em 22 de abril de 2026. Esses modelos Gemini são fechados; o Gemma é a família de pesos abertos do Google.",
+"n": "Em novembro de 2026, o Gemini 4 Carbon está liberado aqui para desenvolvedores pagantes, como o modelo mais forte do Google.",
+"m": "Gemini Enterprise Agent Platform é o novo nome do Vertex AI, não um produto separado."
+},
+"metaai": {
+"l": "Meta AI",
+"p": "O assistente de IA da Meta, disponível como app próprio e integrado ao WhatsApp, Instagram, Facebook, Messenger, Threads e aos óculos com IA da Meta.",
+"e": "A Meta AI é o assistente que muita gente encontra sem instalar nada, porque ele mora dentro de apps que as pessoas já usam. Ele roda nos modelos Muse da Meta, mais especificamente no Muse Spark. É um produto diferente do Muse, o app de agente pessoal separado da Meta, e do Vibes, o app da Meta para criar e compartilhar vídeos com IA.",
+"k": "Como um concierge que trabalha na recepção de todos os prédios de uma mesma empresa.",
+"w": "Numa conversa do WhatsApp, dentro do Instagram, do Facebook ou do Messenger, no app próprio da Meta AI ou nos óculos com IA da Meta.",
+"t": "A Meta AI roda no Muse Spark, parte da família Muse, que agora é a linha de modelos ativa da Meta, com o Llama mantido só como legado. Ela é oferecida como app de assistente próprio e dentro do WhatsApp, Instagram, Facebook, Messenger e Threads, além dos óculos com IA da Meta. Desenvolvedores que querem os modelos por trás dela usam a Meta Model API em dev.meta.ai, compatível com o SDK da OpenAI, que oferece os modelos Muse.",
+"n": "Em novembro de 2026, a Meta AI roda no Muse Spark em todos os apps e óculos da Meta.",
+"m": "A Meta AI é o assistente; Muse é tanto a família de modelos por trás dele quanto um app de agente separado."
+},
+"copilot": {
+"l": "Microsoft Copilot",
+"p": "O app de assistente de IA da Microsoft, com abas para conversa do dia a dia, tarefas de trabalho, criação de apps e um agente autônomo.",
+"e": "O Microsoft Copilot reúne vários modos num só app: Home e Chat para perguntas do dia a dia, Cowork para tarefas de trabalho, Code para criar apps e o Autopilot, um agente em prévia privada. Ele é declaradamente multimodelo: pelo Copilot harness, trabalha com os modelos MAI, da própria Microsoft, e com modelos de parceiros. É um produto diferente do GitHub Copilot, que é para programadores.",
+"k": "Como uma recepção que passa cada pedido para o especialista mais adequado, seja da casa ou de fora.",
+"w": "No app Copilot e em copilot.microsoft.com, para perguntas, tarefas de trabalho e, no programa Frontier, criação de pequenos apps.",
+"t": "O app reúne Home, Chat, Cowork, Code e Autopilot. O Code, também chamado Copilot Code, permite criar apps e faz parte do programa Frontier da Microsoft; o Autopilot é um agente em prévia privada. Por trás do app, o Copilot harness trabalha com modelos MAI e de parceiros, então a Microsoft não prende o app a um único modelo. O próprio harness também é hospedado no Microsoft Foundry, no Azure, ao lado dos modelos MAI. Entre os modelos MAI atuais estão o MAI Thinking 1, o MAI Image 2.6 e o MAI Voice 2.",
+"n": "Em novembro de 2026, o principal assistente da Microsoft para o público, com o Autopilot ainda em prévia privada.",
+"m": "Microsoft Copilot e GitHub Copilot têm o mesmo nome, mas são produtos diferentes para públicos diferentes."
+},
+"ghcopilot": {
+"l": "GitHub Copilot",
+"p": "O assistente de programação da Microsoft, feito pelo GitHub, que ajuda a escrever e alterar código e funciona como agente em editores, no terminal e num app.",
+"e": "O GitHub Copilot ajuda programadores a escrever e alterar código, de sugestões a tarefas de agente. Ele funciona no VS Code, no terminal por meio de uma CLI e num app para computador do GitHub Copilot, ainda em prévia. Como os outros produtos da Microsoft, é multimodelo: usa o MAI Code, da Microsoft, ao lado de modelos de outras empresas.",
+"k": "Como um parceiro de programação em dupla que consulta um especialista diferente conforme o trabalho.",
+"w": "No VS Code enquanto você escreve código, no terminal com a Copilot CLI e na prévia do app para computador do GitHub.",
+"t": "O GitHub Copilot roda no VS Code, como CLI e como app para computador em prévia. Ele usa os modelos MAI Code da Microsoft, sendo o atual o MAI Code 1.1 Flash, junto com modelos de terceiros. O GitHub Models foi desativado em 30 de julho de 2026. O GitHub Copilot é separado do Copilot Code, a aba Code do app Microsoft Copilot para criar apps. Sua primeira versão rodava no modelo Codex de 2021 da OpenAI, nome que a OpenAI depois reaproveitou para seu agente de programação atual.",
+"n": "Em novembro de 2026, o app para computador do GitHub Copilot ainda está em prévia.",
+"h": "O primeiro GitHub Copilot rodava no modelo Codex de 2021 da OpenAI.",
+"m": "O GitHub Copilot é para programadores e é separado do Microsoft Copilot, o assistente geral."
+},
+"grokapp": {
+"l": "Grok (app)",
+"p": "O chatbot da xAI na web, no iPhone, no Android e dentro do X, com voz, busca em tempo real e geração de imagens e vídeos.",
+"e": "O app Grok é o chatbot da xAI para o público. Ele responde perguntas com busca em tempo real, conversa por voz e cria imagens e vídeos com o Grok Imagine, que também existe como gerador separado. Está disponível sozinho e integrado ao X. O Grok Bot, os colegas de equipe em forma de agentes sempre ativos da xAI, e o Grok Build, seu agente de programação, são produtos separados que rodam nos modelos Grok.",
+"k": "Como um locutor de rádio que lê as notícias ao vivo e ainda desenha o que está descrevendo.",
+"w": "Em grok.com, nos apps do Grok para iPhone e Android e dentro do X, onde responde perguntas.",
+"t": "O app roda nos modelos Grok da xAI; qual modelo específico cada usuário recebe não é informado nas fontes usadas aqui, enquanto o Grok 4.7 é o principal modelo atual da API. A geração de imagens e vídeos usa os modelos Grok Imagine, listados na API como grok-imagine-image-2.0 e grok-imagine-video-1.5. Esses modelos são fechados; só os antigos Grok-1 e Grok 2 têm pesos publicados. Desenvolvedores que querem os mesmos modelos usam a xAI API, não o app. A xAI agora pertence à SpaceX e usa a marca SpaceXSI no x.ai.",
+"n": "Em novembro de 2026, o principal produto da xAI para o público, ao lado dos agentes Grok Bot, lançados no fim de outubro de 2026.",
+"m": "Grok é o nome tanto do app quanto da família de modelos; xAI é a empresa."
+},
+"makers": {
+"l": "Quem faz o quê",
+"p": "As empresas por trás dos nomes de IA que aparecem nas notícias, cada uma com os modelos que treina e os produtos que as pessoas usam.",
+"e": "A maioria das empresas de IA faz dois tipos de coisa. As famílias de modelos são os motores treinados, como GPT ou Claude. Os produtos são o que as pessoas abrem: apps de chat, agentes, ferramentas de programação e plataformas para desenvolvedores. Uma família de modelos costuma alimentar vários produtos, então aqui cada empresa mostra os dois lado a lado, e as setas mostram qual produto roda em quais modelos.",
+"k": "Como as montadoras: cada uma fabrica motores e vende vários carros, e o mesmo motor muitas vezes vai em mais de um carro.",
+"w": "Quando uma manchete anuncia um modelo novo, uma atualização de app ou um agente de programação, este ramo mostra de qual empresa é e como se encaixa no resto da linha dela.",
+"t": "Cada empresa lista suas famílias de modelos, separadas em pesos fechados (usados só pelos apps e pela API da empresa) e pesos abertos (que podem ser baixados sob uma licença), e seus produtos: apps para o público, agentes, harnesses de programação e plataformas para desenvolvedores. As conexões ligam os produtos às famílias de modelos que usam, os modelos à categoria fechada ou aberta, os apps e harnesses aos seus conceitos gerais e as plataformas de desenvolvedor à inferência e às APIs. Os nomes de versão em cada página trazem a data da última verificação, porque mudam a cada poucos meses.",
+"n": "Em novembro de 2026, os maiores laboratórios ocidentais (OpenAI, Anthropic, Google, Meta, Microsoft, xAI) vendem principalmente modelos fechados, enquanto muitos laboratórios chineses e a Mistral publicam pesos abertos."
+}
+};
+Object.keys(ECO2_EN).forEach(function (k) { EN[k] = ECO2_EN[k]; PT[k] = ECO2_PT[k]; });
+EN.ogpt.l = "GPT models"; PT.ogpt = Object.assign(PT.ogpt || {}, { l: "Modelos GPT" });
+EN.oclaude.l = "Claude models"; PT.oclaude = Object.assign(PT.oclaude || {}, { l: "Modelos Claude" });
+EN.ogemini.l = "Gemini models"; PT.ogemini = Object.assign(PT.ogemini || {}, { l: "Modelos Gemini" });
+EN.ogrok.l = "Grok models"; PT.ogrok = Object.assign(PT.ogrok || {}, { l: "Modelos Grok" });
+EN.odeepseek.l = "DeepSeek models"; PT.odeepseek = Object.assign(PT.odeepseek || {}, { l: "Modelos DeepSeek" });
+EN.oqwen.l = "Qwen models"; PT.oqwen = Object.assign(PT.oqwen || {}, { l: "Modelos Qwen" });
+EN.okimi.l = "Kimi models"; PT.okimi = Object.assign(PT.okimi || {}, { l: "Modelos Kimi" });
+EN.oglm.l = "GLM models"; PT.oglm = Object.assign(PT.oglm || {}, { l: "Modelos GLM" });
+EN.omistral.l = "Mistral models"; PT.omistral = Object.assign(PT.omistral || {}, { l: "Modelos Mistral" });
+EN.lechat.l = "Mistral Vibe"; PT.lechat = Object.assign(PT.lechat || {}, { l: "Mistral Vibe" });
+EN.codex.l = "Codex"; PT.codex = Object.assign(PT.codex || {}, { l: "Codex" });
+EN.geminiapp.l = "Gemini app"; PT.geminiapp = Object.assign(PT.geminiapp || {}, { l: "App Gemini" });
+EN.oglm.n = (EN.oglm.n || "") + " " + "By November 2026 Z.ai’s documentation listed GLM-5.3 as its flagship."; PT.oglm.n = ((PT.oglm && PT.oglm.n) || EN.oglm.n) + " " + "Em novembro de 2026, a documentação da Z.ai já listava o GLM-5.3 como carro-chefe.";
+EN.odeepseek.n = (EN.odeepseek.n || "") + " " + "An October 2026 update, DeepSeek-V4.1-Flash, sits alongside V4-Pro in the API."; PT.odeepseek.n = ((PT.odeepseek && PT.odeepseek.n) || EN.odeepseek.n) + " " + "Uma atualização de outubro de 2026, o DeepSeek-V4.1-Flash, convive com o V4-Pro na API.";
+EN.lechat.n = (EN.lechat.n || "") + " " + "Mistral renamed Le Chat to Mistral Vibe on May 28, 2026."; PT.lechat.n = ((PT.lechat && PT.lechat.n) || EN.lechat.n) + " " + "A Mistral renomeou o Le Chat para Mistral Vibe em 28 de maio de 2026.";
+XLINKS.push(
+ ["odots", "ogpt", "uses"],
+ ["oaiapi", "ogpt", "uses"],
+ ["antapi", "oclaude", "uses"],
+ ["gapi", "ogemini", "uses"],
+ ["metaai", "omuse", "uses"],
+ ["copilot", "omai", "uses"],
+ ["ghcopilot", "omai", "uses"],
+ ["grokapp", "ogrok", "uses"],
+ ["ogpt", "closed", "exampleof"],
+ ["oclaude", "closed", "exampleof"],
+ ["ogemini", "closed", "exampleof"],
+ ["ogrok", "closed", "exampleof"],
+ ["omai", "closed", "exampleof"],
+ ["ojev", "closed", "exampleof"],
+ ["ogptoss", "open", "exampleof"],
+ ["ogemma", "open", "exampleof"],
+ ["odeepseek", "open", "exampleof"],
+ ["oqwen", "open", "exampleof"],
+ ["okimi", "open", "exampleof"],
+ ["oglm", "open", "exampleof"],
+ ["omistral", "open", "exampleof"],
+ ["chatgpt", "apps", "exampleof"],
+ ["claudeapp", "apps", "exampleof"],
+ ["geminiapp", "apps", "exampleof"],
+ ["metaai", "apps", "exampleof"],
+ ["copilot", "apps", "exampleof"],
+ ["grokapp", "apps", "exampleof"],
+ ["lechat", "apps", "exampleof"],
+ ["deepseekapp", "apps", "exampleof"],
+ ["codex", "harness", "exampleof"],
+ ["claudecode", "harness", "exampleof"],
+ ["antigravity", "harness", "exampleof"],
+ ["ghcopilot", "harness", "exampleof"],
+ ["odots", "aiagents", "exampleof"],
+ ["oaiapi", "inference", "exampleof"],
+ ["antapi", "inference", "exampleof"],
+ ["gapi", "inference", "exampleof"],
+ ["ogemma", "slm", "exampleof"],
+ ["makers", "stack", "explains"]
+);
+EN.ogptoss.l = "gpt-oss"; PT.ogptoss.l = "gpt-oss";
+EN.ogemma.l = "Gemma"; PT.ogemma.l = "Gemma";
+EN.omuse.l = "Muse models"; PT.omuse.l = "Modelos Muse";
+EN.omai.l = "MAI and Phi models"; PT.omai.l = "Modelos MAI e Phi";
+EN.odots.l = "dots"; PT.odots.l = "dots";
+EN.grokapp.l = "Grok app"; PT.grokapp.l = "App Grok";
+EN.ojev.l = "Jev"; PT.ojev.l = "Jev";
+TIMELINE.push({ y:"2026", k:"release", id:"odots", en:"OpenAI introduces dots, always-on agents that each run on their own cloud computer (September 29).", pt:"A OpenAI apresenta os dots, agentes sempre ligados que rodam cada um no seu próprio computador na nuvem (29 de setembro)." });
+TIMELINE.sort(function (a, b) { return parseInt(a.y, 10) - parseInt(b.y, 10); });
 
 (function () {
   "use strict";
