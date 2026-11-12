@@ -424,14 +424,17 @@ html.sheet .maxbtn { display: inline-flex; margin-right: 6px; }
 html.sheet .minbtn { display: inline-flex; margin-right: 6px; }
 .minbtn .ico { width: 13px; height: 8px; }
 .dock {
-  position: absolute; z-index: 5; left: 50%; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  position: absolute; z-index: 5; right: calc(12px + env(safe-area-inset-right, 0px)); bottom: calc(78px + env(safe-area-inset-bottom, 0px)); transform-origin: 100% 100%;
   display: inline-flex; align-items: center; gap: 10px; max-width: min(420px, calc(100% - 32px)); padding: 10px 16px;
   border: 0; border-radius: 999px; background: var(--panel); color: var(--ink); font-size: 0.92rem; cursor: pointer;
   box-shadow: 0 0 0 1px var(--line), 0 8px 26px rgba(0, 0, 0, 0.14); animation: dockin 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .dock-t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dock .dock-i { width: 13px; height: 8px; color: var(--muted); }
-@keyframes dockin { from { opacity: 0; transform: translate(-50%, 12px); } }
+@keyframes dockin { from { opacity: 0; transform: translateY(-14px) scale(0.92, 0.6); } }
+/* minimizing: the panel rolls down into its bottom-right corner, where the small bar appears */
+html.sheet.sheet-open.sheet-rolling .side { transform-origin: 100% 100%; pointer-events: none; animation: rolldown 0.3s cubic-bezier(0.5, 0, 0.75, 0) forwards; }
+@keyframes rolldown { to { opacity: 0; transform: scale(0.55, 0.04); border-radius: 999px; } }
 .maxbtn .ico { width: 14px; height: 14px; }
 @keyframes sidein { from { opacity: 0; transform: translateX(24px); } }
 @keyframes sheetin { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } }
@@ -8872,7 +8875,20 @@ addLanguage("uk", {"nodes":{"ai":{"l":"Штучний інтелект","p":"Ш�
   }
   function setMin(v) {
     sheetMin = v; save("aimap-min", v ? "1" : "0");
-    if (v) { setMax(false); sheetOpen = false; document.documentElement.classList.remove("sheet-open"); }
+    const root = document.documentElement;
+    if (v) {
+      setMax(false); sheetOpen = false;
+      if (reduce || !root.classList.contains("sheet-open")) root.classList.remove("sheet-open");
+      else {
+        root.classList.add("sheet-rolling");
+        setTimeout(function () {
+          root.classList.remove("sheet-rolling");
+          if (sheetMin && !sheetOpen) root.classList.remove("sheet-open");
+          syncDock();
+        }, 300);
+        return;
+      }
+    }
     syncDock();
   }
   function syncDock() {             // the small bar that stands for the minimized panel
