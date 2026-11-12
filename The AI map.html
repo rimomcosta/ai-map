@@ -1161,6 +1161,7 @@ ai
    routing
    evals
    guardrails
+   decmodel
  trust
   limits
    halluc
@@ -1185,6 +1186,7 @@ ai
    oclaude
    ogemini
    ogrok
+   ojev
   open
    openvs
    odeepseek
@@ -7462,6 +7464,63 @@ const LESSON_TEXT = {
 };
 Object.keys(LESSON_TEXT).forEach(function (id) { if (!EN[id]) return; Object.assign(EN[id], LESSON_TEXT[id].en); PT[id] = Object.assign(PT[id] || {}, LESSON_TEXT[id].pt); });
 // ---- end rewritten lesson texts ----
+
+// ---- decision models (added November 2026) ----
+EX.add("ojev");
+Object.assign(TYPE, { decmodel:"concept", ojev:"model" });
+Object.assign(REFS, { decmodel:"https://www.thoughtworks.com/en-us/insights/blog/generative-ai/jev-decision-models-what-need-know-why", ojev:"https://docs.typesafe.ai/" });
+CHECKED.ids.push("ojev");
+XLINKS.push(
+ ["decmodel","cls","buildson"], ["decmodel","confid","workson"], ["decmodel","routing","usedfor"], ["decmodel","guardrails","usedfor"],
+ ["decmodel","evals","usedfor"], ["decmodel","aiagents","usedfor"], ["decmodel","llm","alt"], ["ojev","decmodel","exampleof"]
+);
+TIMELINE.push({ y:"2026", k:"release", id:"ojev", en:"TypeSafe AI opens early access to Jev, a “decision model” that returns choices with probabilities instead of text (September 15).", pt:"A TypeSafe AI abre acesso antecipado ao Jev, um “modelo de decisão” que devolve escolhas com probabilidades em vez de texto (15 de setembro)." });
+TIMELINE.sort(function (a, b) { return parseInt(a.y, 10) - parseInt(b.y, 10); });
+COURSE[6].steps.push("decmodel");
+
+EN.decmodel = { l:"Decision models", f:"System One models", s:"emerg",
+ p:"Models that don’t write text: you give them a situation and a list of possible answers, and they return the best option with a probability for each.",
+ e:"A chat model writes words, and your code then has to read those words to find the answer. A decision model skips that step. You send the facts (the state) plus questions with fixed answers: pick one of these labels, score this on a scale, is this statement true. It returns the chosen answer and how likely each option is. Because the answers are limited to what you allowed, the output is always valid and your software can act on it directly.",
+ k:"Like a fast, careful examiner who only answers multiple-choice questions and always tells you how sure they are. For an essay, you still need a writer.",
+ x:"A support team gets 5,000 emails a day and wants each one sent to the right queue.\nThe app sends each email as the state, with one question: is this “billing”, “technical problem”, “cancellation” or “other”?\nThe decision model answers in a fraction of a second, say “billing” with 0.93, “cancellation” 0.05 and the rest 0.02.\nThe team sets a rule: above 0.85, route it automatically; below that, send it to a person to sort.\nAfter a week they check the automatic decisions. If the 0.9 answers turn out right about 90% of the time, the probabilities can be trusted, and they can raise or lower the threshold with confidence.",
+ w:"Teams use them where software needs a quick yes, no or pick-one: routing support tickets, flagging risky content, screening job applications, or checking an AI agent’s planned action before it runs.",
+ m:"A decision model isn’t a smaller chatbot. It can’t explain itself in words or invent a new answer; it can only choose among the options you give it, and it can still choose the wrong one, which is why you look at its confidence.",
+ t:"A decision model is a discriminative model used through an API: it maps an input (the state, which may be text, JSON or an image) and a set of candidate answers to a probability distribution over those answers, rather than generating tokens. Typical question types are single choice from an unordered list, a score on an ordered scale, and the probability that a statement is true. Independent questions can be evaluated in parallel against the same state. The key property is calibration: if the model says 0.8, it should be right about 80% of the time, so software can set thresholds for acting automatically versus asking a person. Outputs are constrained to the allowed options, so there is nothing to parse and no free-text hallucination, but the model can still be confidently wrong, so thresholds are tuned on real data. In agent systems the usual pattern is an LLM for open-ended reasoning and text, and a decision model for fast, cheap, repeatable judgments such as routing, guardrails and grading.",
+ h:"Classifiers that output probabilities are decades old. The label “decision model”, and TypeSafe AI’s “System One model” (after Daniel Kahneman’s fast, intuitive System 1 thinking), spread in September 2026 with the launch of Jev.",
+ n:"Emerging. Jev is the best-known example; other decision models, such as the open-weight Laya, appeared around the same time. Most published speed and cost figures still come from the vendors themselves.",
+ io:["A situation (text, data or an image) plus questions with fixed answers","The chosen answer, a probability for each option and a confidence estimate"] };
+PT.decmodel = { l:"Modelos de decisão", f:"Modelos System One",
+ p:"Modelos que não escrevem texto: você entrega uma situação e uma lista de respostas possíveis, e eles devolvem a melhor opção com uma probabilidade para cada uma.",
+ e:"Um modelo de chat escreve palavras, e o seu código ainda precisa ler essas palavras para achar a resposta. Um modelo de decisão pula essa etapa. Você envia os fatos (o estado) e perguntas com respostas fixas: escolha um destes rótulos, dê uma nota numa escala, esta afirmação é verdadeira. Ele devolve a resposta escolhida e o quanto cada opção é provável. Como as respostas se limitam ao que você permitiu, a saída é sempre válida e o software pode agir direto sobre ela.",
+ k:"Como um avaliador rápido e cuidadoso que só responde perguntas de múltipla escolha e sempre diz o quanto tem certeza. Para uma redação, você ainda precisa de um escritor.",
+ x:"Uma equipe de suporte recebe 5.000 e-mails por dia e quer mandar cada um para a fila certa.\nO app envia cada e-mail como estado, com uma pergunta: é “cobrança”, “problema técnico”, “cancelamento” ou “outro”?\nO modelo de decisão responde em uma fração de segundo, digamos “cobrança” com 0,93, “cancelamento” 0,05 e o resto 0,02.\nA equipe define uma regra: acima de 0,85, encaminha automaticamente; abaixo disso, uma pessoa decide.\nDepois de uma semana, conferem as decisões automáticas. Se as respostas com 0,9 estiverem certas em cerca de 90% das vezes, dá para confiar nas probabilidades e ajustar o limite com segurança.",
+ w:"Equipes usam esses modelos quando o software precisa de um sim, um não ou uma escolha rápida: encaminhar chamados de suporte, sinalizar conteúdo arriscado, fazer a triagem de candidaturas ou conferir a ação planejada por um agente de IA antes de ela rodar.",
+ m:"Um modelo de decisão não é um chatbot menor. Ele não se explica em palavras nem inventa uma resposta nova; só escolhe entre as opções que você deu, e ainda pode escolher a errada, por isso você olha a confiança dele.",
+ t:"Um modelo de decisão é um modelo discriminativo usado por API: ele relaciona uma entrada (o estado, que pode ser texto, JSON ou imagem) e um conjunto de respostas candidatas a uma distribuição de probabilidade sobre essas respostas, em vez de gerar tokens. Os tipos de pergunta mais comuns são escolha única numa lista sem ordem, nota numa escala ordenada e a probabilidade de uma afirmação ser verdadeira. Perguntas independentes podem ser avaliadas em paralelo sobre o mesmo estado. A propriedade central é a calibração: se o modelo diz 0,8, deve acertar em cerca de 80% das vezes, e assim o software define limites para agir sozinho ou pedir uma pessoa. As saídas ficam restritas às opções permitidas, então não há nada para interpretar nem alucinação em texto livre, mas o modelo ainda pode errar com confiança, por isso os limites são ajustados com dados reais. Em sistemas de agentes, o padrão é um LLM para raciocínio aberto e texto, e um modelo de decisão para julgamentos rápidos, baratos e repetíveis, como roteamento, guardrails e avaliação.",
+ h:"Classificadores que devolvem probabilidades existem há décadas. O nome “modelo de decisão” e o termo “System One model” da TypeSafe AI (inspirado no pensamento rápido e intuitivo, o Sistema 1, de Daniel Kahneman) se espalharam em setembro de 2026 com o lançamento do Jev.",
+ n:"Emergente. O Jev é o exemplo mais conhecido; outros modelos de decisão, como o Laya, de pesos abertos, surgiram na mesma época. A maior parte dos números de velocidade e custo publicados ainda vem das próprias empresas.",
+ io:["Uma situação (texto, dados ou imagem) mais perguntas com respostas fixas","A resposta escolhida, uma probabilidade para cada opção e uma estimativa de confiança"] };
+
+EN.ojev = { l:"Jev (TypeSafe AI)", s:"emerg",
+ p:"A decision model from TypeSafe AI: instead of writing text, it answers structured questions with typed answers and calibrated probabilities.",
+ e:"You send Jev a state, such as an email, a JSON record or an image, and one or more questions. Each question is a Choice (pick one option from a list), a Score (rate it on a scale you define) or a Noul (how likely a statement is to be true); a newer Box type finds where something is in an image. Questions run in parallel, and each answer comes back with probabilities and a confidence estimate that your code can use to decide whether to act or ask a person.",
+ k:"Like a referee who only signals from a fixed set of calls, never gives speeches, and always shows how sure the call is.",
+ x:"An online store wants to stop scam listings before they go live.\nFor each new listing, the app sends the title, description and price as the state, with two questions: a Noul, “this listing looks like a scam”, and a Choice of category from the store’s list.\nJev returns, say, 0.12 for the scam statement and “electronics” with 0.88 confidence.\nBelow 0.3 the listing is published automatically; above 0.7 it is blocked; in between, a moderator reviews it.\nThe team checks a sample of blocked and published listings each week and adjusts the two thresholds.",
+ w:"Developers call it from their own code for routing, screening and safety checks, for example to check an AI agent’s planned tool call and stop a risky one before it runs.",
+ m:"Jev doesn’t hallucinate free text, but it isn’t always right: it can pick the wrong option with high confidence, so teams test it on their own cases and set thresholds.",
+ t:"Jev is proprietary and hosted. TypeSafe has not published its architecture, weights or a technical paper, and describes it as transformer-based. It is trained with what TypeSafe calls Reinforcement Learning for Calibrated Decisions (RLCD), which aims for probabilities that match how often the answers turn out right. A request holds a state (text, JSON or images) and any mix of question types, which are evaluated independently, so questions that depend on each other need separate requests. TypeSafe’s documentation advises keeping each question narrow and splitting broad judgments into several questions combined in your own code. The company reports end-to-end responses in roughly 70 to 500 milliseconds and much lower cost than frontier LLMs, but those figures come from workflows built by its own team.",
+ h:"TypeSafe AI, a San Francisco company founded in 2024, opened limited early access to Jev on September 15, 2026, alongside a US$40 million seed round led by DCVC. Its chief executive, Diogo Almeida, previously worked at OpenAI.",
+ n:"In early access as of November 2026. Its speed and cost claims are mostly the company’s own; independent comparisons are still few." };
+PT.ojev = { l:"Jev (TypeSafe AI)",
+ p:"Um modelo de decisão da TypeSafe AI: em vez de escrever texto, ele responde perguntas estruturadas com respostas tipadas e probabilidades calibradas.",
+ e:"Você envia ao Jev um estado, como um e-mail, um registro em JSON ou uma imagem, e uma ou mais perguntas. Cada pergunta é uma Choice (escolher uma opção de uma lista), um Score (dar uma nota numa escala definida por você) ou um Noul (o quanto uma afirmação é provável de ser verdadeira); um tipo mais novo, o Box, localiza algo numa imagem. As perguntas rodam em paralelo, e cada resposta volta com probabilidades e uma estimativa de confiança que o seu código usa para decidir se age sozinho ou chama uma pessoa.",
+ k:"Como um árbitro que só sinaliza a partir de um conjunto fixo de marcações, nunca faz discurso e sempre mostra o quanto tem certeza da marcação.",
+ x:"Uma loja on-line quer barrar anúncios golpistas antes de irem ao ar.\nPara cada anúncio novo, o app envia título, descrição e preço como estado, com duas perguntas: um Noul, “este anúncio parece golpe”, e uma Choice de categoria a partir da lista da loja.\nO Jev devolve, digamos, 0,12 para a afirmação de golpe e “eletrônicos” com 0,88 de confiança.\nAbaixo de 0,3 o anúncio é publicado automaticamente; acima de 0,7 é bloqueado; no meio, um moderador revisa.\nToda semana a equipe confere uma amostra de anúncios bloqueados e publicados e ajusta os dois limites.",
+ w:"Desenvolvedores chamam o Jev do próprio código para roteamento, triagem e verificações de segurança, por exemplo para conferir a chamada de ferramenta planejada por um agente de IA e barrar uma arriscada antes de ela rodar.",
+ m:"O Jev não alucina texto livre, mas não acerta sempre: pode escolher a opção errada com muita confiança, por isso as equipes o testam nos próprios casos e definem limites.",
+ t:"O Jev é proprietário e hospedado pela empresa. A TypeSafe não publicou a arquitetura, os pesos nem um artigo técnico, e o descreve como baseado em transformer. Ele é treinado com o que a TypeSafe chama de Reinforcement Learning for Calibrated Decisions (RLCD), que busca probabilidades que batam com a frequência real de acertos. Uma requisição traz um estado (texto, JSON ou imagens) e qualquer combinação de tipos de pergunta, avaliados de forma independente, então perguntas que dependem umas das outras precisam de requisições separadas. A documentação da TypeSafe recomenda manter cada pergunta estreita e dividir julgamentos amplos em várias perguntas combinadas no seu próprio código. A empresa relata respostas completas em cerca de 70 a 500 milissegundos e custo bem menor que o de LLMs de fronteira, mas esses números vêm de fluxos montados pela própria equipe.",
+ h:"A TypeSafe AI, empresa de São Francisco fundada em 2024, abriu acesso antecipado limitado ao Jev em 15 de setembro de 2026, junto com uma rodada seed de US$ 40 milhões liderada pela DCVC. O CEO, Diogo Almeida, trabalhou antes na OpenAI.",
+ n:"Em acesso antecipado em novembro de 2026. As afirmações de velocidade e custo são principalmente da própria empresa; comparações independentes ainda são poucas." };
 
 (function () {
   "use strict";
